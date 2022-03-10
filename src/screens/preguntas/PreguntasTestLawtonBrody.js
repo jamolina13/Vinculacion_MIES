@@ -15,7 +15,6 @@ const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestLawtonBrody = (props) => {
   const [state, setState] = useState({
-  
     checked1: "",
     checked2: "",
     checked3: "",
@@ -30,14 +29,21 @@ export const PreguntasTestLawtonBrody = (props) => {
     uno: "1",
     cero: "0",
     datetimeStart: moment(new Date()),
+
+    //Ver y ocultar clave
+    showPass: true,
+    press: false,
   });
 
+ 
   const navigation = props.navigation;
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
+
+ 
 
   const { checked1 } = state;
   const { checked2 } = state;
@@ -60,7 +66,8 @@ export const PreguntasTestLawtonBrody = (props) => {
     const fechaInicial = datetimeStart.format("HH:mm:ss");
     const fechaFinal = datetimeEnd.format("HH:mm:ss");
     const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
-  
+    
+
     var time = new Date();
 
     time.setHours(parseInt(diferencia / 3600) % 24);
@@ -105,18 +112,18 @@ export const PreguntasTestLawtonBrody = (props) => {
             },
             body: JSON.stringify({
               ef_id: '',
-              checked1elb_p1_usar_telefono: checked1,
-              checked2elb_p2_hacer_compras: checked2,
-              checked3elb_p3_preparar_comida: checked3,
-              checked4elb_p4_cuidado_casa: checked4,
-              checked5elb_p5_lavar_ropa: checked5,
-              checked6elb_p6_uso_transporte: checked6,
-              checked7elb_p7_medicacion: checked7,
-              checked8elb_p8_utiliza_dinero: checked8,
-              fechaInicialelb_tiempo_inicial: fechaInicial,
-              fechaFinalelb_tiempo_final: fechaFinal,
-              timeelb_tiempo_total: time,
-              estadoelb_estado: estado,
+              elb_p1_usar_telefono: checked1,
+              elb_p2_hacer_compras: checked2,
+              elb_p3_preparar_comida: checked3,
+              elb_p4_cuidado_casa: checked4,
+              elb_p5_lavar_ropa: checked5,
+              elb_p6_uso_transporte: checked6,
+              elb_p7_medicacion: checked7,
+              elb_p8_utiliza_dinero: checked8,
+              elb_tiempo_inicial: fechaInicial,
+              elb_tiempo_final: fechaFinal,
+              elb_tiempo_total: time,
+              elb_estado: estado,
               elb_puntaje_total: puntaje,
             }),
           }
