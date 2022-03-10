@@ -26,8 +26,8 @@ export const PreguntasTestLawtonBrody = (props) => {
     puntaje: 0,
     temp: "",
     estado: "1",
-    uno: "1",
-    cero: "0",
+    uno: 1,
+    cero: 0,
     datetimeStart: moment(new Date()),
 
     //Ver y ocultar clave
