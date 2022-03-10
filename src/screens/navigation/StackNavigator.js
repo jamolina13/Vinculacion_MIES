@@ -23,6 +23,9 @@ import { PreguntasTestBarthel } from "../preguntas/PreguntasTestBarthel";
 import { PreguntasTestLawtonBrody } from "../preguntas/PreguntasTestLawtonBrody";
 import { RegistroTecnico } from "../gestion/tecnico/RegistroTecnico";
 import { ActualizarTecnico } from "../gestion/tecnico/ActualizarTecnico";
+import { Observaciones } from "../control/Observaciones";
+import { Camara } from "../control/Camara";
+
 
 //Creación de la navegación
 const Stack = createStackNavigator();
@@ -157,6 +160,16 @@ export const StackNavigator = () => {
             name="Ubicacion"
             options={{ title: "MIES APP" }}
             component={ UbicacionScreen }
+          />
+           <Stack.Screen
+            name="Observaciones"
+            options={{ title: "MIES APP" }}
+            component={ Observaciones}
+          />
+          <Stack.Screen
+            name="Camara"
+            options={{ title: "MIES APP" }}
+            component={ Camara }
           />
         </>
       )}
