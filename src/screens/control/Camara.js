@@ -1,33 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Modal, Image, SafeAreaView } from 'react-native';
+import React, { useState, useEffect,useRef } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, Image, SafeAreaView} from 'react-native';
 import { Camera } from 'expo-camera';
-import { FontAwesome } from '@expo/vector-icons';
-import * as Permission from 'expo-permissions';
-import * as MediaLibrary from 'expo-media-library';
-import { CameraRoll } from 'expo';
+import {FontAwesome} from '@expo/vector-icons';
+import *as Permission from 'expo-permissions';
+import *as MediaLibrary from 'expo-media-library';
 
 export const Camara = () => {
   const camRef = useRef(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [hasPermission, setHaspermission] = useState(null);
-  const [capturedPhoto, setCapturedPhoto] = useState(null);
-
+  const [previewVisible, setPreviewVisible] = useState(false); 
+  const [capturedImage, setCapturedImage] = useState(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHaspermission(status === 'granted');
-
+      
     })();
 
     (async () => {
-      const { status } = await Permission.askAsync(Permission.CameraRoll);
-      console.log(status);
-      //setHaspermission(status === 'granted');
-    })();
+        const { status } = await Permission.askAsync(Permission.CAMERA_ROLL);
+        console.log(status);
+       //setHaspermission(status === 'granted');
+      })();
   }, []);
-
+  
 
   if (hasPermission === null) {
     return <View />;
@@ -37,41 +36,30 @@ export const Camara = () => {
     return <Text>Acceso denegado!</Text>;
   }
 
-  const takePicture = async () => {
-    if (camRef) {
-      const data = await camRef.current.takePictureAsync();
-      setCapturedPhoto(data);
-      //  console.log(data);
-      console.log(data.base64);
-
+   const takePicture = async () => {
+      if(camRef){
+          const data = await camRef.current.takePictureAsync();
+          setPreviewVisible(true);
+          setCapturedImage(data);
+          //setOpen(true);
+          console.log(data);
+      }
+      console.log("foto tomada")
     }
+    
 
-    console.log("foto tomada")
-
-
-
-
-    const asset = await MediaLibrary.createAssetAsync()
-
-    asset.saveToCameraRollAsync()
-
-
-
-
-      .then(() => {
-        alert('Salvo con sucesso!');
-      })
-      .catch(error => {
-        console.log('err', error);
-      })
-    console.log("foto guardada")
-    console.log(asset);
-
-  }
-
-
-
-  /*deberia captura*/
+  const savePicture = async () => {
+        const asset = await MediaLibrary.createAssetAsync(data)
+        console.log('asset', asset.filename);
+        MediaLibrary.createAlbumAsync('Obs', asset)
+        .then(()=> {
+            alert('Salvo con sucesso!');
+        })
+        .catch(error => {
+            console.log('err', error);
+        })
+        console.log("foto guardada")
+    }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -95,54 +83,55 @@ export const Camara = () => {
                   : Camera.Constants.Type.back
               );
             }}>
-            <Text style={{ fontSize: 10, marginBottom: 10, color: 'white' }}>Girar</Text>
+            <Text style={{ fontSize: 15, marginBottom: 10, color: 'white' }}>Girar</Text>
           </TouchableOpacity>
         </View>
       </Camera>
 
-      <TouchableOpacity style={styles.button} onPress={takePicture}>
-        <FontAwesome name="camera" size={23} color="white" />
+      <TouchableOpacity style={styles.button} onPress={ takePicture}>
+          <FontAwesome name="camera" size={23} color="white" />
       </TouchableOpacity>
 
-
-
-      {capturedPhoto &&
+      
+      {previewVisible &&
         <Modal
-          animationType="slide"
-          transparent={false}
-          visible={open}
+        animationType="slide"
+        transparent={false}
+        visible={open}
         >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 20 }}>
-            <View style={{ margin: 10, flexDirection: 'row' }}>
-              <TouchableOpacity style={{ margin: 10 }} onPress={() => setOpen(true)}>
-                <FontAwesome name="windows-close" size={50} color="red" />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ margin: 10 }} onPress={() => setOpen(savePicture)}>
-                <FontAwesome name="upload" size={50} color="#121212" />
-              </TouchableOpacity>
+            <View style={{flex: 1, justifyContent:'center', alignItems:'center', margin:20}}>
+            <View style={{margin: 10, flexDirection: 'row'}}> 
+            <TouchableOpacity style={{margin:10}} onPress={()=> setOpen(true)}>
+                <FontAwesome name="windows-close" size={50} color="red"/>
+            </TouchableOpacity>
+            <TouchableOpacity style={{margin:10}} onPress={()=> setOpen(savePicture)}>
+                <FontAwesome name="upload" size={50} color="#121212"/>
+            </TouchableOpacity>
             </View>
-            <Image
-              style={{ width: '100', height: 450, borderRadius: 20 }}
-              img={{ uri: capturedPhoto }}
+            <Image 
+                style={{ width: '100', height: 450, borderRadius: 20}}
+                source={{uri: previewVisible}}
             />
-          </View>
+            </View>
         </Modal>
       }
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
   },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#121212',
-    margin: 0,
-    borderRadius: 10,
-
-    height: 50,
+  button:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#121212',
+      margin: 0,
+      borderRadius: 10,
+      
+      height: 50,
   }
 });
+
