@@ -131,7 +131,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         console.log(response.status);
         if (response.status == 200) {
           //const json = await response.json();
-          navigation.replace("HeaderInicio");
+          navigation.replace("Test");
         } else {
           Alert.alert("MIES APP", "Ha existido un error", [
             {
