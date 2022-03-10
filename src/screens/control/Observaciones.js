@@ -1,5 +1,6 @@
 
 import React, { Component, useState, useEffect } from 'react';
+import { Camera } from 'expo-camera';
 import {
   Image,
   StyleSheet,
@@ -13,8 +14,7 @@ import {
   TouchableOpacity,
   Button,
   pickImage, image, TouchableHighlight,
-  ScrollView
-} from 'react-native';
+  ScrollView} from 'react-native';
 import bgImage from '../../../assets/img_sistema/fondo_login.jpg';
 import Textarea from 'react-native-textarea';
 import * as ImagePicker from 'expo-image-picker';
@@ -30,7 +30,7 @@ function ImagePickerChoose(props) {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        const { status } = await ImagePicker.requestCameraPermissionsAsync;
         if (status !== 'granted') {
           alert('Lo sentimos, se necesitan permisos para acceder a la galería');
         }
@@ -68,6 +68,7 @@ function ImagePickerChoose(props) {
   );
 }
 
+
 const { width: WIDTH } = Dimensions.get('window')
 const options = {
   title: 'Select Avatar',
@@ -77,6 +78,54 @@ const options = {
     path: 'images',
   },
 };
+ /*const { id } = useSelector((state) => state.auth);
+  const params = props.route.params;
+  const navigation = props.navigation;
+  const [values, setValues] = useState({
+    ef_id: params.id,
+    ef_observacion_preguntas: params.obPreguntas,
+    ef_observacion_tecnico: params.observacionTec,
+    ef_ubicacion: params.ubicacion,
+    ef_estado: params.estado,
+    ef_representante: params.representante,
+    ef_foto_adulto: params.foto,
+    ef_tiempo_inicial: params.tInicial,
+    ef_tiempo_final: params.tFinal,
+    ef_tiempo_total: params.tTotal,
+    ef_fecha_aplicacion: params.fAplicacion,
+  });
+  const actualizar = async () => {
+    try {
+      const response = await fetch(
+        "http://192.188.58.82:3000/actualizarFotObsEncabezadoById/" + values.id + "",
+        {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify({
+          ef_observacion_tecnico: observacionTec,
+          ef_foto_adulto: foto,
+        })
+        }
+      );
+      console.log(response.status)
+      if(response.status == 200){
+        navigation.navigate("Test")
+      }else{
+        Alert.alert("MIES APP", "Error al agregar la Observacion. Intente más tarde. ", [
+          {
+            text: "Continuar",
+            onPress: {onRefresh},
+            style: "destructive",
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };*/
 
 export class Observaciones extends React.Component {
 
@@ -268,6 +317,7 @@ export class Observaciones extends React.Component {
               placeholder={'El adulto mayor tardo un tiempo considerable en responder las preguntas de indole familiar y emocional。。。'}
               placeholderTextColor={'#c7c7c7'}
               underlineColorAndroid={'transparent'}
+              
             />
         <Text style={styles.TextInfo}>Tome una foto o seleccione una imagen del adulto mayor</Text>
             <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Camara')}>
@@ -275,7 +325,7 @@ export class Observaciones extends React.Component {
               <Text style={styles.btnText}> Tomar foto</Text>
             </TouchableOpacity>
        
-            <ImagePickerChoose parentCallBack={this.setImageState}></ImagePickerChoose>
+            <ImagePickerChoose parentCallBack={this.setImageState} ></ImagePickerChoose>
             <TouchableOpacity style={styles.button1}  onPress={this.uploadImage}>
             <FontAwesome name="upload" size={20} color="white" />
               <Text style={styles.btnText}> Subir Foto</Text>
