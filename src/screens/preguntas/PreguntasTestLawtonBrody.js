@@ -15,13 +15,7 @@ const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestLawtonBrody = (props) => {
   const [state, setState] = useState({
-    nombresApellidos: "",
-    cedula: "",
-    telefono: "",
-    correo: "",
-    usuario: "",
-    clave: "",
-
+  
     checked1: "",
     checked2: "",
     checked3: "",
@@ -30,81 +24,20 @@ export const PreguntasTestLawtonBrody = (props) => {
     checked6: "",
     checked7: "",
     checked8: "",
-
-    //Ver y ocultar clave
-    showPass: true,
-    press: false,
+    puntaje: 0,
+    temp: "",
+    estado: "1",
+    uno: "1",
+    cero: "0",
+    datetimeStart: moment(new Date()),
   });
 
-  /* export  class PreguntasTestLawtonBrody extends React.Component {
-  
-    constructor(props){
-        super(props)
-        this.state = {
-          nombresApellidos: "",
-          cedula: "",
-          telefono: "",
-          correo: "",
-          usuario: "",
-          clave: "",
-   
-          checked1: '',
-          checked2: '',
-          checked3: '',
-          checked4: '',
-          checked5: '',
-          checked6: '',
-          checked7: '',
-          checked8: '',
-
-          //Ver y ocultar clave
-          showPass: true,
-          press: false
-    }
-  }*/
-
-  // const showPass = () => {
-  //   if (state.press == false) {
-  //     setState({ showPass: false, press: true });
-  //   } else {
-  //     setState({ showPass: true, press: false });
-  //   }
-  // };
-
-
-  const registroUsuario = () => {
-    //alert('OK');
-    const { nombresApellidos } = state;
-    const { cedula } = state;
-    const { telefono } = state;
-    const { correo } = state;
-    const { usuario } = state;
-    const { clave } = state;
-
-    fetch("http://192.188.58.82:3000/guardarEscalaLawtonBrody", {
-      method: "POST",
-      headers: {
-        Accept: "Application/json",
-        "Content-type": "Application/json",
-      },
-      body: JSON.stringify({
-        nombresApellidos: nombresApellidos,
-        cedula: cedula,
-        telefono: telefono,
-        correo: correo,
-        usuario: usuario,
-        clave: clave,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        alert(responseJson);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const navigation = props.navigation;
+  const calculartotal = (total) => {
+    setState({
+      temp: total,
+    });
   };
-
 
   const { checked1 } = state;
   const { checked2 } = state;
@@ -114,6 +47,97 @@ export const PreguntasTestLawtonBrody = (props) => {
   const { checked6 } = state;
   const { checked7 } = state;
   const { checked8 } = state;
+  const { estado } = state;
+  const { puntaje } = state;
+  const { uno } = state;
+  const { cero } = state;
+  const { temp } = state;
+
+   //CALCULO DE TIEMPO DE APLICACIÓN
+   const { datetimeStart } = state;
+    const datetimeEnd = moment(new Date());
+    //fechas para enviar a la base de datos
+    const fechaInicial = datetimeStart.format("HH:mm:ss");
+    const fechaFinal = datetimeEnd.format("HH:mm:ss");
+    const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
+  
+    var time = new Date();
+
+    time.setHours(parseInt(diferencia / 3600) % 24);
+    time.setMinutes(parseInt(diferencia / 60) % 60);
+    time.setSeconds(parseInt(diferencia % 60));
+    time = time.toTimeString().split(" ")[0];
+
+    const onsubmitGuardar = async () => {
+      let valor =0;
+  
+      Object.keys(state).forEach(key => {
+        
+        if(key.substring(0, 7)=="checked"){
+          if((state[key])!=''){
+            valor=valor+parseInt(state[key]);
+          } 
+        }
+      });
+
+
+      const { checked1 } = state;
+      const { checked2 } = state;
+      const { checked3 } = state;
+      const { checked4 } = state;
+      const { checked5 } = state;
+      const { checked6 } = state;
+      const { checked7 } = state;
+      const { checked8 } = state;
+      const { estado } = state;
+      const { puntaje } = state;
+      console.log(valor);
+
+
+      try {
+        const response = await fetch(
+          "http://192.188.58.82:3000/guardarEscalaLawtonBrody",
+          {
+            method: "POST",
+            headers: {
+              Accept: "Application/json",
+              "Content-type": "Application/json",
+            },
+            body: JSON.stringify({
+              ef_id: '',
+              checked1elb_p1_usar_telefono: checked1,
+              checked2elb_p2_hacer_compras: checked2,
+              checked3elb_p3_preparar_comida: checked3,
+              checked4elb_p4_cuidado_casa: checked4,
+              checked5elb_p5_lavar_ropa: checked5,
+              checked6elb_p6_uso_transporte: checked6,
+              checked7elb_p7_medicacion: checked7,
+              checked8elb_p8_utiliza_dinero: checked8,
+              fechaInicialelb_tiempo_inicial: fechaInicial,
+              fechaFinalelb_tiempo_final: fechaFinal,
+              timeelb_tiempo_total: time,
+              estadoelb_estado: estado,
+              elb_puntaje_total: puntaje,
+            }),
+          }
+        );
+        console.log(response.status);
+        if (response.status == 200) {
+          //const json = await response.json();
+          navigation.replace("HeaderInicio");
+        } else {
+          Alert.alert("MIES APP", "Ha existido un error", [
+            {
+              text: "Continuar",
+              style: "destructive",
+            },
+          ]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
 
   return (
     <ScrollView>
@@ -142,7 +166,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked1: v });
+              setState({ checked1: v });
             }}
           >
             <View style={styles.radios}>
@@ -200,7 +224,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state,checked2: v });
+              setState({ checked2: v });
             }}
           >
             <View style={styles.radios}>
@@ -260,7 +284,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked3: v });
+              setState({ checked3: v });
             }}
           >
             <View style={styles.radios2}>
@@ -322,7 +346,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked4: v });
+              setState({ checked4: v });
             }}
           >
             <View style={styles.radios}>
@@ -395,7 +419,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked5: v });
+              setState({ checked5: v });
             }}
           >
             <View style={styles.radios}>
@@ -443,7 +467,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked6: v });
+              setState({ checked6: v });
             }}
           >
             <View style={styles.radios}>
@@ -516,7 +540,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked7: v });
+              setState({ checked7: v });
             }}
           >
             <View style={styles.radios}>
@@ -566,7 +590,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({ ...state, checked8: v });
+              setState({ checked5: v });
             }}
           >
             <View style={styles.radios}>
@@ -623,7 +647,7 @@ export const PreguntasTestLawtonBrody = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.loginBtn3}
-            onPress={() => props.navigation.navigate("PreguntasTestLawtonBrody")}
+            onPress={() => props.navigation.navigate("Test")}
           >
             <Text style={styles.textBoton}>Cancelar</Text>
           </TouchableOpacity>

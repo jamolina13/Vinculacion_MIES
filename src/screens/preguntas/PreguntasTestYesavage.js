@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,171 +6,49 @@ import {
   Alert,
   ImageBackground,
   Dimensions,
-  TouchableOpacity, ScrollView
-} from 'react-native';
-import bgImage from '../../../assets/img_sistema/fondo_login.jpg';
-import { RadioButton } from 'react-native-paper';
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import bgImage from "../../../assets/img_sistema/fondo_login.jpg";
+import { RadioButton } from "react-native-paper";
 //import DatePicker from '@react-native-community/datetimepicker';
 //https://snack.expo.io/@phattran1201/date-picker-example
-import moment from 'moment';
+import moment from "moment";
 
-const { width: WIDTH } = Dimensions.get('window')
+const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestYesavage = (props) => {
-
   const [state, setState] = useState({
-    checked: '',
-    checked1: '',
-    checked2: '',
-    checked3: '',
-    checked4: '',
-    checked5: '',
-    checked6: '',
-    checked7: '',
-    checked8: '',
-    checked9: '',
-    checked10: '',
-    checked11: '',
-    checked12: '',
-    checked13: '',
-    checked14: '',
+    checked: "",
+    checked1: "",
+    checked2: "",
+    checked3: "",
+    checked4: "",
+    checked5: "",
+    checked6: "",
+    checked7: "",
+    checked8: "",
+    checked9: "",
+    checked10: "",
+    checked11: "",
+    checked12: "",
+    checked13: "",
+    checked14: "",
     puntaje: 0,
-    temp: '',
-    estado: '1',
-    uno: '1',
-    cero: '0',
+    temp: "",
+    estado: "1",
+    uno: "1",
+    cero: "0",
     datetimeStart: moment(new Date()),
-    //Ver y ocultar clave
-    showPass: true,
-    press: false
+    
   });
 
   const navigation = props.navigation;
-
-  // onsubmitGuardar = onsubmitGuardar.bind(this);
-  // alertTime = alertTime.bind(this);
-  // calculartotal = calculartotal.bind(this);
-
   const calculartotal = (total) => {
     setState({
       temp: total,
-    })
-  }
-
-  const alertTime = (time) => {
-    Alert.alert(
-      'Resultados Test Yesavage',
-      'Tiempo de duración: ' + time +
-      '\n\nPuntaje Total: ' + state.temp + '.',
-      [
-        { text: 'Aceptar', onPress: () => navigation.navigate('Test') }
-      ],
-      { cancelable: false }
-    )
-  }
-
-  //CALCULO DE TIEMPO DE APLICACIÓN
-
-  const onsubmitGuardar = () => {
-    const { datetimeStart } = state;
-    const datetimeEnd = moment(new Date());
-    //fechas para enviar a la base de datos
-    const fechaInicial = datetimeStart.format('HH:mm:ss a');
-    const fechaFinal = datetimeEnd.format('HH:mm:ss a');
-    const diferencia = moment(datetimeEnd).diff(datetimeStart, 'seconds');
-    //mostrar fecha inicial
-    console.log(fechaInicial);
-
-    //mostrar fecha final
-    console.log(fechaFinal);
-
-    var total = 0;
-    var time = new Date();
-
-    time.setHours(parseInt(diferencia / 3600) % 24);
-    time.setMinutes(parseInt(diferencia / 60) % 60);
-    time.setSeconds(parseInt(diferencia % 60));
-    time = time.toTimeString().split(" ")[0];
-
-    console.log('Tiempo duración', time);
-
-    const { checked } = state;
-    const { checked1 } = state;
-    const { checked2 } = state;
-    const { checked3 } = state;
-    const { checked4 } = state;
-    const { checked5 } = state;
-    const { checked6 } = state;
-    const { checked7 } = state;
-    const { checked8 } = state;
-    const { checked9 } = state;
-    const { checked10 } = state;
-    const { checked11 } = state;
-    const { checked12 } = state;
-    const { checked13 } = state;
-    const { checked14 } = state;
-    const { estado } = state;
-
-    var preg = parseInt(state.checked);
-    var preg1 = parseInt(state.checked1);
-    var preg2 = parseInt(state.checked2);
-    var preg3 = parseInt(state.checked3);
-    var preg4 = parseInt(state.checked4);
-    var preg5 = parseInt(state.checked5);
-    var preg6 = parseInt(state.checked6);
-    var preg7 = parseInt(state.checked7);
-    var preg8 = parseInt(state.checked8);
-    var preg9 = parseInt(state.checked9);
-    var preg10 = parseInt(state.checked10);
-    var preg11 = parseInt(state.checked11);
-    var preg12 = parseInt(state.checked12);
-    var preg13 = parseInt(state.checked13);
-    var preg14 = parseInt(state.checked14);
-
-    fetch('http://192.188.58.82:3000/guardarEscalaYesavage', {
-      method: 'POST',
-      headers: {
-        'Accept': 'Application/json',
-        'Content-type': 'Application/json'
-      },
-      body: JSON.stringify({
-        checked: checked,
-        checked1: checked1,
-        checked2: checked2,
-        checked3: checked3,
-        checked4: checked4,
-        checked5: checked5,
-        checked6: checked6,
-        checked7: checked7,
-        checked8: checked8,
-        checked9: checked9,
-        checked10: checked10,
-        checked11: checked11,
-        checked12: checked12,
-        checked13: checked13,
-        checked14: checked14,
-        fechaInicial: fechaInicial,
-        fechaFinal: fechaFinal,
-        time: time,
-        estado: estado
-      })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        if (responseJson == "Ok") {
-          var total = preg + preg1 + preg2 + preg3 + preg4 + preg5 + preg6 + preg7 + preg8 + preg9 + preg10 + preg11 + preg12 + preg13 + preg14;
-          calculartotal(total);
-          alertTime(time);
-        } else if (responseJson == "No") {
-          alert("Error al realizar el registro");
-        } else {
-          alert("Todos los campos son obligatorios");
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-
-  }
-
+    });
+  };
 
   const { checked } = state;
   const { checked1 } = state;
@@ -193,42 +71,151 @@ export const PreguntasTestYesavage = (props) => {
   const { cero } = state;
   const { temp } = state;
 
+  //CALCULO DE TIEMPO DE APLICACIÓN
+  const { datetimeStart } = state;
+  const datetimeEnd = moment(new Date());
+  //fechas para enviar a la base de datos
+  const fechaInicial = datetimeStart.format("HH:mm:ss");
+  const fechaFinal = datetimeEnd.format("HH:mm:ss");
+  const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
+  var time = new Date();
+
+  time.setHours(parseInt(diferencia / 3600) % 24);
+  time.setMinutes(parseInt(diferencia / 60) % 60);
+  time.setSeconds(parseInt(diferencia % 60));
+  time = time.toTimeString().split(" ")[0];
+
+  const onsubmitGuardar = async () => {
+    let valor =0;
+
+    Object.keys(state).forEach(key => {
+      
+      if(key.substring(0, 7)=="checked"){
+        if((state[key])!=''){
+          valor=valor+parseInt(state[key]);
+        } 
+      }
+    });
+
+    const { checked } = state;
+    const { checked1 } = state;
+    const { checked2 } = state;
+    const { checked3 } = state;
+    const { checked4 } = state;
+    const { checked5 } = state;
+    const { checked6 } = state;
+    const { checked7 } = state;
+    const { checked8 } = state;
+    const { checked9 } = state;
+    const { checked10 } = state;
+    const { checked11 } = state;
+    const { checked12 } = state;
+    const { checked13 } = state;
+    const { checked14 } = state;
+    const { estado } = state;
+    const { puntaje } = valor;
+    console.log(valor);
+    
+    try {
+      const response = await fetch(
+        "http://192.188.58.82:3000/guardarEscalaYesavage",
+        {
+          method: "POST",
+          headers: {
+            Accept: "Application/json",
+            "Content-type": "Application/json",
+          },
+          body: JSON.stringify({
+            ef_id: 3,
+            checkedey_p1_satisfecho: checked,
+            checked1ey_p2_actividades: checked1,
+            checked2ey_p3_vacio: checked2,
+            checked3ey_p4_aburrido: checked3,
+            checked4ey_p5_animo: checked4,
+            checked5ey_p6_preocupado: checked5,
+            checked6ey_p7_feliz: checked6,
+            checked7ey_p8_desamparado: checked7,
+            checked8ey_p9_cosas: checked8,
+            checked9ey_p10_memoria: checked9,
+            checked10ey_p11_estar_vivo: checked10,
+            checked11ey_p12_inutil_despreciable: checked11,
+            checked12ey_p13_energia: checked12,
+            checked13ey_p14_esperanza_actual: checked13,
+            checked14ey_p15_cree_mejor: checked14,
+            fechaInicialey_tiempo_inicial: fechaInicial,
+            fechaFinaley_tiempo_final: fechaFinal,
+            timeey_tiempo_total: time,
+            estadoey_estado: estado,
+            ey_puntaje_total: puntaje,
+          }),
+        }
+      );
+      console.log(response.status);
+      if (response.status == 200) {
+        //const json = await response.json();
+        navigation.replace("HeaderInicio");
+      } else {
+        Alert.alert("MIES APP", "Ha existido un error", [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ImageBackground source={bgImage} style={styles.backgroundContainer}>
       <ScrollView style={styles.scrollView}>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <Text style={styles.TituloLogin}>Intrucciones</Text>
         </View>
         <View style={styles.subtitulo}>
-          <Text style={styles.TextInfoSub}>Responda cada una de las siguientes preguntas según como se ha sentido Ud. durante la última semana.</Text>
+          <Text style={styles.TextInfoSub}>
+            Responda cada una de las siguientes preguntas según como se ha
+            sentido Ud. durante la última semana.
+          </Text>
         </View>
 
         <View tyle={styles.tituloEdad}>
-          <Text style={styles.TituloEda}>Cada una de estas respuestas cuenta <Text style={{ color: 'red' }}>1 PUNTO.</Text></Text>
+          <Text style={styles.TituloEda}>
+            Cada una de estas respuestas cuenta{" "}
+            <Text style={{ color: "red" }}>1 PUNTO.</Text>
+          </Text>
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>1. ¿Está Ud. básicamente satisfecho con su vida?</Text>
+          <Text style={styles.label}>
+            1. ¿Está Ud. básicamente satisfecho con su vida?
+          </Text>
         </View>
 
-        <View style={{ alignItems: 'center' }}>
-          <RadioButton.Group re
-            onValueChange={checked => setState({ ...state, checked })}
+        <View style={{ alignItems: "center" }}>
+          <RadioButton.Group
+            re
+            onValueChange={(checked) => setState({ ...state, checked })}
           >
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked: uno }); }}
+                  status={checked === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked: cero }); }}
+                  status={checked === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -237,25 +224,35 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>2. ¿Ha disminuido o abandonado muchos de sus intereses o actividades previas?</Text>
+          <Text style={styles.label}>
+            2. ¿Ha disminuido o abandonado muchos de sus intereses o actividades
+            previas?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked1: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked1: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked1 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked1: uno }); }}
+                  status={checked1 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked1 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked1: cero }); }}
+                  status={checked1 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -266,23 +263,30 @@ export const PreguntasTestYesavage = (props) => {
         <View style={styles.tituloLabel}>
           <Text style={styles.label}>3. ¿Siente que su vida está vacía?</Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked2: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked2: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked2 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked2: uno }); }}
+                  status={checked2 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked2: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked2 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked2: cero }); }}
+                  status={checked2 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked2: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -291,25 +295,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>4. ¿Se siente aburrido frecuentemente?</Text>
+          <Text style={styles.label}>
+            4. ¿Se siente aburrido frecuentemente?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked3: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked3: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked3 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked3: uno }); }}
+                  status={checked3 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked3: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked3 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked3: cero }); }}
+                  status={checked3 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked3: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -318,25 +331,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>5. ¿Está Ud. de buen ánimo la mayoría del tiempo?</Text>
+          <Text style={styles.label}>
+            5. ¿Está Ud. de buen ánimo la mayoría del tiempo?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked4: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked4: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked4 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked4: uno }); }}
+                  status={checked4 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked4: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked4 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked4: cero }); }}
+                  status={checked4 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked4: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -345,25 +367,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>6. ¿Está preocupado o teme que algo malo le va a pasar?</Text>
+          <Text style={styles.label}>
+            6. ¿Está preocupado o teme que algo malo le va a pasar?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked5: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked5: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked5 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked5: uno }); }}
+                  status={checked5 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked5 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked5: cero }); }}
+                  status={checked5 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -372,25 +403,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>7. ¿Se siente feliz la mayor parte del tiempo?</Text>
+          <Text style={styles.label}>
+            7. ¿Se siente feliz la mayor parte del tiempo?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked6: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked6: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked6 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked6: uno }); }}
+                  status={checked6 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked6: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked6 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked6: cero }); }}
+                  status={checked6 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked6: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -399,25 +439,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>8. ¿Se siente con frecuencia desamparado?</Text>
+          <Text style={styles.label}>
+            8. ¿Se siente con frecuencia desamparado?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked7: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked7: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked7 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked7: uno }); }}
+                  status={checked7 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked7: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked7 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked7: cero }); }}
+                  status={checked7 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked7: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -426,25 +475,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>9. ¿Prefiere Ud. quedarse en casa a salir a hacer cosas nuevas?</Text>
+          <Text style={styles.label}>
+            9. ¿Prefiere Ud. quedarse en casa a salir a hacer cosas nuevas?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked8: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked8: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked8 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked8: uno }); }}
+                  status={checked8 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked8: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked8 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked8: cero }); }}
+                  status={checked8 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked8: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -453,25 +511,35 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>10. ¿Siente Ud. que tiene más problemas con su memoria que otras personas de su edad?</Text>
+          <Text style={styles.label}>
+            10. ¿Siente Ud. que tiene más problemas con su memoria que otras
+            personas de su edad?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked9: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked9: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked9 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked9: uno }); }}
+                  status={checked9 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked9: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked9 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked9: cero }); }}
+                  status={checked9 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked9: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -480,25 +548,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>11. ¿Cree Ud. que es maravilloso estar vivo?</Text>
+          <Text style={styles.label}>
+            11. ¿Cree Ud. que es maravilloso estar vivo?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked10: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked10: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked10 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked10: uno }); }}
+                  status={checked10 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked10: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked10 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked10: cero }); }}
+                  status={checked10 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked10: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -507,25 +584,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>12. ¿Se siente inútil o despreciable como está Ud. actualmente?</Text>
+          <Text style={styles.label}>
+            12. ¿Se siente inútil o despreciable como está Ud. actualmente?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked11: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked11: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked11 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked11: uno }); }}
+                  status={checked11 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked11: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked11 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked11: cero }); }}
+                  status={checked11 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked11: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -536,23 +622,30 @@ export const PreguntasTestYesavage = (props) => {
         <View style={styles.tituloLabel}>
           <Text style={styles.label}>13. ¿Se siente lleno de energía?</Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked12: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked12: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked12 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked12: uno }); }}
+                  status={checked12 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked12: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked12 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked12: cero }); }}
+                  status={checked12 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked12: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -561,25 +654,34 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>14. ¿Se encuentrra sin esperanza ante su situación actual?</Text>
+          <Text style={styles.label}>
+            14. ¿Se encuentrra sin esperanza ante su situación actual?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked13: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked13: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked13 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked13: uno }); }}
+                  status={checked13 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked13: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked13 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked13: cero }); }}
+                  status={checked13 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked13: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
@@ -588,47 +690,60 @@ export const PreguntasTestYesavage = (props) => {
         </View>
 
         <View style={styles.tituloLabel}>
-          <Text style={styles.label}>15. ¿Cree Ud. que las otras personas están en general mejor que Ud?</Text>
+          <Text style={styles.label}>
+            15. ¿Cree Ud. que las otras personas están en general mejor que Ud?
+          </Text>
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <RadioButton.Group
-            onValueChange={(v) => { setState({ ...state, checked14: v }) }} >
-            <View style={{ flexDirection: 'row' }}>
+            onValueChange={(v) => {
+              setState({ ...state, checked14: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value={state.uno}
-                  status={checked14 === uno ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked14: uno }); }}
+                  status={checked14 === uno ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked14: uno });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
                   value={state.cero}
-                  status={checked14 === cero ? 'checked' : 'unchecked'}
-                  onPress={() => { setState({ ...state, checked14: cero }); }}
+                  status={checked14 === cero ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked14: cero });
+                  }}
                 />
               </View>
               <Text style={styles.TextRadio}>No</Text>
             </View>
           </RadioButton.Group>
         </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-          <TouchableOpacity style={styles.btnRegistrar}
-            onPress={onsubmitGuardar}>
+        <View
+          style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
+        >
+          <TouchableOpacity
+            style={styles.btnRegistrar}
+            onPress={onsubmitGuardar}
+          >
             <Text style={styles.text1}>Guardar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnCancelar} onPress={() => navigation.navigate('Test')}>
+          <TouchableOpacity
+            style={styles.btnCancelar}
+            onPress={() => navigation.navigate("Test")}
+          >
             <Text style={styles.text1}>Cancelar</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </ImageBackground>
   );
-}
-
-
-
+};
 
 const styles = StyleSheet.create({
   backgroundContainer: {
@@ -636,24 +751,23 @@ const styles = StyleSheet.create({
     width: null,
     height: null,
     //alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20
+    justifyContent: "center",
+    paddingTop: 20,
   },
   scrollView: {
     // backgroundColor: 'pink',
     //marginBottom : 10,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
     marginTop: 70,
   },
   inputContainer1: {
     marginTop: 20,
-
   },
   inputIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     left: 40,
   },
@@ -664,34 +778,32 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingTop: 9,
     paddingLeft: 39,
-    backgroundColor: 'rgba(0,0,0,0.35)',
+    backgroundColor: "rgba(0,0,0,0.35)",
     color: "#FEFCFC",
     marginHorizontal: 25,
-
   },
   TextRadio: {
     fontSize: 16,
     marginTop: 0,
     top: 6,
     opacity: 0.5,
-    marginRight: 50
+    marginRight: 50,
   },
   tituloEdad: {
-    alignItems: 'center',
-    marginBottom: 50
+    alignItems: "center",
+    marginBottom: 50,
   },
   TituloEda: {
-    color: '#020202',
-    alignItems: 'center',
+    color: "#020202",
+    alignItems: "center",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
-    textAlign: 'center'
-
+    textAlign: "center",
   },
 
   logoLogin: {
-    height: 150
+    height: 150,
   },
 
   tituloLabel: {
@@ -699,90 +811,87 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     marginBottom: 20,
     marginTop: 0,
-    textAlign: 'justify',
+    textAlign: "justify",
   },
   subtitulo: {
     paddingLeft: 25,
     paddingRight: 25,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginTop: 0,
-    textAlign: 'center',
+    textAlign: "center",
   },
   TituloLogin: {
-    color: 'black',
+    color: "black",
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 0,
     opacity: 0.5,
-    justifyContent: 'center',
-
+    justifyContent: "center",
   },
   TextInfo: {
-    color: 'black',
+    color: "black",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 3,
     opacity: 0.5,
-    textAlign: 'justify',
+    textAlign: "justify",
   },
   TextInfoSub: {
-    color: 'black',
+    color: "black",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 3,
     opacity: 0.5,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   label: {
     fontSize: 16,
     paddingLeft: 0,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
     top: 5,
-    fontWeight: 'bold'
-
+    fontWeight: "bold",
   },
   inputContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
 
   btnRegistrar: {
     width: WIDTH - 250,
     height: 45,
     borderRadius: 45,
-    backgroundColor: '#005DA6',
-    justifyContent: 'center',
+    backgroundColor: "#005DA6",
+    justifyContent: "center",
     marginTop: 20,
-    marginRight: 30
-
+    marginRight: 30,
   },
   btnCancelar: {
     width: WIDTH - 250,
     height: 45,
     borderRadius: 45,
     marginBottom: 20,
-    backgroundColor: '#E74C3C',
-    justifyContent: 'center',
+    backgroundColor: "#E74C3C",
+    justifyContent: "center",
     marginTop: 20,
   },
   text1: {
-    color: '#ffff',
+    color: "#ffff",
     fontSize: 18,
-    textAlign: 'center',
-    fontWeight: 'bold'
+    textAlign: "center",
+    fontWeight: "bold",
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     padding: 20,
   },
   sectionStyle: {
     flex: 1,
     marginTop: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 20,
@@ -790,16 +899,15 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    backgroundColor: '#FF0000',
+    backgroundColor: "#FF0000",
     padding: 5,
     borderRadius: 5,
     width: 200,
-    alignItems: 'center',
+    alignItems: "center",
   },
   text: {
     fontSize: 25,
-    color: '#FFF',
+    color: "#FFF",
     marginLeft: 7,
   },
-
 });

@@ -9,17 +9,11 @@ import {
 } from "react-native";
 
 import { RadioButton } from "react-native-paper";
-
+import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestMiniExamenMental = (props) => {
   const [state, setState] = useState({
-    /*  nombresApellidos: "",
-      cedula: "",
-      telefono: "",
-      correo: "",
-      usuario: "",
-      clave: "", */
     checked: "",
     checked1: "",
     checked2: "",
@@ -50,79 +44,149 @@ export const PreguntasTestMiniExamenMental = (props) => {
     checked27: "",
     checked28: "",
     checked29: "",
-    date: null,
-    dt: null,
-    registrationDate: "",
-
-    //Ver y ocultar clave
-    showPass: true,
-    press: false,
+    cero: 0,
+    uno: 1,
+    puntaje: 0,
+    temp: "",
+    estado: "1",
+    fechaInicial: "",
+    fechaFinal: "",
+    time: "",
+    datetimeStart: moment(new Date()),
   });
 
-  const {checked} = state;
-  const {checked1} = state;
-  const {checked2} = state;
-  const {checked3} = state;
-  const {checked4} = state;
-  const {checked5} = state;
-  const {checked6} = state;
-  const {checked7} = state;
-  const {checked8} = state;
-  const {checked9} = state;
-  const {checked10} = state;
-  const {checked11} = state;
-  const {checked12} = state;
-  const {checked13} = state;
-  const {checked14} = state;
-  const {checked15} = state;
-  const {checked16} = state;
-  const {checked17} = state;
-  const {checked18} = state;
-  const {checked19} = state;
-  const {checked20} = state;
-  const {checked21} = state;
-  const {checked22} = state;
-  const {checked23} = state;
-  const {checked24} = state;
-  const {checked25} = state;
-  const {checked26} = state;
-  const {checked27} = state;
-  const {checked28} = state;
-  const {checked29} = state;
+  const { checked } = state;
+  const { checked1 } = state;
+  const { checked2 } = state;
+  const { checked3 } = state;
+  const { checked4 } = state;
+  const { checked5 } = state;
+  const { checked6 } = state;
+  const { checked7 } = state;
+  const { checked8 } = state;
+  const { checked9 } = state;
+  const { checked10 } = state;
+  const { checked11 } = state;
+  const { checked12 } = state;
+  const { checked13 } = state;
+  const { checked14 } = state;
+  const { checked15 } = state;
+  const { checked16 } = state;
+  const { checked17 } = state;
+  const { checked18 } = state;
+  const { checked19 } = state;
+  const { checked20 } = state;
+  const { checked21 } = state;
+  const { checked22 } = state;
+  const { checked23 } = state;
+  const { checked24 } = state;
+  const { checked25 } = state;
+  const { checked26 } = state;
+  const { checked27 } = state;
+  const { checked28 } = state;
+  const { checked29 } = state;
+  const { cero } = state;
+  const { uno } = state;
+  const { estado } = state;
+  const { puntaje } = state;
 
-  /* const registroUsuario = () => {
-    //alert('OK');
-    const { nombresApellidos } = state;
-    const { cedula } = state;
-    const { telefono } = state;
-    const { correo } = state;
-    const { usuario } = state;
-    const { clave } = state;
+  const navigation = props.navigation;
+  const calculartotal = (total) => {
+    setState({
+      temp: total,
+    });
+  };
 
-    fetch('http://192.168.100.6/pruebas_react/registrarse.php', {
-      method: 'POST',
-      headers: {
-        'Accept': 'Application/json',
-        'Content-type': 'Application/json'
-      },
-      body: JSON.stringify({
-        nombresApellidos: nombresApellidos,
-        cedula: cedula,
-        telefono: telefono,
-        correo: correo,
-        usuario: usuario,
-        clave: clave
-      })
+  const { datetimeStart } = state;
+  const datetimeEnd = moment(new Date());
+  //fechas para enviar a la base de datos
+  const fechaInicial = datetimeStart.format("HH:mm:ss");
+  const fechaFinal = datetimeEnd.format("HH:mm:ss");
+  const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
 
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        alert(responseJson);
-      }).catch((error) => {
-        console.log(error);
-      });
+  var time = new Date();
+  time.setHours(parseInt(diferencia / 3600) % 24);
+  time.setMinutes(parseInt(diferencia / 60) % 60);
+  time.setSeconds(parseInt(diferencia % 60));
+  time = time.toTimeString().split(" ")[0];
 
-  }
- */
+  const p1_orientacion_tiempo =
+    checked + checked1 + checked2 + checked3 + checked4;
+  const p2_orientacion_espacio =
+    checked5 + checked6 + checked7 + checked8 + checked9;
+  const p3_memoria = checked10 + checked11 + checked12;
+  const p4_atencion_calculo =
+    checked13 + checked14 + checked15 + checked16 + checked17;
+  const p5_memoria = checked18 + checked19 + checked20;
+  const p6_denominacion = checked21 + checked22;
+  const p7_repeticion_frase = checked23;
+  const p8_compresion = checked24 + checked25 + checked26;
+  const p9_lectura = checked27;
+  const p10_escritura = checked28;
+  const p11_copia_dibujo = checked29;
+
+  const puntajeTotal =
+    p1_orientacion_tiempo +
+    p2_orientacion_espacio +
+    p3_memoria +
+    p4_atencion_calculo +
+    p5_memoria +
+    p6_denominacion +
+    p7_repeticion_frase +
+    p8_compresion +
+    p9_lectura +
+    p10_escritura +
+    p11_copia_dibujo;
+
+  const onsubmitGuardar = async () => {
+    try {
+      console.log("entra");
+      const response = await fetch(
+        "http://192.188.58.82:3000/guardarMiniMental",
+        {
+          method: "POST",
+          headers: {
+            Accept: "Application/json",
+            "Content-type": "Application/json",
+          },
+          body: JSON.stringify({
+            ef_id: 2,
+            mim_p1_orientacion_tiempo: p1_orientacion_tiempo,
+            mim_p2_orientacion_espacio: p2_orientacion_espacio,
+            mim_p3_memoria: p3_memoria,
+            mim_p4_atencion_calculo: p4_atencion_calculo,
+            mim_p5_memoria: p5_memoria,
+            mim_p6_denominacion: p6_denominacion,
+            mim_p7_repeticion_frase: p7_repeticion_frase,
+            mim_p8_compresion: p8_compresion,
+            mim_p9_lectura: p9_lectura,
+            mim_p10_escritura: p10_escritura,
+            mim_p11_copia_dibujo: p11_copia_dibujo,
+            mim_tiempo_inicial: fechaInicial,
+            mim_tiempo_final: fechaFinal,
+            mim_tiempo_total: time,
+            mim_estado: estado,
+            mim_puntaje_total: puntajeTotal,
+          }),
+        }
+      );
+      console.log("sale");
+      console.log(response.status);
+      if (response.status == 200) {
+        //const json = await response.json();
+        navigation.replace("Test");
+      } else {
+        Alert.alert("MIES APP", "Ha existido un error", [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -146,20 +210,20 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked: "uno" });
+                  setState({ ...state, checked: cero });
                 }}
               />
             </View>
             <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
             <View>
               <RadioButton
-                value="dos"
-                status={checked === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked: "dos" });
+                  setState({ ...state, checked: uno });
                 }}
               />
             </View>
@@ -181,20 +245,20 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked1 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked1 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "uno" });
+                  setState({ ...state, checked1: cero });
                 }}
               />
             </View>
             <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
             <View>
               <RadioButton
-                value="dos"
-                status={checked1 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked1 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "dos" });
+                  setState({ ...state, checked1: uno });
                 }}
               />
             </View>
@@ -215,20 +279,20 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked2 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked2 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "uno" });
+                  setState({ ...state, checked2: cero });
                 }}
               />
             </View>
             <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
             <View>
               <RadioButton
-                value="dos"
-                status={checked2 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked2 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "dos" });
+                  setState({ ...state, checked2: uno });
                 }}
               />
             </View>
@@ -250,10 +314,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked3 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked3 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "uno" });
+                  setState({ ...state, checked3: cero });
                 }}
               />
             </View>
@@ -261,10 +325,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked3 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked3 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "dos" });
+                  setState({ ...state, checked3: uno });
                 }}
               />
             </View>
@@ -285,10 +349,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked4 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked4 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "uno" });
+                  setState({ ...state, checked4: cero });
                 }}
               />
             </View>
@@ -296,10 +360,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked4 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked4 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "dos" });
+                  setState({ ...state, checked4: uno });
                 }}
               />
             </View>
@@ -324,10 +388,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked5 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked5 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked5: "uno" });
+                  setState({ ...state, checked5: cero });
                 }}
               />
             </View>
@@ -335,10 +399,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked5 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked5 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked5: "dos" });
+                  setState({ ...state, checked5: uno });
                 }}
               />
             </View>
@@ -362,10 +426,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked6 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked6 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "uno" });
+                  setState({ ...state, checked6: cero });
                 }}
               />
             </View>
@@ -373,10 +437,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked6 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked6 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "dos" });
+                  setState({ ...state, checked6: uno });
                 }}
               />
             </View>
@@ -398,10 +462,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked7 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked7 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked7: "uno" });
+                  setState({ ...state, checked7: cero });
                 }}
               />
             </View>
@@ -409,10 +473,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked7 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked7 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked7: "dos" });
+                  setState({ ...state, checked7: uno });
                 }}
               />
             </View>
@@ -433,10 +497,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked8 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked8 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked8: "uno" });
+                  setState({ ...state, checked8: cero });
                 }}
               />
             </View>
@@ -444,10 +508,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked8 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked8 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked8: "dos" });
+                  setState({ ...state, checked8: uno });
                 }}
               />
             </View>
@@ -469,10 +533,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked9 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked9 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked9: "uno" });
+                  setState({ ...state, checked9: cero });
                 }}
               />
             </View>
@@ -480,10 +544,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked9 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked9 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked9: "dos" });
+                  setState({ ...state, checked9: uno });
                 }}
               />
             </View>
@@ -520,10 +584,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked10 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked10 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked10: "uno" });
+                  setState({ ...state, checked10: cero });
                 }}
               />
             </View>
@@ -531,10 +595,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked10 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked10 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked10: "dos" });
+                  setState({ ...state, checked10: uno });
                 }}
               />
             </View>
@@ -555,10 +619,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked11 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked11 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked11: "uno" });
+                  setState({ ...state, checked11: cero });
                 }}
               />
             </View>
@@ -566,10 +630,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked11 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked11 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked11: "dos" });
+                  setState({ ...state, checked11: uno });
                 }}
               />
             </View>
@@ -590,10 +654,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked12 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked12 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked12: "uno" });
+                  setState({ ...state, checked12: cero });
                 }}
               />
             </View>
@@ -601,10 +665,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked12 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked12 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked12: "dos" });
+                  setState({ ...state, checked12: uno });
                 }}
               />
             </View>
@@ -633,10 +697,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked13 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked13 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked13: "uno" });
+                  setState({ ...state, checked13: cero });
                 }}
               />
             </View>
@@ -644,10 +708,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked13 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked13 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked13: "dos" });
+                  setState({ ...state, checked13: uno });
                 }}
               />
             </View>
@@ -668,20 +732,20 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked14 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked14 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked14: "uno" });
+                  setState({ ...state, checked14: cero });
                 }}
               />
             </View>
             <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
             <View>
               <RadioButton
-                value="dos"
-                status={checked14 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked14 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked14: "dos" });
+                  setState({ ...state, checked14: uno });
                 }}
               />
             </View>
@@ -702,10 +766,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked15 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked15 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked15: "uno" });
+                  setState({ ...state, checked15: cero });
                 }}
               />
             </View>
@@ -713,10 +777,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked15 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked15 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked15: "dos" });
+                  setState({ ...state, checked15: uno });
                 }}
               />
             </View>
@@ -737,10 +801,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked16 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked16 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked16: "uno" });
+                  setState({ ...state, checked16: cero });
                 }}
               />
             </View>
@@ -748,10 +812,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked16 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked16 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked16: "dos" });
+                  setState({ ...state, checked16: uno });
                 }}
               />
             </View>
@@ -771,10 +835,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked17 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked17 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked17: "uno" });
+                  setState({ ...state, checked17: cero });
                 }}
               />
             </View>
@@ -782,10 +846,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked17 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked17 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked17: "dos" });
+                  setState({ ...state, checked17: uno });
                 }}
               />
             </View>
@@ -814,10 +878,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked18 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked18 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked18: "uno" });
+                  setState({ ...state, checked18: cero });
                 }}
               />
             </View>
@@ -825,10 +889,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked18 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked18 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked18: "dos" });
+                  setState({ ...state, checked18: uno });
                 }}
               />
             </View>
@@ -849,10 +913,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked19 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked19 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked19: "uno" });
+                  setState({ ...state, checked19: cero });
                 }}
               />
             </View>
@@ -860,10 +924,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked19 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked19 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked19: "dos" });
+                  setState({ ...state, checked19: uno });
                 }}
               />
             </View>
@@ -883,10 +947,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked20 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked20 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked20: "uno" });
+                  setState({ ...state, checked20: cero });
                 }}
               />
             </View>
@@ -894,10 +958,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked20 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked20 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked20: "dos" });
+                  setState({ ...state, checked20: uno });
                 }}
               />
             </View>
@@ -924,20 +988,20 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked21 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked21 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked21: "uno" });
+                  setState({ ...state, checked21: cero });
                 }}
               />
             </View>
             <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
             <View>
               <RadioButton
-                value="dos"
-                status={checked21 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked21 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked21: "dos" });
+                  setState({ ...state, checked21: uno });
                 }}
               />
             </View>
@@ -960,10 +1024,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked22 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked22 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "uno" });
+                  setState({ ...state, checked2: cero });
                 }}
               />
             </View>
@@ -971,10 +1035,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked22 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked22 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked22: "dos" });
+                  setState({ ...state, checked22: uno });
                 }}
               />
             </View>
@@ -1005,10 +1069,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked23 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked23 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked23: "uno" });
+                  setState({ ...state, checked23: cero });
                 }}
               />
             </View>
@@ -1016,10 +1080,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked23 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked23 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked23: "dos" });
+                  setState({ ...state, checked23: uno });
                 }}
               />
             </View>
@@ -1058,10 +1122,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked24 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked24 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked24: "uno" });
+                  setState({ ...state, checked24: cero });
                 }}
               />
             </View>
@@ -1069,10 +1133,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked24 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked24 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked24: "dos" });
+                  setState({ ...state, checked24: uno });
                 }}
               />
             </View>
@@ -1093,10 +1157,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked25 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked25 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked25: "uno" });
+                  setState({ ...state, checked25: cero });
                 }}
               />
             </View>
@@ -1104,10 +1168,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked25 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked25 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked25: "dos" });
+                  setState({ ...state, checked25: uno });
                 }}
               />
             </View>
@@ -1127,10 +1191,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked26 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked26 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked26: "uno" });
+                  setState({ ...state, checked26: cero });
                 }}
               />
             </View>
@@ -1138,10 +1202,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked26 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked26 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked26: "dos" });
+                  setState({ ...state, checked26: uno });
                 }}
               />
             </View>
@@ -1169,10 +1233,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked27 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked27 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked25: "uno" });
+                  setState({ ...state, checked25: cero });
                 }}
               />
             </View>
@@ -1180,10 +1244,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked27 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked27 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked27: "dos" });
+                  setState({ ...state, checked27: uno });
                 }}
               />
             </View>
@@ -1210,10 +1274,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked28 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked28 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked28: "uno" });
+                  setState({ ...state, checked28: cero });
                 }}
               />
             </View>
@@ -1221,10 +1285,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked28 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked28 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked28: "dos" });
+                  setState({ ...state, checked28: uno });
                 }}
               />
             </View>
@@ -1251,10 +1315,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View>
               <RadioButton
-                value="uno"
-                status={checked29 === "uno" ? "checked" : "unchecked"}
+                value={state.cero}
+                status={checked29 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked29: "uno" });
+                  setState({ ...state, checked29: cero });
                 }}
               />
             </View>
@@ -1262,10 +1326,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
             <View>
               <RadioButton
-                value="dos"
-                status={checked29 === "dos" ? "checked" : "unchecked"}
+                value={state.uno}
+                status={checked29 === uno ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked29: "dos" });
+                  setState({ ...state, checked29: uno });
                 }}
               />
             </View>
@@ -1280,10 +1344,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
           width: "100%",
         }}
       >
-        <TouchableOpacity
-          style={styles.btnRegistrar}
-          onPress={() => props.navigation.navigate("Test")}
-        >
+        <TouchableOpacity style={styles.btnRegistrar} onPress={onsubmitGuardar}>
           <Text style={styles.text}>Guardar</Text>
         </TouchableOpacity>
         <TouchableOpacity
