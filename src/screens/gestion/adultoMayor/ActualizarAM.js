@@ -11,6 +11,7 @@ import { TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { Alert } from "react-native";
 
 export const ActualizarAM = (props) => {
   const { id } = useSelector((state) => state.auth);
@@ -30,6 +31,22 @@ export const ActualizarAM = (props) => {
     registro: params.registro,
     disabled: true,
   });
+
+  const{am_id} = values;
+  const {nombre} = values;
+  const {apellido} = values;
+  const {cedula} = values;
+  const {domicilio} = values;
+  const {autoidentificacion} = values;
+  const {genero} = values;
+  const {edad} = values;
+  const {origen} = values;
+  const {nacimiento} = values;
+  const {registro} = values;
+
+
+
+
   const [date, setDate] = useState(new Date(values.nacimiento));
   const [dateRegistro, setDateRegistro] = useState(new Date(values.registro));
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -94,8 +111,8 @@ export const ActualizarAM = (props) => {
   };
 
   const actualizar = async () => {
-
     try {
+      console.log('entra')
       const response = await fetch(
         "http://192.188.58.82:3000/actualizarAdultoMayorById/" + values.am_id + "",
         {
@@ -104,7 +121,7 @@ export const ActualizarAM = (props) => {
             "Accept": "application/json",
             "Content-Type": "application/json",
           },
-        body: JSON.stringify({         
+          body: JSON.stringify({
           am_nombre: nombre,
           am_apellido: apellido,
           am_cedula: cedula,
@@ -117,14 +134,15 @@ export const ActualizarAM = (props) => {
         })
         }
       );
+      console.log('pasa')
       console.log(response.status)
       if(response.status == 200){
-        navigation.navigate("ListadoAdultoMayor")
+        navigation.navigate("HeaderInicio")
       }else{
         Alert.alert("MIES APP", "Error al actualizar. Intente más tarde. ", [
           {
             text: "Continuar",
-            onPress: {onRefresh},
+            //onPress: {onRefresh},
             style: "destructive",
           },
         ]);
@@ -267,13 +285,14 @@ export const ActualizarAM = (props) => {
           <View
           style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
         >
-          {<TouchableOpacity
+          {
+            <TouchableOpacity
             style={stylesInfo.btnActualizar}
-            onPress={() => actualizar()}
+            onPress={actualizar}
           >
             <Text style={stylesInfo.textBtn}>Actualizar</Text>
-          </TouchableOpacity> }
-          
+          </TouchableOpacity>}
+         
           <TouchableOpacity
             style={stylesInfo.btnCancelar}
             onPress={() => navigation.navigate("HeaderInicio")}

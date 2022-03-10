@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import bgImage from "../../../assets/img_sistema/fondo_login.jpg";
 import { RadioButton } from "react-native-paper";
-
+import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestLawtonBrody = (props) => {
