@@ -14,10 +14,14 @@ import bgImage from "../../../assets/img_sistema/fondo_login.jpg";
 import { RadioButton } from "react-native-paper";
 import moment from "moment";
 import { useSelector } from "react-redux";
+//import DatePicker from '@react-native-community/datetimepicker';
+//https://snack.expo.io/@phattran1201/date-picker-example
 
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestBarthel = (props) => {
+  //const { id } = useSelector((state) => state.auth);
+  //const TestBarthelRegistrados = props.route.params.PreguntasTestBarthel;
   const [state, setState] = useState({
     checked: "",
     checked1: "",
@@ -39,6 +43,7 @@ export const PreguntasTestBarthel = (props) => {
   });
 
   const navigation = props.navigation;
+
   const calculartotal = (total) => {
     setState({
       temp: total,
@@ -56,13 +61,20 @@ export const PreguntasTestBarthel = (props) => {
   const { checked8 } = state;
   const { checked9 } = state;
 
-  //CALCULO DE TIEMPO DE APLICACIÓN
   const { datetimeStart } = state;
   const datetimeEnd = moment(new Date());
   //fechas para enviar a la base de datos
   const fechaInicial = datetimeStart.format("HH:mm:ss");
+
   const fechaFinal = datetimeEnd.format("HH:mm:ss");
+
   const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
+  //mostrar fecha inicial
+  //console.log(fechaInicial);
+
+  //mostrar fecha final
+  //console.log(fechaFinal);
+
   var time = new Date();
 
   time.setHours(parseInt(diferencia / 3600) % 24);
@@ -108,7 +120,7 @@ export const PreguntasTestBarthel = (props) => {
             ib_p1_comer: checked,
             ib_p2_trasladarse: checked1,
             ib_p3_aseo_personal: checked2,
-            ib_p4_uso_retrete: checked,
+            ib_p4_uso_retrete: checked3,
             ib_p5_bañarse: checked4,
             ib_p6_desplazarse: checked5,
             ib_p7_escaleras: checked6,
@@ -127,7 +139,7 @@ export const PreguntasTestBarthel = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.replace("Test");
+        navigation.replace("HeaderInicio");
       } else {
         Alert.alert("MIES APP", "Ha existido un error", [
           {
@@ -341,16 +353,16 @@ export const PreguntasTestBarthel = (props) => {
         <View style={styles.radioButton}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({ ...state, checked: v });
+              setState({ ...state, checked3: v });
             }}
           >
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
                   value="0"
-                  status={checked === "0" ? "checked" : "unchecked"}
+                  status={checked3 === "0" ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked: "0" });
+                    setState({ ...state, checked3: "0" });
                   }}
                 />
               </View>
@@ -361,9 +373,9 @@ export const PreguntasTestBarthel = (props) => {
               <View>
                 <RadioButton
                   value="5"
-                  status={checked === "5" ? "checked" : "unchecked"}
+                  status={checked3 === "5" ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked: "5" });
+                    setState({ ...state, checked3: "5" });
                   }}
                 />
               </View>
@@ -376,9 +388,9 @@ export const PreguntasTestBarthel = (props) => {
               <View>
                 <RadioButton
                   value="10"
-                  status={checked === "10" ? "checked" : "unchecked"}
+                  status={checked3 === "10" ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked: "10" });
+                    setState({ ...state, checked3: "10" });
                   }}
                 />
               </View>
