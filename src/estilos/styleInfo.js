@@ -1,0 +1,112 @@
+import { StyleSheet } from "react-native";
+
+export const stylesInfo = StyleSheet.create({
+  backgroundContainer: {
+    flex: 1,
+    width: null,
+    height: null,
+    paddingTop: 30,
+  },
+  Titulo: {
+    color: "black",
+    fontSize: 25,
+    fontWeight: "bold",
+    marginTop: 10,
+    opacity: 0.8,
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
+  subtitulo: {
+    color: "black",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginLeft: 15, 
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
+  items: {
+    color: "black",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    textAlign: "left",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+  },
+  resp: {
+    color: "black",
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 15,
+    textAlign: "left",
+  },
+  text: {
+    paddingTop: 10,
+    fontWeight: "bold",
+  },
+  btnActualizar:{
+    marginHorizontal: 20,
+    marginVertical: 25,
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#0275d8",
+    padding: 15,
+  },
+  btnActualizarDisabled:{
+    marginHorizontal: 20,
+    marginVertical: 25,
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#CBCBCB",
+    padding: 15,
+  },
+  btnCancelar: {
+    backgroundColor: "#E74C3C",
+    marginHorizontal: 20,
+    marginVertical: 25,
+    borderRadius: 10,
+    alignItems: "center",
+    padding: 15,
+  },
+  textBtn:{
+    color: "white",
+  },
+  containerRow: {
+    flex: 1,
+    marginHorizontal: 15,
+  },
+  containerColumn: {
+    flex: 1,
+    marginHorizontal: 15,
+  },
+  container: {
+    marginHorizontal: 30,
+  },
+  containerGeneral:{
+    marginTop: 15,
+  },
+  input: {
+    height: 45,
+    borderRadius: 10,
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    backgroundColor: "rgba(0,0,0,0.10)",
+    color: "black",
+    paddingHorizontal: 20,
+  },
+  btnFecha: {
+    borderRadius: 10,
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    backgroundColor: "rgba(0,0,0,0.10)",
+    color: "black",
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
+});
