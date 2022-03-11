@@ -1,12 +1,10 @@
 
 import React, { Component, useState, useEffect } from 'react';
-import { Camera } from 'expo-camera';
 import {
   Image,
   StyleSheet,
   SafeAreaView,
   Text,
-
   View, Alert,
   ImageBackground,
   TextInput,
@@ -14,23 +12,31 @@ import {
   TouchableOpacity,
   Button,
   pickImage, image, TouchableHighlight,
-  ScrollView} from 'react-native';
+  ScrollView
+} from 'react-native';
 import bgImage from '../../../assets/img_sistema/fondo_login.jpg';
 import Textarea from 'react-native-textarea';
 import * as ImagePicker from 'expo-image-picker';
 //import { Camera } from 'expo-camera';
 import { FontAwesome } from '@expo/vector-icons';
 
-//Función que contiene el componente para seleccionar imagenes de la galería
-//************************************* */
+
+
+//Función qu  e contiene el componente para seleccionar imagenes de la galería
+
 function ImagePickerChoose(props) {
+
+
+
+
   const [image, setImage] = useState(null);
   const [photoStatus, setPhotoStatus] = useState('No se ha seleccionado ninguna imagen');
+
   //controla que los permisos para acceder a la galería hayan sido dados
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync;
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== 'granted') {
           alert('Lo sentimos, se necesitan permisos para acceder a la galería');
         }
@@ -54,20 +60,19 @@ function ImagePickerChoose(props) {
     props.parentCallBack(result)
   };
   return (
-   
+
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}  onPress={pickImage}>
-      <FontAwesome name="image" size={20} color="black" />
-          <Text style={styles.btnText}> Seleccionar Imagen</Text>
+      <TouchableOpacity style={styles.button} onPress={pickImage}>
+        <FontAwesome name="image" size={20} color="black" />
+        <Text style={styles.btnText}> Seleccionar Imagen</Text>
       </TouchableOpacity>
       <Text style={styles.TextInfo1}>{photoStatus}</Text>
       {image && <Image source={{ uri: image }} style={{ width: 260, height: 260, marginTop: 20 }} />}
     </View>
-    
-    
+
+
   );
 }
-
 
 const { width: WIDTH } = Dimensions.get('window')
 const options = {
@@ -78,54 +83,6 @@ const options = {
     path: 'images',
   },
 };
- /*const { id } = useSelector((state) => state.auth);
-  const params = props.route.params;
-  const navigation = props.navigation;
-  const [values, setValues] = useState({
-    ef_id: params.id,
-    ef_observacion_preguntas: params.obPreguntas,
-    ef_observacion_tecnico: params.observacionTec,
-    ef_ubicacion: params.ubicacion,
-    ef_estado: params.estado,
-    ef_representante: params.representante,
-    ef_foto_adulto: params.foto,
-    ef_tiempo_inicial: params.tInicial,
-    ef_tiempo_final: params.tFinal,
-    ef_tiempo_total: params.tTotal,
-    ef_fecha_aplicacion: params.fAplicacion,
-  });
-  const actualizar = async () => {
-    try {
-      const response = await fetch(
-        "http://192.188.58.82:3000/actualizarFotObsEncabezadoById/" + values.id + "",
-        {
-          method: "POST",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        body: JSON.stringify({
-          ef_observacion_tecnico: observacionTec,
-          ef_foto_adulto: foto,
-        })
-        }
-      );
-      console.log(response.status)
-      if(response.status == 200){
-        navigation.navigate("Test")
-      }else{
-        Alert.alert("MIES APP", "Error al agregar la Observacion. Intente más tarde. ", [
-          {
-            text: "Continuar",
-            onPress: {onRefresh},
-            style: "destructive",
-          },
-        ]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };*/
 
 export class Observaciones extends React.Component {
 
@@ -261,45 +218,34 @@ export class Observaciones extends React.Component {
   setImageState = (img) => {
     this.setState({
       image: img.uri
-    })
+
+    }
+
+
+    )
+    console.log('image', this.state.image);
+
+    function getBase64Image(image) {
+      var canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0);
+      var dataURL = canvas.toDataURL();
+      return dataURL;
+    }
+    
+    var base64 = getBase64Image(document.getElementById("image"));
+    console.log(base64);
+  
   }
 
-  //función para subir imagen al server, en este caso es un servidor en PHP
+ 
+
+
+  //función para subir imagen al server, API
+
   uploadImage = async () => {
-    let localUri = this.state.image;
-    if (localUri == null || localUri == '') {
-      //Alert.alert('Debe seleccionar una imágen')
-      Alert.alert('Error de Carga', 'Debe seleccionar una imagen o tomar una foto. Intente nuevamente', [{ text: 'Aceptar' }]);
-    }
-    else {
-      let filename = localUri.split('/').pop();
-
-      let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : `image`;
-
-      let formData = new FormData();
-      formData.append('photo', { uri: localUri, name: filename, type });
-
-      return await fetch('http://192.168.100.6/pruebas_react/upload_image.php', {
-        method: 'POST',
-        body: formData,
-        header: {
-          'content-type': 'multipart/form-data',
-        },
-      }).then(res => res.json())
-        .catch(error => console.error('Error', error))
-        .then(response => {
-          if (response.status == 1) {
-            //Alert.alert('Imagen guardada')
-            Alert.alert('Subida exitosa', 'La imagen se ha guardado correctamente', [{ text: 'Aceptar' }]);
-          }
-          else {
-            //Alert.alert('No se ha podido guardar la imagen, intentelo de nuevo')
-            Alert.alert('Error de carga', 'No se ha podido guardar la imagen, intentelo de nuevo', [{ text: 'Aceptar' }]);
-          }
-        });
-    }
-uploadImage = async () => {
 
     console.log("hola");
     console.log(dataURL);
@@ -344,15 +290,16 @@ uploadImage = async () => {
       })
     );
 
+
   };
 
   render() {
     return (
-        <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-          <ScrollView style={styles.scrollView}>
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <ScrollView style={styles.scrollView}>
           <View style={styles.container}>
             <Text style={styles.TextInfo}>Registre todas las anomalias que noto en el adulto mayor durante la realizacion de los test.</Text>
-            <Textarea
+            <Textarea class="Anomalias"
               containerStyle={styles.textareaContainer}
               style={styles.textarea}
               onChangeText={this.onChange}
@@ -361,9 +308,8 @@ uploadImage = async () => {
               placeholder={'El adulto mayor tardo un tiempo considerable en responder las preguntas de indole familiar y emocional。。。'}
               placeholderTextColor={'#c7c7c7'}
               underlineColorAndroid={'transparent'}
-              
             />
-             <Text style={styles.TextInfo}>Registre todos los problemas que se le presentaron a la hora  de realizar la visita.</Text>
+            <Text style={styles.TextInfo}>Registre todos los problemas que se le presentaron a la hora  de realizar la visita.</Text>
             <Textarea class="Anomalias"
               containerStyle={styles.textareaContainer}
               style={styles.textarea}
@@ -374,33 +320,34 @@ uploadImage = async () => {
               placeholderTextColor={'#c7c7c7'}
               underlineColorAndroid={'transparent'}
             />
-        <Text style={styles.TextInfo}>Tome una foto o seleccione una imagen del adulto mayor</Text>
-            <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Camara')}>
+            <Text style={styles.TextInfo}>Seleccione una imagen del adulto mayor</Text>
+            {/* <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Camara')}>
               <FontAwesome name="camera" size={20} color="black" />
               <Text style={styles.btnText}> Tomar foto</Text>
-            </TouchableOpacity>
-       
-            <ImagePickerChoose parentCallBack={this.setImageState} ></ImagePickerChoose>
-            <TouchableOpacity style={styles.button1}  onPress={this.uploadImage}>
-            <FontAwesome name="upload" size={20} color="white" />
+            </TouchableOpacity> */}
+
+            <ImagePickerChoose parentCallBack={this.setImageState}></ImagePickerChoose>
+            <TouchableOpacity style={styles.button1} onPress={this.uploadImage}>
+              <FontAwesome name="upload" size={20} color="white" />
               <Text style={styles.btnText}> Subir Foto</Text>
             </TouchableOpacity>
-            
-            </View>
-            <View style={{flexDirection:'row', justifyContent:'space-evenly', width:'100%'}}>
-          <TouchableOpacity style={styles.btnRegistrar}
-            onPress={() => this.props.navigation.navigate('Test')}>
-            <Text style={styles.text}>Guardar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnCancelar} onPress={() => this.props.navigation.navigate('Test')}>
-            <Text style={styles.text}>Cancelar</Text>
-          </TouchableOpacity>
+
           </View>
-      </ScrollView>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+            <TouchableOpacity style={styles.btnRegistrar}
+              onPress={() => this.props.navigation.navigate('Test')}>
+              <Text style={styles.text}>Guardar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnCancelar} onPress={() => this.props.navigation.navigate('Test')}>
+              <Text style={styles.text}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
 };
+
 export default Observaciones;
 
 const styles = StyleSheet.create({
