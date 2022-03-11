@@ -14,7 +14,6 @@ import { RadioButton } from "react-native-paper";
 //import DatePicker from '@react-native-community/datetimepicker';
 //https://snack.expo.io/@phattran1201/date-picker-example
 import moment from "moment";
-
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestYesavage = (props) => {
@@ -39,6 +38,9 @@ export const PreguntasTestYesavage = (props) => {
     estado: "1",
     uno: "1",
     cero: "0",
+    fechaInicial: "",
+    fechaFinal: "",
+    time: "",
     datetimeStart: moment(new Date()),
     
   });
@@ -85,6 +87,34 @@ export const PreguntasTestYesavage = (props) => {
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
+  function validarFormulario(){
+      
+    let valor =0;
+
+    let count =0;
+    Object.keys(state).forEach(key => {
+      
+      if(key.substring(0, 7)=="checked"){
+
+        if((state[key])!='' && count === 0){
+          valor=valor+parseInt(state[key]);
+          
+        }else if ( (state[key])=='' && count === 0) {
+          
+          count=1;
+          Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
+            {
+              text: "Continuar",
+              style: "destructive",
+            },
+          ]);
+        }
+      }
+    });
+    
+    onsubmitGuardar()
+  }
+
   const onsubmitGuardar = async () => {
     let valor =0;
 
@@ -95,7 +125,11 @@ export const PreguntasTestYesavage = (props) => {
           valor=valor+parseInt(state[key]);
         } 
       }
+
+      
     });
+
+    
 
     const { checked } = state;
     const { checked1 } = state;
@@ -113,8 +147,7 @@ export const PreguntasTestYesavage = (props) => {
     const { checked13 } = state;
     const { checked14 } = state;
     const { estado } = state;
-    const { puntaje } = valor;
-    console.log(valor);
+
     
     try {
       const response = await fetch(
@@ -126,34 +159,48 @@ export const PreguntasTestYesavage = (props) => {
             "Content-type": "Application/json",
           },
           body: JSON.stringify({
-            ef_id: 3,
-            checkedey_p1_satisfecho: checked,
-            checked1ey_p2_actividades: checked1,
-            checked2ey_p3_vacio: checked2,
-            checked3ey_p4_aburrido: checked3,
-            checked4ey_p5_animo: checked4,
-            checked5ey_p6_preocupado: checked5,
-            checked6ey_p7_feliz: checked6,
-            checked7ey_p8_desamparado: checked7,
-            checked8ey_p9_cosas: checked8,
-            checked9ey_p10_memoria: checked9,
-            checked10ey_p11_estar_vivo: checked10,
-            checked11ey_p12_inutil_despreciable: checked11,
-            checked12ey_p13_energia: checked12,
-            checked13ey_p14_esperanza_actual: checked13,
-            checked14ey_p15_cree_mejor: checked14,
-            fechaInicialey_tiempo_inicial: fechaInicial,
-            fechaFinaley_tiempo_final: fechaFinal,
-            timeey_tiempo_total: time,
-            estadoey_estado: estado,
-            ey_puntaje_total: puntaje,
+            ef_id: 5,
+            ey_p1_satisfecho: checked,
+            ey_p2_actividades: checked1,
+            ey_p3_vacio: checked2,
+            ey_p4_aburrido: checked3,
+            ey_p5_animo: checked4,
+            ey_p6_preocupado: checked5,
+            ey_p7_feliz: checked6,
+            ey_p8_desamparado: checked7,
+            ey_p9_cosas: checked8,
+            ey_p10_memoria: checked9,
+            ey_p11_estar_vivo: checked10,
+            ey_p12_inutil_despreciable: checked11,
+            ey_p13_energia: checked12,
+            ey_p14_esperanza_actual: checked13,
+            ey_p15_cree_mejor: checked14,
+            ey_tiempo_inicial: fechaInicial,
+            ey_tiempo_final: fechaFinal,
+            ey_tiempo_total: time,
+            ey_estado: estado,
+            ey_puntaje_total: valor,
           }),
         }
       );
-      console.log(response.status);
+      if(response.ok){
+        console.log("hola ..ya sale")
+       }else{
+        console.log("no ..ya sale")
+       }
+        console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.replace("Test");
+       // navigation.replace("Test");
+
+        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+ 
+        
       } else {
         Alert.alert("MIES APP", "Ha existido un error", [
           {
@@ -165,6 +212,15 @@ export const PreguntasTestYesavage = (props) => {
     } catch (error) {
       console.log(error);
     }
+
+    /*Alert.alert(
+      "Guardado",
+      "Datos correctamente guardados",
+      [
+        
+        { text: "OK", onPress: () => props.navigation.navigate("Test") }
+      ]
+    );*/
   };
 
   return (
@@ -729,7 +785,7 @@ export const PreguntasTestYesavage = (props) => {
         >
           <TouchableOpacity
             style={styles.btnRegistrar}
-            onPress={onsubmitGuardar}
+            onPress={validarFormulario}
           >
             <Text style={styles.text1}>Guardar</Text>
           </TouchableOpacity>
