@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,11 @@ import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestYesavage = (props) => {
+
+  const [values, setValues] = useState({
+    listadoY: [],
+  });
+  const { listadoY } = values;
   const [state, setState] = useState({
     checked: "",
     checked1: "",
@@ -42,15 +47,51 @@ export const PreguntasTestYesavage = (props) => {
     fechaFinal: "",
     time: "",
     datetimeStart: moment(new Date()),
-    
+
   });
 
   const navigation = props.navigation;
+  const params = props.route.params;
+  const enc_id = params.enc_id;
+  
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
+  useEffect(() => {
+    Yesavage();
+    return () => {
+      setValues({});
+    }
+  }, [state.isReady]);
+
+  const Yesavage = async () => {
+
+    try {
+      const Yesavage2 = await fetch(
+        "http://192.188.58.82:3000/consultaEscalaYesavage",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await Yesavage2.json();
+      setValues({
+        ...values,
+        listadoY: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const idYesavage = listadoY.length + 1;
 
   const { checked } = state;
   const { checked1 } = state;
@@ -87,21 +128,21 @@ export const PreguntasTestYesavage = (props) => {
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
-  function validarFormulario(){
-      
-    let valor =0;
+  function validarFormulario() {
 
-    let count =0;
+    let valor = 0;
+
+    let count = 0;
     Object.keys(state).forEach(key => {
-      
-      if(key.substring(0, 7)=="checked"){
 
-        if((state[key])!='' && count === 0){
-          valor=valor+parseInt(state[key]);
-          
-        }else if ( (state[key])=='' && count === 0) {
-          
-          count=1;
+      if (key.substring(0, 7) == "checked") {
+
+        if ((state[key]) != '' && count === 0) {
+          valor = valor + parseInt(state[key]);
+
+        } else if ((state[key]) == '' && count === 0) {
+
+          count = 1;
           Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
             {
               text: "Continuar",
@@ -111,25 +152,25 @@ export const PreguntasTestYesavage = (props) => {
         }
       }
     });
-    
+
     onsubmitGuardar()
   }
 
   const onsubmitGuardar = async () => {
-    let valor =0;
+    let valor = 0;
 
     Object.keys(state).forEach(key => {
-      
-      if(key.substring(0, 7)=="checked"){
-        if((state[key])!=''){
-          valor=valor+parseInt(state[key]);
-        } 
+
+      if (key.substring(0, 7) == "checked") {
+        if ((state[key]) != '') {
+          valor = valor + parseInt(state[key]);
+        }
       }
 
-      
+
     });
 
-    
+
 
     const { checked } = state;
     const { checked1 } = state;
@@ -148,7 +189,7 @@ export const PreguntasTestYesavage = (props) => {
     const { checked14 } = state;
     const { estado } = state;
 
-    
+
     try {
       const response = await fetch(
         "http://192.188.58.82:3000/guardarEscalaYesavage",
@@ -159,7 +200,7 @@ export const PreguntasTestYesavage = (props) => {
             "Content-type": "Application/json",
           },
           body: JSON.stringify({
-            ef_id: 5,
+            ef_id: enc_id,
             ey_p1_satisfecho: checked,
             ey_p2_actividades: checked1,
             ey_p3_vacio: checked2,
@@ -183,24 +224,21 @@ export const PreguntasTestYesavage = (props) => {
           }),
         }
       );
-      if(response.ok){
-        console.log("hola ..ya sale")
-       }else{
-        console.log("no ..ya sale")
-       }
-        console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-       // navigation.replace("Test");
-
+        // navigation.replace("Test");
+        console.log("idYesavage: " + idYesavage)
+        navigation.navigate("Test", {
+          idYesavage: idYesavage,
+        });
         Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
           },
         ]);
- 
-        
+
+
       } else {
         Alert.alert("MIES APP", "Ha existido un error", [
           {
