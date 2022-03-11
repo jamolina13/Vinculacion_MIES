@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import {
+  Image,
   StyleSheet,
   Text,
   View,
+  ImageBackground,
+  TextInput,
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
-
+import bgImage from "../../../assets/img_sistema/fondo_login.jpg";
 import { RadioButton } from "react-native-paper";
 import moment from "moment";
+import { useSelector } from "react-redux";
+//import DatePicker from '@react-native-community/datetimepicker';
+//https://snack.expo.io/@phattran1201/date-picker-example
+
 const { width: WIDTH } = Dimensions.get("window");
 
-export const PreguntasTestMiniExamenMental = (props) => {
+export const PreguntasTestBarthel = (props) => {
+  //const { id } = useSelector((state) => state.auth);
+  //const TestBarthelRegistrados = props.route.params.PreguntasTestBarthel;
   const [state, setState] = useState({
     checked: "",
     checked1: "",
@@ -24,28 +34,6 @@ export const PreguntasTestMiniExamenMental = (props) => {
     checked7: "",
     checked8: "",
     checked9: "",
-    checked10: "",
-    checked11: "",
-    checked12: "",
-    checked13: "",
-    checked14: "",
-    checked15: "",
-    checked16: "",
-    checked17: "",
-    checked18: "",
-    checked19: "",
-    checked20: "",
-    checked21: "",
-    checked22: "",
-    checked23: "",
-    checked24: "",
-    checked25: "",
-    checked26: "",
-    checked27: "",
-    checked28: "",
-    checked29: "",
-    cero: 0,
-    uno: 1,
     puntaje: 0,
     temp: "",
     estado: "1",
@@ -54,6 +42,14 @@ export const PreguntasTestMiniExamenMental = (props) => {
     time: "",
     datetimeStart: moment(new Date()),
   });
+
+  const navigation = props.navigation;
+
+  const calculartotal = (total) => {
+    setState({
+      temp: total,
+    });
+  };
 
   const { checked } = state;
   const { checked1 } = state;
@@ -65,84 +61,84 @@ export const PreguntasTestMiniExamenMental = (props) => {
   const { checked7 } = state;
   const { checked8 } = state;
   const { checked9 } = state;
-  const { checked10 } = state;
-  const { checked11 } = state;
-  const { checked12 } = state;
-  const { checked13 } = state;
-  const { checked14 } = state;
-  const { checked15 } = state;
-  const { checked16 } = state;
-  const { checked17 } = state;
-  const { checked18 } = state;
-  const { checked19 } = state;
-  const { checked20 } = state;
-  const { checked21 } = state;
-  const { checked22 } = state;
-  const { checked23 } = state;
-  const { checked24 } = state;
-  const { checked25 } = state;
-  const { checked26 } = state;
-  const { checked27 } = state;
-  const { checked28 } = state;
-  const { checked29 } = state;
-  const { cero } = state;
-  const { uno } = state;
-  const { estado } = state;
-  const { puntaje } = state;
-
-  const navigation = props.navigation;
-  const calculartotal = (total) => {
-    setState({
-      temp: total,
-    });
-  };
 
   const { datetimeStart } = state;
   const datetimeEnd = moment(new Date());
   //fechas para enviar a la base de datos
   const fechaInicial = datetimeStart.format("HH:mm:ss");
+
   const fechaFinal = datetimeEnd.format("HH:mm:ss");
+
   const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
+  //mostrar fecha inicial
+  //console.log(fechaInicial);
+
+  //mostrar fecha final
+  //console.log(fechaFinal);
 
   var time = new Date();
+
   time.setHours(parseInt(diferencia / 3600) % 24);
   time.setMinutes(parseInt(diferencia / 60) % 60);
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
-  const p1_orientacion_tiempo =
-    checked + checked1 + checked2 + checked3 + checked4;
-  const p2_orientacion_espacio =
-    checked5 + checked6 + checked7 + checked8 + checked9;
-  const p3_memoria = checked10 + checked11 + checked12;
-  const p4_atencion_calculo =
-    checked13 + checked14 + checked15 + checked16 + checked17;
-  const p5_memoria = checked18 + checked19 + checked20;
-  const p6_denominacion = checked21 + checked22;
-  const p7_repeticion_frase = checked23;
-  const p8_compresion = checked24 + checked25 + checked26;
-  const p9_lectura = checked27;
-  const p10_escritura = checked28;
-  const p11_copia_dibujo = checked29;
+  function validarFormulario(){
+      
+    let valor =0;
 
-  const puntajeTotal =
-    p1_orientacion_tiempo +
-    p2_orientacion_espacio +
-    p3_memoria +
-    p4_atencion_calculo +
-    p5_memoria +
-    p6_denominacion +
-    p7_repeticion_frase +
-    p8_compresion +
-    p9_lectura +
-    p10_escritura +
-    p11_copia_dibujo;
+    let count =0;
+    Object.keys(state).forEach(key => {
+      
+      if(key.substring(0, 7)=="checked"){
+
+        if((state[key])!='' && count === 0){
+          valor=valor+parseInt(state[key]);
+          
+        }else if ( (state[key])=='' && count === 0) {
+          
+          count=1;
+          Alert.alert("MIES APP", "Hay un campo no llenado", [
+            {
+              text: "Continuar",
+              style: "destructive",
+            },
+          ]);
+        }
+      }
+    });
+    
+    onsubmitGuardar()
+  }
+
 
   const onsubmitGuardar = async () => {
+    let valor =0;
+
+    Object.keys(state).forEach(key => {
+      
+      if(key.substring(0, 7)=="checked"){
+        if((state[key])!=''){
+          valor=valor+parseInt(state[key]);
+        } 
+      }
+    });
+
+    const { checked } = state;
+    const { checked1 } = state;
+    const { checked2 } = state;
+    const { checked3 } = state;
+    const { checked4 } = state;
+    const { checked5 } = state;
+    const { checked6 } = state;
+    const { checked7 } = state;
+    const { checked8 } = state;
+    const { checked9 } = state;
+    const { estado } = state;
+
     try {
-      console.log("entra");
       const response = await fetch(
-        "http://192.188.58.82:3000/guardarMiniMental",
+        "http://192.188.58.82:3000/guardarIndiceBarthel",
         {
           method: "POST",
           headers: {
@@ -150,31 +146,37 @@ export const PreguntasTestMiniExamenMental = (props) => {
             "Content-type": "Application/json",
           },
           body: JSON.stringify({
-            ef_id: 2,
-            mim_p1_orientacion_tiempo: p1_orientacion_tiempo,
-            mim_p2_orientacion_espacio: p2_orientacion_espacio,
-            mim_p3_memoria: p3_memoria,
-            mim_p4_atencion_calculo: p4_atencion_calculo,
-            mim_p5_memoria: p5_memoria,
-            mim_p6_denominacion: p6_denominacion,
-            mim_p7_repeticion_frase: p7_repeticion_frase,
-            mim_p8_compresion: p8_compresion,
-            mim_p9_lectura: p9_lectura,
-            mim_p10_escritura: p10_escritura,
-            mim_p11_copia_dibujo: p11_copia_dibujo,
-            mim_tiempo_inicial: fechaInicial,
-            mim_tiempo_final: fechaFinal,
-            mim_tiempo_total: time,
-            mim_estado: estado,
-            mim_puntaje_total: puntajeTotal,
+            ef_id: 5,
+            ib_p1_comer: checked,
+            ib_p2_trasladarse: checked1,
+            ib_p3_aseo_personal: checked2,
+            ib_p4_uso_retrete: checked3,
+            ib_p5_bañarse: checked4,
+            ib_p6_desplazarse: checked5,
+            ib_p7_escaleras: checked6,
+            ib_p8_vestirse_desvertirse: checked7,
+            ib_p9_control_heces: checked8,
+            ib_p10_control_orina: checked9,
+            ib_tiempo_inicial: fechaInicial,
+            ib_tiempo_final: fechaFinal,
+            ib_tiempo_total: time,
+            ib_estado: estado,
+            ib_puntaje_total: valor,
           }),
         }
       );
-      console.log("sale");
+      console.log(valor)
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.replace("Test");
+        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+        //navigation.replace("HeaderInicio");
+
       } else {
         Alert.alert("MIES APP", "Ha existido un error", [
           {
@@ -189,1172 +191,604 @@ export const PreguntasTestMiniExamenMental = (props) => {
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View tyle={styles.tituloContainer1}>
-        <Text style={styles.TituloLogin}>Mini Examen del</Text>
-        <Text style={styles.TituloLogin}> Estado Mental</Text>
-      </View>
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Orientación en el Tiempo</Text>
-      </View>
+    <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.logoContainer}></View>
+        <View style={styles.tituloContainer}>
+          <Text style={styles.TituloLogin}>Indice de Barthel</Text>
+        </View>
+        <View style={styles.tituloLabel}>
+          <Text style={styles.TextInfo}>
+            A continuación encontrará 10 ítems correspondientes a actividades
+            básicas de la vida diaria. Lea en voz alta las alternativas
+            pertenecientes a cada una de ellas y solicite a la persona evaluada
+            que escoja la que más coincida con la realidad de la persona adulta
+            mayor. La información se obtiene preguntando directamente al usuario
+            o a su cuidador principal.
+          </Text>
+        </View>
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>1. COMER.</Text>
+        </View>
 
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>En qué Día estamos (fecha):</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked: v });
-          }}
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Incapaz.</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="5"
+                  status={checked === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Necesita ayuda para cortar, extender mantequilla, usar
+                condimentos, etc.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente. (puede comer solo).
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>
+            2. TRASLADARSE ENTRE LA SILLA Y LA CAMA.
+          </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked1: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked1 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Incapaz, no se mantiene sentado.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="5"
+                  status={checked1 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Necesita ayuda importante (una persona entrenada o 2 personas),
+                puede estar sentado.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="10"
+                  status={checked1 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Necesita algo de ayuda (una pequeña ayuda física o ayuda
+                verbal).
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="15"
+                  status={checked1 === "15" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked1: "15" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente. (puede comer solo).
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>3. ASEO PERSONAL.</Text>
+        </View>
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked2: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked2 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked2: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Necesita ayuda con el aseo personal.
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="5"
+                  status={checked2 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked2: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Independiente para lavarse la cara, las manos y los dientes,
+                peinarse y afeitarse.{" "}
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>
+            4. USO DEL RETRETE (ESCUSADO, INODORO).
+          </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked3: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked3 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked3: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Dependiente.</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="5"
+                  status={checked3 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked3: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Necesita alguna ayuda, pero puede hacer algo solo.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked3 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked3: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente (entrar y salir, limpiarse y vestirse).
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>5. BAÑARSE/DUCHARSE.</Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked4: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked4 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked4: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Dependiente.</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="5"
+                  status={checked4 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked4: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente para bañarse o ducharse.
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>6. DESPLAZARSE. </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked5: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked5 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Inmóvil. </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="5"
+                  status={checked5 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente en silla de ruedas en 50 metros.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked5 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Anda con pequeña ayuda de una persona (física o verbal).{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="15"
+                  status={checked5 === "15" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked5: "15" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Independiente al menos 50m con cualquier tipo de muleta excepto
+                andador.{" "}
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>7. SUBIR Y BAJAR ESCALERAS. </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked6: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked6 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked6: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Incapaz. </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="5"
+                  status={checked6 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked6: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Necesita ayuda física o verbal puede llevar cualquier tipo de
+                muleta.
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked6 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked6: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Independiente para subir y bajar.
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>8. VESTIRSE O DESVERTIRSE. </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked7: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked7 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked7: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Dependiente. </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="5"
+                  status={checked7 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked7: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Necesita ayuda, pero puede hacer la mitad aproximadamente sin
+                ayuda.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ marginTop: 10 }}>
+                <RadioButton
+                  value="10"
+                  status={checked7 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked7: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio2}>
+                Independiente incluyendo botones, cremalleras (cierres) y
+                cordones.
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>9. CONTROL DE HECES. </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked8: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked8 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked8: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Incontinente, (o necesita que le suministren enema).
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="5"
+                  status={checked8 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked8: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Accidente excepcional (1 por semana).
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked8 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked8: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>Continente.</Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+        <View style={styles.tituloLabel}>
+          <Text style={styles.label}>10. CONTROL DE ORINA. </Text>
+        </View>
+
+        <View style={styles.radioButton}>
+          <RadioButton.Group
+            onValueChange={(v) => {
+              setState({ ...state, checked9: v });
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="0"
+                  status={checked9 === "0" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked9: "0" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Incontinente o sondado incapaz de cambiarse la bolsa.{" "}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="5"
+                  status={checked9 === "5" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked9: "5" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Accidente excepcional (máximo 1 por 24 horas).
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <RadioButton
+                  value="10"
+                  status={checked9 === "10" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setState({ ...state, checked9: "10" });
+                  }}
+                />
+              </View>
+              <Text style={styles.TextRadio1}>
+                Continente, durante al menos 7 días.{" "}
+              </Text>
+            </View>
+          </RadioButton.Group>
+        </View>
+
+        <View
+          style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto)</Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>En qué mes:</Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked1: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked1 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked1: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked1 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked1: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>En qué año:</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked2: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked2 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked2: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked2 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked2: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>En qué día de la semana </Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked3: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked3 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked3: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked3 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked3: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>¿Qué hora es aproximadamente? </Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked4: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked4 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked4: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked4 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked4: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Orientación en el Espacio</Text>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>¿En qué lugar estamos ahora? </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked5: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked5 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked5: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked5 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked5: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          ¿En qué piso o departamento estamos ahora?{" "}
-        </Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked6: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked6 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked6: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked6 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked6: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>¿Qué barrio o parroquia es este?</Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked7: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked7 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked7: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked7 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked7: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>¿En qué ciudad estamos? </Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked8: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked8 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked8: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked8 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked8: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>¿En qué país estamos?</Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked9: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked9 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked9: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked9 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked9: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Memoria</Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.TextInfo}>
-          CONSIGNA: “Le voy a decir el nombre de tres objetos, cuando yo termine
-          quiero que por favor usted los repita”.
-        </Text>
-        <Text style={styles.TextInfo1}>
-          *Pronuncie claramente las palabras, una cada segundo, luego pídale a
-          persona adulta mayor, que las repita. Otorgue un punto por cada
-          respuesta correcta. Se repiten las palabras hasta que la persona se
-          las aprenda (máx. 6 ensayos) pero únicamente se puntúa la primera
-          repetición o ensayo.
-        </Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Papel</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked10: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked10 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked10: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked10 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked10: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Bicicleta</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked11: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked11 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked11: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked11 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked11: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Cuchara</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked12: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked12 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked12: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked12 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked12: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Atención y Calculo</Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.TextInfo}>
-          CONSIGNA: “Le voy a pedir que reste de 7 en 7 a partir del 100”.
-        </Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>93</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked13: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked13 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked13: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked13 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked13: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>86</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked14: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked14 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked14: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked14 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked14: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>79</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked15: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked15 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked15: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked15 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked15: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>72</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked16: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked16 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked16: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked16 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked16: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>65</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked17: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked17 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked17: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked17 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked17: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Memoria Diferida</Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.TextInfo}>
-          CONSIGNA: “Dígame los 3 objetos que le mencioné al principio”.
-        </Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Papel</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked18: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked18 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked18: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked18 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked18: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Bicicleta</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked19: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked19 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked19: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked19 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked19: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Cuchara</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked20: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked20 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked20: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked20 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked20: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Denominación</Text>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          Mostrarle un lápiz o un bolígrafo y preguntar ¿qué es esto?
-        </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked21: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked21 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked21: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked21 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked21: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          Mostrarle un reloj y preguntar ¿qué es esto?
-        </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked22: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked22 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked2: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked22 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked22: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Repetición de una Frase</Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.TextInfo}>
-          CONSIGNA: “Ahora le voy a decir una frase que tendrá que repetir
-          después de mí. Solo se la puedo decir una vez, así que ponga mucha
-          atención”.
-        </Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>"ni sí, ni no, ni pero”</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked23: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked23 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked23: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked23 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked23: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>
-          Comprensión - Ejecución de Orden
-        </Text>
-      </View>
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>de Orden</Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.TextInfo}>
-          CONSIGNA: “Le voy a dar unas instrucciones. Por favor sígalas en el
-          orden en que las voy a decir. Solo las puedo decir una vez”:
-        </Text>
-        <Text style={styles.TextInfo1}>
-          “TOME ESTE PAPEL CON LA MANO DERECHA, DÓBLELO POR LA MITAD Y DÉJELO EN
-          EL SUELO”
-        </Text>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Tome este papel con la mano derecha</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked24: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked24 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked24: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked24 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked24: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Dóblelo por la mitad</Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked25: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked25 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked25: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked25 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked25: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>Déjelo en suelo</Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked26: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked26 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked26: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked26 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked26: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Lectura</Text>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          Escriba legiblemente en un papel "cierre los ojos". Pídale a la
-          persona adulta mayor que lo lea y que haga lo que dice la frase
-        </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked27: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked27 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked25: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked27 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked27: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Escritura</Text>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          CONSIGNA: “Quiero que por favor escriba una frase que diga un mensaje”
-        </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked28: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked28 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked28: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked28 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked28: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-
-      <View style={styles.tituloContainer}>
-        <Text style={styles.TituloSeccion}>Copia de un Dibujo</Text>
-      </View>
-
-      <View style={styles.tituloLabel}>
-        <Text style={styles.label}>
-          “Copie por favor este dibujo tal como está”
-        </Text>
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <RadioButton.Group
-          onValueChange={(v) => {
-            setState({ ...state, checked29: v });
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <RadioButton
-                value={state.cero}
-                status={checked29 === cero ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked29: cero });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio1}>0 (Incorrecto)</Text>
-
-            <View>
-              <RadioButton
-                value={state.uno}
-                status={checked29 === uno ? "checked" : "unchecked"}
-                onPress={() => {
-                  setState({ ...state, checked29: uno });
-                }}
-              />
-            </View>
-            <Text style={styles.TextRadio2}>1 (Correcto) </Text>
-          </View>
-        </RadioButton.Group>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          width: "100%",
-        }}
-      >
-        <TouchableOpacity style={styles.btnRegistrar} onPress={onsubmitGuardar}>
-          <Text style={styles.text}>Guardar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.btnCancelar}
-          onPress={() => props.navigation.navigate("Test")}
-        >
-          <Text style={styles.text}>Cancelar</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.btnRegistrar}
+            onPress={validarFormulario}
+          >
+            <Text style={styles.text}>Guardar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btnCancelar}
+            onPress={() => navigation.navigate("TestBarthel")}
+          >
+            <Text style={styles.text}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -1365,18 +799,15 @@ const styles = StyleSheet.create({
     height: null,
     //alignItems: 'center',
     justifyContent: "center",
-    paddingTop: 20,
   },
-
   scrollView: {
     // backgroundColor: 'pink',
     //marginBottom : 10,
-    marginBottom: 0,
   },
   logoContainer: {
     alignItems: "center",
-    //marginBottom: 10,
-    marginTop: 70,
+    marginBottom: 10,
+    marginTop: 40,
   },
   logoLogin: {
     height: 150,
@@ -1388,42 +819,19 @@ const styles = StyleSheet.create({
   tituloLabel: {
     paddingLeft: 35,
     paddingRight: 35,
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: 30,
+    marginTop: 30,
+    alignItems: "center",
   },
   TituloLogin: {
     color: "black",
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: "bold",
-    //marginTop: 0,
+    marginTop: 0,
     opacity: 0.5,
-    textAlign: "center",
-  },
-  TituloSeccion: {
-    color: "black",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 20,
-    //opacity: 0.5,
     justifyContent: "center",
   },
   TextInfo: {
-    color: "black",
-    fontSize: 15,
-    fontWeight: "bold",
-    marginTop: 0,
-    opacity: 0.5,
-    textAlign: "justify",
-  },
-  TextInfo1: {
-    color: "black",
-    fontSize: 15,
-    fontWeight: "normal",
-    marginTop: 0,
-    opacity: 0.5,
-    textAlign: "justify",
-  },
-  TextRadio: {
     color: "black",
     fontSize: 15,
     fontWeight: "bold",
@@ -1438,7 +846,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     opacity: 0.5,
     textAlign: "justify",
-    marginRight: 50,
+    paddingRight: 35,
   },
   TextRadio2: {
     color: "black",
@@ -1447,6 +855,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     opacity: 0.5,
     textAlign: "justify",
+    paddingRight: 35,
   },
   label: {
     color: "black",
@@ -1460,11 +869,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   radioButton: {
-    paddingLeft: 35,
-    paddingRight: 35,
+    paddingLeft: 12,
+    paddingRight: 30,
     textAlign: "justify",
     marginTop: 0,
-    alignItems: "center",
+    marginRight: 10,
   },
   input: {
     width: WIDTH - 55,
@@ -1502,15 +911,16 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   btnRegistrar: {
-    width: 160,
+    width: WIDTH - 250,
     height: 45,
     borderRadius: 45,
     backgroundColor: "#005DA6",
     justifyContent: "center",
     marginTop: 20,
+    marginRight: 30,
   },
   btnCancelar: {
-    width: 160,
+    width: WIDTH - 250,
     height: 45,
     borderRadius: 45,
     marginBottom: 20,
