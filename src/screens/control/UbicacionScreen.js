@@ -15,6 +15,8 @@ const { width: WIDTH } = Dimensions.get("window");
 
 const fecha = new Date();
 const tiempoInicial = fecha.getHours()+':'+fecha.getMinutes()+':'+fecha.getSeconds();
+var  validacionBtn =  true;
+var  validacion = false;
 /* 
 const tiempoInicial=tiempoActual;
 const tiempoActual = () => {
@@ -39,9 +41,10 @@ export const UbicacionScreen = (props) => {
     listadoE: [],
   });
   const { listadoE } = values;
+ 
+
   const [value, setValue] = useState({
     validacionBtn: true,
-    validacion: false,
   });
 
   const [state, setState] = useState({
@@ -69,6 +72,8 @@ export const UbicacionScreen = (props) => {
     domicilio: false,
     nombresValidate: false,
   });
+
+  
 
   useEffect(() => {
     encabezados();
@@ -242,27 +247,29 @@ export const UbicacionScreen = (props) => {
   const fpuntoAtencion = () => {
     //alert('Punto de Atención');   
     setState({ ...state, puntoAtencion: true, domicilio: false, ubicacion: "Punto de Atención" })
-    validateContinuar()
+    
   }
 
   const fdomicilio = () => {
     //alert('Domicilio');
 
     setState({ ...state, domicilio: true, puntoAtencion: false, ubicacion: "Domicilio" })
-    validateContinuar()
+    
   }
 
   const fasistido = () => {
-    setValue({ ...value, validacion: true })
-    setState({ ...state, asistido: true, independiente: false, representante: state.representante })
     validateContinuar()
+    validacion = true;
+    setState({ ...state, asistido: true, independiente: false, representante: state.representante })
+    
   }
 
 
   const findependiente = () => {
-    setValue({ ...value, validacion: true })
-    setState({ ...state, independiente: true, asistido: false, representante: "Independiente" })
     validateContinuar()
+    validacion = false;
+    setState({ ...state, independiente: true, asistido: false, representante: "Independiente" })
+    
 
 
   }
@@ -289,24 +296,19 @@ export const UbicacionScreen = (props) => {
         }*/
 
     } else {
-      setValue({ ...value, validacion: false })
+      validacion = false;
       setState({ ...state, representante: "Independiente" })
     }
   }
 
-
-
   const validateContinuar = () => {
-
-    if ((state.puntoAtencion == true || state.domicilio == true ||
+    state.asistido = true;
+    state.independiente = true;
+    if ((state.puntoAtencion == true || state.domicilio == true &&
       state.asistido == true || state.independiente == true)) {
       setValue({ ...value, validacionBtn: false })
-
     }
-
   }
-
-
 
   const fobservacion_preguntas = (observacion_preguntas) => {
     //alert('Domicilio');
@@ -385,7 +387,7 @@ export const UbicacionScreen = (props) => {
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
             onChangeText={(representante) => validateAsistido(representante, "representante")}
-            editable={value.validacion}
+            editable={validacion}
           />
         </View>
         <CheckBox
