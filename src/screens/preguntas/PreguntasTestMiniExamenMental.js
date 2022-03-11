@@ -6,6 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  ImageBackground,
 } from "react-native";
 
 import { RadioButton } from "react-native-paper";
@@ -138,7 +140,45 @@ export const PreguntasTestMiniExamenMental = (props) => {
     p10_escritura +
     p11_copia_dibujo;
 
+    function validarFormulario(){
+      
+      let valor =0;
+  
+      let count =0;
+      Object.keys(state).forEach(key => {
+        
+        if(key.substring(0, 7)=="checked"){
+  
+          if((state[key])!='' && count === 0){
+            valor=valor+parseInt(state[key]);
+            
+          }else if ( (state[key])=='' && count === 0) {
+            
+            count=1;
+            Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
+              {
+                text: "Continuar",
+                style: "destructive",
+              },
+            ]);
+          }
+        }
+      });
+      
+      onsubmitGuardar()
+    }
+
+
   const onsubmitGuardar = async () => {
+    /*Alert.alert(
+      "Guardado",
+      "Datos correctamente guardados",
+      [
+        
+        { text: "OK", onPress: () => props.navigation.navigate("Test") }
+      ]
+    );
+*/
     try {
       console.log("entra");
       const response = await fetch(
@@ -174,9 +214,15 @@ export const PreguntasTestMiniExamenMental = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.replace("Test");
+        Alert.alert("MIES APP", `puntaje total: ${puntajeTotal}`, [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+        //navigation.replace("Test");
       } else {
-        Alert.alert("MIES APP", "Ha existido un error", [
+        Alert.alert("Datos correctamente guardados", "Ha existido un error", [
           {
             text: "Continuar",
             style: "destructive",
@@ -1344,7 +1390,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
           width: "100%",
         }}
       >
-        <TouchableOpacity style={styles.btnRegistrar} onPress={onsubmitGuardar}>
+        <TouchableOpacity style={styles.btnRegistrar} onPress={validarFormulario}>
           <Text style={styles.text}>Guardar</Text>
         </TouchableOpacity>
         <TouchableOpacity
