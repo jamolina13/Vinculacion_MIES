@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import bgImage from "../../../assets/img_sistema/fondo_login.jpg";
 import { RadioButton } from "react-native-paper";
@@ -82,6 +83,35 @@ export const PreguntasTestBarthel = (props) => {
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
+  function validarFormulario(){
+      
+    let valor =0;
+
+    let count =0;
+    Object.keys(state).forEach(key => {
+      
+      if(key.substring(0, 7)=="checked"){
+
+        if((state[key])!='' && count === 0){
+          valor=valor+parseInt(state[key]);
+          
+        }else if ( (state[key])=='' && count === 0) {
+          
+          count=1;
+          Alert.alert("MIES APP", "Hay un campo no llenado", [
+            {
+              text: "Continuar",
+              style: "destructive",
+            },
+          ]);
+        }
+      }
+    });
+    
+    onsubmitGuardar()
+  }
+
+
   const onsubmitGuardar = async () => {
     let valor =0;
 
@@ -139,7 +169,14 @@ export const PreguntasTestBarthel = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.replace("HeaderInicio");
+        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+        //navigation.replace("HeaderInicio");
+
       } else {
         Alert.alert("MIES APP", "Ha existido un error", [
           {
@@ -739,7 +776,7 @@ export const PreguntasTestBarthel = (props) => {
         >
           <TouchableOpacity
             style={styles.btnRegistrar}
-            onPress={onsubmitGuardar}
+            onPress={validarFormulario}
           >
             <Text style={styles.text}>Guardar</Text>
           </TouchableOpacity>
