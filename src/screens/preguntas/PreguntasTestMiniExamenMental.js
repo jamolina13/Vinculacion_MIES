@@ -111,7 +111,6 @@ export const PreguntasTestBarthel = (props) => {
     onsubmitGuardar()
   }
 
-
   const onsubmitGuardar = async () => {
     let valor =0;
 
