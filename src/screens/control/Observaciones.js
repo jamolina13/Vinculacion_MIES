@@ -299,6 +299,50 @@ export class Observaciones extends React.Component {
           }
         });
     }
+uploadImage = async () => {
+
+    console.log("hola");
+    console.log(dataURL);
+
+    try {
+
+      const response = await fetch(
+        "http://192.188.58.82:3000/actualizarFotObsEncabezadoById/264",/* DEBES PONER EL ID QUE TE SALE EN ENCABEZADO */
+        {
+          method: "POST",
+          headers: {
+            "Accept": "Application/json",
+            "Content-type": "Application/json",
+          },
+
+          body: JSON.stringify({
+            ef_observacion_preguntas: "",
+            ef_observacion_tecnico: "Prueba",
+            ef_foto_adulto: base64,
+          }),
+        }
+      );
+      if (response.status == 200) {
+        //const json = await response.json();
+        console.log("hola200");
+
+        
+      } else {
+
+        
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    console.log(
+      JSON.stringify({
+        
+        ef_observacion_tecnico: state.observacion_tecnico,
+       
+        ef_foto_adulto: state.foto_adulto,
+        
+      })
+    );
 
   };
 
@@ -318,6 +362,17 @@ export class Observaciones extends React.Component {
               placeholderTextColor={'#c7c7c7'}
               underlineColorAndroid={'transparent'}
               
+            />
+             <Text style={styles.TextInfo}>Registre todos los problemas que se le presentaron a la hora  de realizar la visita.</Text>
+            <Textarea class="Anomalias"
+              containerStyle={styles.textareaContainer}
+              style={styles.textarea}
+              onChangeText={this.onChange}
+              defaultValue={this.state.text}
+              maxLength={500}
+              placeholder={'La movilidad fue algo muy complejo。。。'}
+              placeholderTextColor={'#c7c7c7'}
+              underlineColorAndroid={'transparent'}
             />
         <Text style={styles.TextInfo}>Tome una foto o seleccione una imagen del adulto mayor</Text>
             <TouchableOpacity style={styles.button2} onPress={() => this.props.navigation.navigate('Camara')}>
