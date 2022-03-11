@@ -193,7 +193,7 @@ export const PreguntasTestYesavage = (props) => {
         //const json = await response.json();
        // navigation.replace("Test");
 
-        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
