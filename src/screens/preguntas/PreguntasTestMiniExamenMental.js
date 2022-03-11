@@ -98,7 +98,7 @@ export const PreguntasTestBarthel = (props) => {
         }else if ( (state[key])=='' && count === 0) {
           
           count=1;
-          Alert.alert("MIES APP", "Hay un campo no llenado", [
+          Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
             {
               text: "Continuar",
               style: "destructive",
