@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,10 @@ import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestLawtonBrody = (props) => {
+  const [values, setValues] = useState({
+    listadoL: [],
+  });
+  const { listadoL } = values;
   const [state, setState] = useState({
     checked1: "",
     checked2: "",
@@ -37,15 +41,48 @@ export const PreguntasTestLawtonBrody = (props) => {
     press: false,
   });
 
- 
   const navigation = props.navigation;
+  const params = props.route.params;
+  const enc_id = params.enc_id;
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
 
- 
+  useEffect(() => {
+    Lawton();
+    return () => {
+      setValues({});
+    }
+  }, [state.isReady]);
+
+  const Lawton = async () => {
+
+    try {
+      const LawtonBrody = await fetch(
+        "http://192.188.58.82:3000/consultaEscalaLawtonBrody",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await LawtonBrody.json();
+      setValues({
+        ...values,
+        listadoL: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const idLawton = listadoL.length + 1;
 
   const { checked1 } = state;
   const { checked2 } = state;
@@ -57,133 +94,133 @@ export const PreguntasTestLawtonBrody = (props) => {
   const { checked8 } = state;
 
 
-   //CALCULO DE TIEMPO DE APLICACIÓN
-   const { datetimeStart } = state;
-    const datetimeEnd = moment(new Date());
-    //fechas para enviar a la base de datos
-    const fechaInicial = datetimeStart.format("HH:mm:ss");
-    const fechaFinal = datetimeEnd.format("HH:mm:ss");
-    const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
-    var time = new Date();
+  //CALCULO DE TIEMPO DE APLICACIÓN
+  const { datetimeStart } = state;
+  const datetimeEnd = moment(new Date());
+  //fechas para enviar a la base de datos
+  const fechaInicial = datetimeStart.format("HH:mm:ss");
+  const fechaFinal = datetimeEnd.format("HH:mm:ss");
+  const diferencia = moment(datetimeEnd).diff(datetimeStart, "seconds");
+  var time = new Date();
 
-    time.setHours(parseInt(diferencia / 3600) % 24);
-    time.setMinutes(parseInt(diferencia / 60) % 60);
-    time.setSeconds(parseInt(diferencia % 60));
-    time = time.toTimeString().split(" ")[0];
+  time.setHours(parseInt(diferencia / 3600) % 24);
+  time.setMinutes(parseInt(diferencia / 60) % 60);
+  time.setSeconds(parseInt(diferencia % 60));
+  time = time.toTimeString().split(" ")[0];
 
-    function validarFormulario(){
-      
-      let valor =0;
+  function validarFormulario() {
 
-      let count =0;
-      Object.keys(state).forEach(key => {
-        
-        if(key.substring(0, 7)=="checked"){
+    let valor = 0;
 
-          if((state[key])!='' && count === 0){
-            valor=valor+parseInt(state[key]);
-            
-          }else if ( (state[key])=='' && count === 0) {
-            
-            count=1;
-            Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
-              {
-                text: "Continuar",
-                style: "destructive",
-              },
-            ]);
-          }
-        }
-      });
-      
-      onsubmitGuardar()
-    }
+    let count = 0;
+    Object.keys(state).forEach(key => {
 
-    const onsubmitGuardar = async () => {
-      let valor =0;
-  
-      Object.keys(state).forEach(key => {
-        
-        if(key.substring(0, 7)=="checked"){
+      if (key.substring(0, 7) == "checked") {
 
-          if((state[key])!=''){
-            valor=valor+parseInt(state[key].charAt(0));
-            console.log(key+" "+valor);
-          }
-        }
-      });
+        if ((state[key]) != '' && count === 0) {
+          valor = valor + parseInt(state[key]);
 
-     
-      const { checked1 } = state;
-      const { checked2 } = state;
-      const { checked3 } = state;
-      const { checked4 } = state;
-      const { checked5 } = state;
-      const { checked6 } = state;
-      const { checked7 } = state;
-      const { checked8 } = state;
-      const { estado } = state;
-      
+        } else if ((state[key]) == '' && count === 0) {
 
-
-      try {
-        
-        const response = await fetch(
-          "http://192.188.58.82:3000/guardarEscalaLawtonBrody",
-          {
-            method: "POST",
-            headers: {
-              Accept: "Application/json",
-              "Content-type": "Application/json",
+          count = 1;
+          Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
+            {
+              text: "Continuar",
+              style: "destructive",
             },
-            body: JSON.stringify({
-              ef_id: 5,
-              
-              elb_p1_usar_telefono: (checked1.charAt(0)),
-              elb_p2_hacer_compras: (checked2.charAt(0)),
-              elb_p3_preparar_comida: (checked3.charAt(0)),
-              elb_p4_cuidado_casa: (checked4.charAt(0)),
-              elb_p5_lavar_ropa: (checked5.charAt(0)),
-              elb_p6_uso_transporte: (checked6.charAt(0)),
-              elb_p7_medicacion: (checked7.charAt(0)),
-              elb_p8_utiliza_dinero: (checked8.charAt(0)),
-              elb_tiempo_inicial: fechaInicial,
-              elb_tiempo_final: fechaFinal,
-              elb_tiempo_total: time,
-              elb_estado: estado,
-              elb_puntaje_total: valor,
-            }),
-          }
-        )
-       if(response.ok){
-        console.log("hola ..ya sale")
-       }else{
-        console.log("no ..ya sale")
-       }
-        console.log(response.status);
-        if (response.status == 200) {
-          //const json = await response.json();
-          
-             Alert.alert("Datos correctamente guardados",  `puntaje total: ${valor}`, [
-                 {
-                   text: "Continuar",
-                   style: "destructive",
-                 },
-               ]);
-        } 
-         else {
-           Alert.alert("MIES APP", "Ha existido un error", [
-             {
-               text: "Continuar",
-               style: "destructive",
-             },
-           ]);
-         }
-      } catch (error) {
-        console.log(error);
+          ]);
+        }
       }
-    };
-  
+    });
+
+    onsubmitGuardar()
+  }
+
+  const onsubmitGuardar = async () => {
+    let valor = 0;
+
+    Object.keys(state).forEach(key => {
+
+      if (key.substring(0, 7) == "checked") {
+
+        if ((state[key]) != '') {
+          valor = valor + parseInt(state[key].charAt(0));
+          console.log(key + " " + valor);
+        }
+      }
+    });
+
+
+
+    const { checked1 } = state;
+    const { checked2 } = state;
+    const { checked3 } = state;
+    const { checked4 } = state;
+    const { checked5 } = state;
+    const { checked6 } = state;
+    const { checked7 } = state;
+    const { checked8 } = state;
+    const { estado } = state;
+
+
+
+    try {
+
+      const response = await fetch(
+        "http://192.188.58.82:3000/guardarEscalaLawtonBrody",
+        {
+          method: "POST",
+          headers: {
+            Accept: "Application/json",
+            "Content-type": "Application/json",
+          },
+          body: JSON.stringify({
+            ef_id: enc_id,
+            elb_p1_usar_telefono: (checked1.charAt(0)),
+            elb_p2_hacer_compras: (checked2.charAt(0)),
+            elb_p3_preparar_comida: (checked3.charAt(0)),
+            elb_p4_cuidado_casa: (checked4.charAt(0)),
+            elb_p5_lavar_ropa: (checked5.charAt(0)),
+            elb_p6_uso_transporte: (checked6.charAt(0)),
+            elb_p7_medicacion: (checked7.charAt(0)),
+            elb_p8_utiliza_dinero: (checked8.charAt(0)),
+            elb_tiempo_inicial: fechaInicial,
+            elb_tiempo_final: fechaFinal,
+            elb_tiempo_total: time,
+            elb_estado: estado,
+            elb_puntaje_total: valor,
+          }),
+        }
+      )
+      console.log(response.status);
+      if (response.status == 200) {
+        //const json = await response.json();
+        console.log("idLawton: " + idLawton)
+        navigation.navigate("Test", {
+          idLawton: idLawton,
+        });
+        Alert.alert("Datos correctamente guardados",  `puntaje total: ${valor}`, [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+
+
+      }
+      else {
+        Alert.alert("MIES APP", "Ha existido un error", [
+          {
+            text: "Continuar",
+            style: "destructive",
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <ScrollView>
@@ -212,7 +249,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked1: v });
+              setState({ ...state, checked1: v });
             }}
           >
             <View style={styles.radios}>
@@ -223,7 +260,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked1 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked1: "1A" });
+                  setState({ ...state, checked1: "1A" });
                 }}
               />
             </View>
@@ -235,7 +272,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1B"
                 status={checked1 === "1B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked1: "1B" });
+                  setState({ ...state, checked1: "1B" });
                 }}
               />
             </View>
@@ -247,7 +284,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1C"
                 status={checked1 === "1C" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked1: "1" });
+                  setState({ ...state, checked1: "1" });
                 }}
               />
             </View>
@@ -257,7 +294,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked1 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked1: "0A" });
+                  setState({ ...state, checked1: "0A" });
                 }}
               />
             </View>
@@ -270,7 +307,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked2: v });
+              setState({ ...state, checked2: v });
             }}
           >
             <View style={styles.radios}>
@@ -281,7 +318,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked2 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked2: "1A" });
+                  setState({ ...state, checked2: "1A" });
                 }}
               />
             </View>
@@ -293,7 +330,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked2 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked2: "0A" });
+                  setState({ ...state, checked2: "0A" });
                 }}
               />
             </View>
@@ -305,7 +342,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0B"
                 status={checked2 === "0B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked2: "0B" });
+                  setState({ ...state, checked2: "0B" });
                 }}
               />
             </View>
@@ -317,7 +354,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0C"
                 status={checked2 === "0C" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked2: "0C" });
+                  setState({ ...state, checked2: "0C" });
                 }}
               />
             </View>
@@ -330,7 +367,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked3: v });
+              setState({ ...state, checked3: v });
             }}
           >
             <View style={styles.radios2}>
@@ -341,7 +378,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked3 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked3: "1A" });
+                  setState({ ...state, checked3: "1A" });
                 }}
               />
             </View>
@@ -354,7 +391,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked3 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked3: "0A" });
+                  setState({ ...state, checked3: "0A" });
                 }}
               />
             </View>
@@ -367,7 +404,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0B"
                 status={checked3 === "0B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked3: "0B" });
+                  setState({ ...state, checked3: "0B" });
                 }}
               />
             </View>
@@ -379,7 +416,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0C"
                 status={checked3 === "0C" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked3: "0C" });
+                  setState({ ...state, checked3: "0C" });
                 }}
               />
             </View>
@@ -392,7 +429,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked4: v });
+              setState({ ...state, checked4: v });
             }}
           >
             <View style={styles.radios}>
@@ -404,7 +441,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked4 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked4: "1A" });
+                  setState({ ...state, checked4: "1A" });
                 }}
               />
             </View>
@@ -416,7 +453,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1B"
                 status={checked4 === "1B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked4: "1B" });
+                  setState({ ...state, checked4: "1B" });
                 }}
               />
             </View>
@@ -429,7 +466,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1C"
                 status={checked4 === "1C" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked4: "1C" });
+                  setState({ ...state, checked4: "1C" });
                 }}
               />
             </View>
@@ -441,7 +478,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1D"
                 status={checked4 === "1D" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked4: "1D" });
+                  setState({ ...state, checked4: "1D" });
                 }}
               />
             </View>
@@ -453,7 +490,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked4 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked4: "0A" });
+                  setState({ ...state, checked4: "0A" });
                 }}
               />
             </View>
@@ -465,7 +502,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked5: v });
+              setState({ ...state, checked5: v });
             }}
           >
             <View style={styles.radios}>
@@ -476,7 +513,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked5 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked5: "1A" });
+                  setState({ ...state, checked5: "1A" });
                 }}
               />
             </View>
@@ -488,7 +525,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1B"
                 status={checked5 === "1B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked5: "1B" });
+                  setState({ ...state, checked5: "1B" });
                 }}
               />
             </View>
@@ -500,7 +537,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked5 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked5: "0A" });
+                  setState({ ...state, checked5: "0A" });
                 }}
               />
             </View>
@@ -513,7 +550,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked6: v });
+              setState({ ...state, checked6: v });
             }}
           >
             <View style={styles.radios}>
@@ -524,7 +561,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked6 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked6: "1A" });
+                  setState({ ...state, checked6: "1A" });
                 }}
               />
             </View>
@@ -536,7 +573,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1B"
                 status={checked6 === "1B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked6: "1B" });
+                  setState({ ...state, checked6: "1B" });
                 }}
               />
             </View>
@@ -549,7 +586,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1C"
                 status={checked6 === "1C" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked6: "1C" });
+                  setState({ ...state, checked6: "1C" });
                 }}
               />
             </View>
@@ -561,7 +598,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked6 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked6: "0A" });
+                  setState({ ...state, checked6: "0A" });
                 }}
               />
             </View>
@@ -571,7 +608,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0B"
                 status={checked6 === "0B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked6: "0B" });
+                  setState({ ...state, checked6: "0B" });
                 }}
               />
             </View>
@@ -586,7 +623,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked7: v });
+              setState({ ...state, checked7: v });
             }}
           >
             <View style={styles.radios}>
@@ -597,7 +634,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked7 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked7: "1A" });
+                  setState({ ...state, checked7: "1A" });
                 }}
               />
             </View>
@@ -609,7 +646,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked7 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked7: "0A" });
+                  setState({ ...state, checked7: "0A" });
                 }}
               />
             </View>
@@ -621,7 +658,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0B"
                 status={checked7 === "0B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked7: "0B" });
+                  setState({ ...state, checked7: "0B" });
                 }}
               />
             </View>
@@ -636,7 +673,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         <View style={{ width: "100%" }}>
           <RadioButton.Group
             onValueChange={(v) => {
-              setState({...state, checked8: v });
+              setState({ ...state, checked8: v });
             }}
           >
             <View style={styles.radios}>
@@ -647,7 +684,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1A"
                 status={checked8 === "1A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked8: "1A" });
+                  setState({ ...state, checked8: "1A" });
                 }}
               />
             </View>
@@ -660,7 +697,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="1B"
                 status={checked8 === "1B" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked8: "1B" });
+                  setState({ ...state, checked8: "1B" });
                 }}
               />
             </View>
@@ -670,7 +707,7 @@ export const PreguntasTestLawtonBrody = (props) => {
                 value="0A"
                 status={checked8 === "0A" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({...state, checked8: "0A" });
+                  setState({ ...state, checked8: "0A" });
                 }}
               />
             </View>
