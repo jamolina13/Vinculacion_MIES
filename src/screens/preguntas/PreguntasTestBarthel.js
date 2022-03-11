@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -21,6 +21,10 @@ import { useSelector } from "react-redux";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestBarthel = (props) => {
+  const [values, setValues] = useState({
+    listadoB: [],
+  });
+  const { listadoB } = values;
   //const { id } = useSelector((state) => state.auth);
   //const TestBarthelRegistrados = props.route.params.PreguntasTestBarthel;
   const [state, setState] = useState({
@@ -50,6 +54,40 @@ export const PreguntasTestBarthel = (props) => {
       temp: total,
     });
   };
+
+  useEffect(() => {
+    Barthel();
+    return () => {
+      setValues({});
+    }
+  }, [state.isReady]);
+
+  const Barthel = async () => {
+
+    try {
+      const Barthel2 = await fetch(
+        "http://192.188.58.82:3000/consultaIndiceBarthel",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await Barthel2.json();
+      setValues({
+        ...values,
+        listadoB: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const idBarthel = listadoB.length + 1;
 
   const { checked } = state;
   const { checked1 } = state;
@@ -98,7 +136,7 @@ export const PreguntasTestBarthel = (props) => {
         }else if ( (state[key])=='' && count === 0) {
           
           count=1;
-          Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
+          Alert.alert("MIES APP", "Hay un campo no llenado", [
             {
               text: "Continuar",
               style: "destructive",
@@ -169,7 +207,11 @@ export const PreguntasTestBarthel = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
+        console.log("idBarthel: " + idBarthel)
+        navigation.navigate("Test", {
+          idBarthel: idBarthel,
+        });
+        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
