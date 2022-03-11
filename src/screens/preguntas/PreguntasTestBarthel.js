@@ -169,7 +169,7 @@ export const PreguntasTestBarthel = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
