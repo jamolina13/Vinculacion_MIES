@@ -41,18 +41,7 @@ export const RegistroTecnico = (props) => {
     contraseñaValidate: true,
   });
 
-  // checkValue(str, max) {
-  //   if (str.charAt(0) !== "0" || str == "00") {
-  //     var num = parseInt(str);
-  //     if (isNaN(num) || num <= 0 || num > max) num = 1;
-  //     str =
-  //       num > parseInt(max.toString().charAt(0)) && num.toString().length == 1
-  //         ? "0" + num
-  //         : num.toString();
-  //   }
-  //   return str;
-  // }
-
+ 
   const registroTecnico = async () => {
     //alert('OK');
     const { nombre } = state;
@@ -63,17 +52,6 @@ export const RegistroTecnico = (props) => {
     const { direccion } = state;
     const { contraseña } = state;
 
-    // console.log(JSON.stringify({
-    //       tec_id: parseInt(tecnicosRegistrados+2),
-    //       sup_id: parseInt(id), 
-    //       tec_nombre: nombre,
-    //       tec_apellido: apellido,
-    //       tec_cedula: cedula,
-    //       tec_telefono: telefono,
-    //       tec_correo: correo,
-    //       tec_direccion: direccion,
-    //       tec_contraseña: contraseña,
-    // }))
     try {
       const response = await fetch("http://192.188.58.82:3000/guardarTecnico", {
           method: "POST",
@@ -466,7 +444,7 @@ export const RegistroTecnico = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnCancelar}
-            onPress={() => navigation.navigate("HeaderInicio")}
+            onPress={() => navigation.replace("HeaderInicio")}
           >
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
