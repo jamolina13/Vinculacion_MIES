@@ -122,7 +122,7 @@ export const RegistroAM = (props) => {
       console.log("guardado");
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.navigate("HeaderInicio");
+        navigation.replace("HeaderInicio");
       } else {
         Alert.alert("MIES APP", "Error al registrar. Intente más tarde. ", [
           {
@@ -661,7 +661,7 @@ export const RegistroAM = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnCancelar}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.replace("HeaderInicio")}
           >
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
