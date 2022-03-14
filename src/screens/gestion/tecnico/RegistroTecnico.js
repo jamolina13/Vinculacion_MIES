@@ -29,7 +29,10 @@ export const RegistroTecnico = (props) => {
     contraseña: "",
     showPass: true,
 
-    cedulaValidate: false,
+    cedulaValidate: {
+      estado:false,
+      msg:"Debe ingresar una cédula válida"
+    },
     nombreValidate: false,
     apellidoValidate: false,
     telefonoValidate: false,
@@ -164,7 +167,7 @@ export const RegistroTecnico = (props) => {
         }
         
       } else {
-        setState({ ...state,  cedulaValidate:{msg:"Ingresar solo 10 numeros",estado:false} });
+        setState({ ...state,  cedulaValidate:{msg:"No se permiten letras",estado:false} });
       }
     };
   
@@ -333,7 +336,7 @@ export const RegistroTecnico = (props) => {
               state.telefonoValidate ? styles.TextErrorValid : null,
             ]}
           >
-            Debe ingresar 10 digitos numéricos
+            {state.cedulaValidate.msg}
           </Text>
         </View>
 
