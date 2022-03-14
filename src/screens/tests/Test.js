@@ -27,6 +27,12 @@ export const Test = (props) => {
   var idLawton= params.idLawton
   var idMini= params.idMini
   var idBarthel= params.idBarthel
+  console.log("----------------------------------------- ")
+  console.log("idYesavage: "+idYesavage)
+  console.log("idLawton: "+idLawton)
+  console.log("idMini: "+idMini)
+  console.log("idBarthel: "+idBarthel)
+
   var validacioIdBarthel=false
   var validacioIdLawton=false
   var validacioIdMini=false
