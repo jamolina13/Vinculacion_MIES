@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,10 @@ import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestMiniExamenMental = (props) => {
+  const [values, setValues] = useState({
+    listadoM: [],
+  });
+  const { listadoM } = values;
   const [state, setState] = useState({
     checked: "",
     checked1: "",
@@ -93,11 +97,47 @@ export const PreguntasTestMiniExamenMental = (props) => {
   const { puntaje } = state;
 
   const navigation = props.navigation;
+  const params = props.route.params;
+  const enc_id = params.enc_id;
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
+
+  useEffect(() => {
+    Mini();
+    return () => {
+      setValues({});
+    }
+  }, [state.isReady]);
+
+  const Mini = async () => {
+
+    try {
+      const Mini2 = await fetch(
+        "http://192.188.58.82:3000/consultaMiniMental",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await Mini2.json();
+      setValues({
+        ...values,
+        listadoM: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const idMini = listadoM.length + 1;
 
   const { datetimeStart } = state;
   const datetimeEnd = moment(new Date());
@@ -214,6 +254,10 @@ export const PreguntasTestMiniExamenMental = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
+        console.log("idMini: " + idMini)
+        navigation.navigate("Test", {
+          idMini: idMini,
+        });
         Alert.alert("MIES APP", `puntaje total: ${puntajeTotal}`, [
           {
             text: "Continuar",
