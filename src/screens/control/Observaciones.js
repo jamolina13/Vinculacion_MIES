@@ -73,7 +73,7 @@ export const Observaciones = (props) => {
 			})
 		} return(
         <View style={styles.container}>
-          {image && <Image source={{ uri: image.base64 }} style={{ width: 260, height: 260, marginTop: 20 }} />}
+          <Image source={{ uri: image.base64 }} style={{ width: 260, height: 260, marginTop: 20 }} />
         </View>
     )
 	}
@@ -103,7 +103,14 @@ export const Observaciones = (props) => {
         console.log(response.status)
         
         if(response.status == 200){
-          navigation.navigate("Observaciones")
+          Alert.alert("MIES APP", "Registro Actualizado. ", [
+            {
+              text: "Continuar",
+              //onPress: {onRefresh},
+              style: "destructive",
+            },
+          ]);
+          navigation.navigate("Test")
         }else{
           Alert.alert("MIES APP", "Error al actualizar. Intente más tarde. ", [
             {
