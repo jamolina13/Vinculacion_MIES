@@ -48,7 +48,9 @@ export const PreguntasTestBarthel = (props) => {
   });
 
   const navigation = props.navigation;
-
+  const params = props.route.params;
+  const enc_id = params.enc_id;
+  console.log("id encabezado: "+enc_id)
   const calculartotal = (total) => {
     setState({
       temp: total,
@@ -184,7 +186,7 @@ export const PreguntasTestBarthel = (props) => {
             "Content-type": "Application/json",
           },
           body: JSON.stringify({
-            ef_id: 5,
+            ef_id: enc_id,
             ib_p1_comer: checked,
             ib_p2_trasladarse: checked1,
             ib_p3_aseo_personal: checked2,
@@ -824,7 +826,7 @@ export const PreguntasTestBarthel = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnCancelar}
-            onPress={() => navigation.navigate("TestBarthel")}
+            onPress={() => navigation.navigate("Test")}
           >
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
@@ -977,3 +979,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
