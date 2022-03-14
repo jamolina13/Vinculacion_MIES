@@ -114,7 +114,7 @@ export const ListaAMScreen = () => {
           <View style={styles.containerColumn5}>
             <TouchableOpacity
               style={styles.btnRegistro}
-              onPress={() => navigation.navigate("RegistrodoAdultoMayor")}
+              onPress={() => navigation.replace("RegistrodoAdultoMayor")}
             >
               <Text style={{ fontWeight: "bold", color: "white" }}>
                 Registrar
@@ -144,7 +144,7 @@ export const ListaAMScreen = () => {
           <ListItem
             thumbnail
             onPress={() =>
-              navigation.navigate("Ubicacion", {
+              navigation.replace("Ubicacion", {
                 id: item.am_id,
                 nombre: item.am_nombre,
                 apellido: item.am_apellido,
@@ -192,7 +192,7 @@ export const ListaAMScreen = () => {
               <Button
                 transparent
                 onPress={() =>
-                  navigation.navigate("InformacionAM", {
+                  navigation.replace("InformacionAM", {
                     id: item.am_id,
                     nombre: item.am_nombre,
                     apellido: item.am_apellido,
