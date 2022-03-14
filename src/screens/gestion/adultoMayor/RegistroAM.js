@@ -34,7 +34,10 @@ export const RegistroAM = (props) => {
     domicilio: "",
     pais_origen: "",
     registro: "sd",
-    cedulaValidate: false,
+    cedulaValidate: {
+      estado:false,
+      msg:"Debe ingresar una cédula válida"
+    },
     nombresValidate: false,
     apellidosValidate: false,
     etniaValidate: false,
@@ -159,23 +162,65 @@ export const RegistroAM = (props) => {
   };
 
   //validaciones de datos
-  const validateCedula = (cedula, type) => {
-    var alph = /^([0-9]{0,10})$/;
-    if (type == "cedula") {
+    const validateCedula = (cedula) => {
+      var alph = /^([0-9]{0,10})$/;
+      var cedInv=false;
       if (alph.test(cedula)) {
-        setState({
-          ...state,
-          cedulaValidate: true,
-          cedula: cedula,
+
+        let digProv = parseInt(cedula.substring(0,2));
+        console.log(digProv);
+        //validar dos primeros digitos de provincia
+        if(digProv < 0 || digProv > 24){
+          console.log("Codigo de Provincia (dos primeros dígitos) no deben ser mayor a 24 ni menores a 0')");
+          cedInv=true;
+        }
+        //validar tercer digito
+        let tercerDig = parseInt(cedula[2]);
+        console.log(tercerDig);
+        if(tercerDig < 0 || tercerDig > 5){
+          console.log("Tercer dígito debe ser mayor o igual a 0 y menor a 6");
+          cedInv=true;
+        }
+        //algoritmo de modulo 10
+        let digitosIniciales = cedula.substring(0,9).split("");
+        let digitoVerificador = parseInt(cedula[9]);
+        let arrayCoeficientes = [2,1,2,1,2,1,2,1,2];
+        let total = 0;
+        digitosIniciales.forEach(function (value,key){
+          let valorPosicion = (parseInt(value)*arrayCoeficientes[key]);
+
+          if(valorPosicion>=10){
+            valorPosicion=valorPosicion.toString().split("");
+
+            valorPosicion= valorPosicion.reduce(function(a, b){
+              return parseInt(a) + parseInt(b);
+            }, 0);
+            
+          }
+          total+=valorPosicion;
         });
+
+        let residuo = total%10;
+        let resultado=0;
+        if (residuo != 0) {
+          resultado = 10 -residuo;
+        }
+
+        if (resultado != digitoVerificador){
+          console.log("Dígitos iniciales no validan contra Dígito Idenficador");
+          cedInv=true;
+        }
+
+        if(cedInv){
+          setState({ ...state,  cedulaValidate:{msg:"Cedula Invalida",estado:false} });
+        }else{
+          setState({ ...state,  cedulaValidate:{msg:"",estado:true},cedula:cedula });
+        }
+        
       } else {
-        setState({
-          ...state,
-          cedulaValidate: false,
-        });
+        setState({ ...state,  cedulaValidate:{msg:"No se permiten letras",estado:false} });
       }
-    }
-  };
+    };
 
 
   const validateNombre = (nombres, type) => {
@@ -292,7 +337,7 @@ export const RegistroAM = (props) => {
     if (
       state.nombresValidate == true &&
       state.apellidosValidate == true &&
-      state.cedulaValidate == true &&
+      state.cedulaValidate.estado == true &&
       state.etniaValidate == true &&
       state.domicilioValidate == true &&
       state.pais_origenValidate == true &&
@@ -353,7 +398,7 @@ export const RegistroAM = (props) => {
               state.cedulaValidate ? styles.TextErrorValid : null,
             ]}
           >
-            Debe ingresar 10 digitos numéricos
+            {state.cedulaValidate.msg}
           </Text>
         </View>
         <View style={styles.inputContainer}>
