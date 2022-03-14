@@ -12,6 +12,9 @@ import {
 const { width: WIDTH } = Dimensions.get("window");
 
 export const IndiTestLawtonBrody = (props) => {
+  const navigation = props.navigation;
+  const params = props.route.params;
+  const enc_id = params.enc_id;
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.tituloContainer}>
@@ -94,13 +97,16 @@ export const IndiTestLawtonBrody = (props) => {
       <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
         <TouchableOpacity
           style={styles.btnRegistrar}
-          onPress={() => props.navigation.navigate("TestLawtonBrody")}
+          onPress={() => 
+            navigation.navigate('TestLawtonBrody', {
+              enc_id: enc_id,
+            })}
         >
           <Text style={styles.text}>Siguiente</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btnCancelar}
-          onPress={() => props.navigation.navigate("Test")}
+          onPress={() => navigation.navigate("Test")}
         >
           <Text style={styles.text}>Cancelar</Text>
         </TouchableOpacity>
