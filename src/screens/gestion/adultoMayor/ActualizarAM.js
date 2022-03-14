@@ -137,7 +137,7 @@ export const ActualizarAM = (props) => {
       console.log('pasa')
       console.log(response.status)
       if(response.status == 200){
-        navigation.navigate("HeaderInicio")
+        navigation.replace("HeaderInicio")
       }else{
         Alert.alert("MIES APP", "Error al actualizar. Intente más tarde. ", [
           {
@@ -247,6 +247,7 @@ export const ActualizarAM = (props) => {
                   underlineColorAndroid="transparent"
                   onChangeText={(text) => validarNumeros(text)}
                   value={String(values.edad)}
+                  editable={false}
                 />
               </View>
             </View>
@@ -295,7 +296,7 @@ export const ActualizarAM = (props) => {
          
           <TouchableOpacity
             style={stylesInfo.btnCancelar}
-            onPress={() => navigation.navigate("HeaderInicio")}
+            onPress={() => navigation.replace("HeaderInicio")}
           >
             <Text style={stylesInfo.textBtn}>Cancelar</Text>
           </TouchableOpacity>
