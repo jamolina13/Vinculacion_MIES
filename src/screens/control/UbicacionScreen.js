@@ -139,8 +139,8 @@ export const UbicacionScreen = (props) => {
 
           body: JSON.stringify({
             am_id: state.am_id,
-            ef_observacion_preguntas: "Sin Obervaciones",
-            ef_observacion_tecnico: "Sin Obervaciones",
+            ef_observacion_preguntas: "assa",
+            ef_observacion_tecnico: "ass",
             ef_ubicacion: state.ubicacion,
             ef_estado: 0,
             ef_representante: state.representante,
@@ -438,7 +438,7 @@ export const UbicacionScreen = (props) => {
 
         <TouchableOpacity
           style={styles.btnSalir}
-          onPress={() => navigation.navigate("HeaderInicio")}
+          onPress={() => navigation.replace("HeaderInicio")}
         >
 
           <Text style={styles.textBtn}>Salir</Text>
