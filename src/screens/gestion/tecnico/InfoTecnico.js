@@ -71,10 +71,20 @@ export const InfoTecnico = (props) => {
           <TouchableOpacity
             style={stylesInfo.btnActualizar}
             onPress={() =>
-              navigation.navigate("ActualizarTecnico", { data: state })
+              navigation.replace("ActualizarTecnico", { data: state })
             }
           >
             <Text style={stylesInfo.textBtn}>Actualizar Información</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={stylesInfo.btnActualizar}
+            onPress={() =>
+              navigation.replace("HeaderInicio")
+            }
+          >
+            <Text style={stylesInfo.textBtn}>Regresar</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
