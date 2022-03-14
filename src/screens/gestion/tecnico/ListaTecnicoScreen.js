@@ -31,9 +31,6 @@ export const ListaTecnicoScreen = () => {
   });
   const { search, listadoTecnicos } = values;
 
-  useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-  }, []);
 
   useEffect(() => {
     listadoTecnicosRequest();
@@ -181,7 +178,7 @@ export const ListaTecnicoScreen = () => {
             <Button
               transparent
               onPress={() =>
-                navigation.navigate("InformacionTecnico", {
+                navigation.replace("InformacionTecnico", {
                   id: item.tec_id,
                   nombre: item.tec_nombre,
                   apellido: item.tec_apellido,
