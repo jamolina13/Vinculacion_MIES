@@ -50,7 +50,7 @@ export const PreguntasTestBarthel = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
-  console.log("id encabezado: "+enc_id)
+
   const calculartotal = (total) => {
     setState({
       temp: total,
@@ -826,7 +826,7 @@ export const PreguntasTestBarthel = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnCancelar}
-            onPress={() => navigation.navigate("Test")}
+            onPress={() => navigation.navigate("TestBarthel")}
           >
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
@@ -979,4 +979,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
