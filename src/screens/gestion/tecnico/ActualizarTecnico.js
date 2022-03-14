@@ -403,7 +403,7 @@ export const ActualizarTecnico = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btnCancelar}
-          onPress={() => navigation.navigate("HeaderInicio")}
+          onPress={() => navigation.replace("HeaderInicio")}
         >
           <Text style={styles.text}>Cancelar</Text>
         </TouchableOpacity>
