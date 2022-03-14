@@ -13,8 +13,7 @@ export const infoAM = ( props ) => {
   const navigation = props.navigation;
   
   useEffect(() => {
-    console.log(props.navigation.getState(), "holllaaa");
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    console.log(props.navigation.getState());
   }, []);
 
   return (
@@ -78,7 +77,7 @@ export const infoAM = ( props ) => {
           <TouchableOpacity
             style={stylesInfo.btnActualizar}
             onPress={() =>
-              navigation.navigate("ActualizarAM", {
+              navigation.replace("ActualizarAM", {
                 id: params.id,
                 nombre: params.nombre,
                 apellido: params.apellido,
@@ -96,6 +95,16 @@ export const infoAM = ( props ) => {
           >
             <Text style={stylesInfo.textBtn}>Actualizar Información</Text>
           </TouchableOpacity>
+            <View>
+          <TouchableOpacity
+            style={stylesInfo.btnActualizar}
+            onPress={() =>
+              navigation.replace("HeaderInicio")
+            }
+          >
+            <Text style={stylesInfo.textBtn}>Regresar</Text>
+          </TouchableOpacity>
+        </View>
         </View>
       </ScrollView>
     </SafeAreaView>
