@@ -1,4 +1,3 @@
-
 import React, { Component, useState, useEffect } from 'react';
 import {
   Image,
@@ -17,7 +16,6 @@ import {
 import bgImage from '../../../assets/img_sistema/fondo_login.jpg';
 import Textarea from 'react-native-textarea';
 import * as ImagePicker from 'expo-image-picker';
-//import { Camera } from 'expo-camera';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 import { Camera } from "expo-camera";
@@ -41,68 +39,68 @@ export const Observaciones = (props) => {
     observacion_tecnico: params.observacion_tecnico,
     foto_adulto: params.foto_adulto,
   });
-  const{enc_id} = values;
-  const {observacion_preguntas} = values;
-  const {observacion_tecnico} = values;
-  const {foto_adulto} = values;
-  
-  
+  const { enc_id } = values;
+  const { observacion_preguntas } = values;
+  const { observacion_tecnico } = values;
+  const { foto_adulto } = values;
+
+
   const preguntarPermisos = async () => {
-		//const permissionResult = await Permissions.askAsync(Permissions.CAMERA)
-		const permissionResult = await Camera.requestPermissionsAsync();
-		if (permissionResult.status !== 'granted') {
-			Alert.alert('No se puede accceder a la camara!', [{ text: 'ok' }])
-			return false
-		}
-		return true
-	}
-	var image;
-	const tomarFoto = async () => {
-		// nos aseguramos de que tengamos el permiso
-		const permisos = await preguntarPermisos()
-		if (!permisos) {
-			return
-		} else {
-			// inicia la cámara con la siguiente configuración
-			image = await ImagePicker.launchCameraAsync({
-				mediaTypes: ImagePicker.MediaTypeOptions.Images,
-				allowsEditing: true,
-				aspect: [3, 3],
-				quality: 0.5,
-				base64: true,
-			})
-		} return(
-        <View style={styles.container}>
-          <Image source={{ uri: image.base64 }} style={{ width: 260, height: 260, marginTop: 20 }} />
-        </View>
+    //const permissionResult = await Permissions.askAsync(Permissions.CAMERA)
+    const permissionResult = await Camera.requestPermissionsAsync();
+    if (permissionResult.status !== 'granted') {
+      Alert.alert('No se puede accceder a la camara!', [{ text: 'ok' }])
+      return false
+    }
+    return true
+  }
+  var image;
+  const tomarFoto = async () => {
+    // nos aseguramos de que tengamos el permiso
+    const permisos = await preguntarPermisos()
+    if (!permisos) {
+      return
+    } else {
+      // inicia la cámara con la siguiente configuración
+      image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [3, 3],
+        quality: 0.5,
+        base64: true,
+      })
+    } return (
+      <View style={styles.container}>
+        <Image source={{ uri: image.base64 }} style={{ width: 260, height: 260, marginTop: 20 }} />
+      </View>
     )
-	}
-  
+  }
+
 
   //función para subir imagen al server, API
 
   const enviarDatos = async () => {
-    try{
+    try {
       if (!image.cancelled) {
         console.log("entra a enviar");
-        const response = await fetch("http://192.188.58.82:3000/actualizarFotObsEncabezadoById/"+ values.enc_id +"", 
-        {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-              // enviar la cadena base64 como solicitud POST
-              body: JSON.stringify({
-                ef_observacion_preguntas: observacion_preguntas,
-                ef_observacion_tecnico: observacion_tecnico,
-                ef_foto_adulto: image.base64,
-              }),
-            });
+        const response = await fetch("http://192.188.58.82:3000/actualizarFotObsEncabezadoById/" + values.enc_id + "",
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            // enviar la cadena base64 como solicitud POST
+            body: JSON.stringify({
+              ef_observacion_preguntas: observacion_preguntas,
+              ef_observacion_tecnico: observacion_tecnico,
+              ef_foto_adulto: image.base64,
+            }),
+          });
         console.log("registro actualizado")
         console.log(response.status)
-        
-        if(response.status == 200){
+
+        if (response.status == 200) {
           Alert.alert("MIES APP", "Registro Actualizado. ", [
             {
               text: "Continuar",
@@ -111,7 +109,7 @@ export const Observaciones = (props) => {
             },
           ]);
           navigation.navigate("Test")
-        }else{
+        } else {
           Alert.alert("MIES APP", "Error al actualizar. Intente más tarde. ", [
             {
               text: "Continuar",
@@ -122,65 +120,68 @@ export const Observaciones = (props) => {
         }
       }
     } catch (error) {
-        console.error(error);
-      }
+      console.error(error);
     }
-    return (
-      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.container}>
-            <Text style={styles.TextInfo}>Registre todas las anomalias que noto en el adulto mayor durante la realizacion de los test.</Text>
-            <Textarea class="Anomalias"
-              containerStyle={styles.textareaContainer}
-              style={styles.textarea}
-              maxLength={500}
-              placeholder={'El adulto mayor tardo un tiempo considerable en responder las preguntas de indole familiar y emocional。。。'}
-              placeholderTextColor={'#c7c7c7'}
-              underlineColorAndroid={'transparent'}
-              onChangeText={(text) =>
-                setValues({ ...values, observacion_preguntas: text })
-              }
-              value={values.observacion_preguntas}
-            />
-            <Text style={styles.TextInfo}>Registre todos los problemas que se le presentaron a la hora  de realizar la visita.</Text>
-            <Textarea class="Anomalias"
-              containerStyle={styles.textareaContainer}
-              style={styles.textarea}
-              maxLength={500}
-              placeholder={'La movilidad fue algo muy complejo。。。'}
-              placeholderTextColor={'#c7c7c7'}
-              underlineColorAndroid={'transparent'}
-              onChangeText={(text) =>
-                setValues({ ...values, observacion_tecnico: text })
-              }
-              value={values.observacion_tecnico}
-            />
-            <Text style={styles.TextInfo}>Seleccione una imagen del adulto mayor</Text>
-            <TouchableOpacity style={styles.button2} onPress={tomarFoto}>
-              <FontAwesome name="camera" size={20} color="black" />
-              <Text style={styles.btnText}> Tomar foto</Text>
-            </TouchableOpacity>
+  }
+  return (
+    <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          <Text style={styles.TextInfo}>AGREGAR LAS OBSERVACIONES PRIMERO </Text>
+          <Text style={styles.TextInfo}></Text>
+          <Text style={styles.TextInfo}>Registre todas las anomalias que noto en el adulto mayor durante la realizacion de los test.</Text>
+          <Textarea class="Anomalias"
+            containerStyle={styles.textareaContainer}
+            style={styles.textarea}
+            maxLength={500}
+            placeholder={'El adulto mayor tardo un tiempo considerable en responder las preguntas de indole familiar y emocional。。。'}
+            placeholderTextColor={'#c7c7c7'}
+            underlineColorAndroid={'transparent'}
+            onChangeText={(text) =>
+              setValues({ ...values, observacion_preguntas: text })
+            }
+            value={values.observacion_preguntas}
+          />
+          <Text style={styles.TextInfo}>Registre todos los problemas que se le presentaron a la hora  de realizar la visita.</Text>
+          <Textarea class="Anomalias"
+            containerStyle={styles.textareaContainer}
+            style={styles.textarea}
+            maxLength={500}
+            placeholder={'La movilidad fue algo muy complejo。。。'}
+            placeholderTextColor={'#c7c7c7'}
+            underlineColorAndroid={'transparent'}
+            onChangeText={(text) =>
+              setValues({ ...values, observacion_tecnico: text })
+            }
+            value={values.observacion_tecnico}
+          />
+          <Text style={styles.TextInfo}>Seleccione una imagen del adulto mayor</Text>
+          <TouchableOpacity style={styles.button2} onPress={tomarFoto}>
+            <FontAwesome name="camera" size={20} color="black" />
+            <Text style={styles.btnText}> Tomar foto</Text>
+          </TouchableOpacity>
+          <Text style={styles.TextInfo}></Text>
 
-            {/*<ImagePickerChoose parentCallBack={this.setImageState}></ImagePickerChoose>
+          {/*<ImagePickerChoose parentCallBack={this.setImageState}></ImagePickerChoose>
             <TouchableOpacity style={styles.button1} onPress={this.uploadImage}>
               <FontAwesome name="upload" size={20} color="white" />
               <Text style={styles.btnText}> Subir Foto</Text>
             </TouchableOpacity>*/}
 
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
-            <TouchableOpacity style={styles.btnRegistrar}
-              onPress={enviarDatos}>
-              <Text style={styles.text}>Guardar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnCancelar} onPress={() => this.props.navigation.navigate('Test')}>
-              <Text style={styles.text}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </ImageBackground>
-    );
-  }
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+          <TouchableOpacity style={styles.btnRegistrar}
+            onPress={enviarDatos}>
+            <Text style={styles.text}>Guardar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnCancelar} onPress={() => this.props.navigation.navigate('Test')}>
+            <Text style={styles.text}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </ImageBackground>
+  );
+}
 
 export default Observaciones;
 
