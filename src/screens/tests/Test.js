@@ -71,9 +71,7 @@ export const Test = (props) => {
   }
 
   const Observaciones = () => {
-    navigation.navigate('Observaciones',{
-      enc_id: state.enc_id,
-    })
+    navigation.navigate('Observaciones')
   }
 
   const CrearEncabezado = () => {
@@ -173,17 +171,20 @@ export const Test = (props) => {
             </View>
           </View>
         </View>
+
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <View>
             <TouchableOpacity style={styles.btnContinuar} onPress={Observaciones}>
-              <Text style={styles.textBtn}>AGREGAR OBSERVACIÓN</Text>
+              <Text style={styles.textBtn}>AGREGAR</Text>
+              <Text style={styles.textBtn}>OBSERVACIÓN</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnContinuar}>
-              <Text style={styles.textBtn}>VER RESULTADOS</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnContinuar} onPress={() => navigation.replace("HeaderInicio")}>
-              <Text style={styles.textBtn}>VOLVER AL INICIO</Text>
-            </TouchableOpacity>
+            {<TouchableOpacity style={styles.btnContinuar}
+              onPress={() => navigation.navigate("Menureporte")}
+            >
+              
+              <Text style={styles.textBtn}>VER</Text>
+              <Text style={styles.textBtn}>RESULTADOS</Text>
+            </TouchableOpacity>}
           </View>
         </View>
       </View>
