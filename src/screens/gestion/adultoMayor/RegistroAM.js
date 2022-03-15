@@ -394,8 +394,8 @@ export const RegistroAM = (props) => {
           <Text
             style={[
               styles.TextDefault,
-              !state.cedulaValidate ? styles.TextError : null,
-              state.cedulaValidate ? styles.TextErrorValid : null,
+              !!state.cedulaValidate ? styles.TextError : null,
+              !state.cedulaValidate ? styles.TextErrorValid : null,
             ]}
           >
             {state.cedulaValidate.msg}
