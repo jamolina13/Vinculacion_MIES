@@ -438,7 +438,7 @@ export const UbicacionScreen = (props) => {
 
         <TouchableOpacity
           style={styles.btnSalir}
-          onPress={() => navigation.navigate("HeaderInicio")}
+          onPress={() => navigation.replace("HeaderInicio")}
         >
 
           <Text style={styles.textBtn}>Salir</Text>
