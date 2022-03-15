@@ -230,6 +230,7 @@ export const RegistroTecnico = (props) => {
         <View tyle={styles.tituloContainer}>
           <Text style={styles.TituloLogin}>Formulario de Registro Técnico</Text>
         </View>
+
         <View style={styles.inputContainer}>
         <Ionicons
           name={"md-person-circle-outline"}
@@ -258,6 +259,7 @@ export const RegistroTecnico = (props) => {
           >Solo se permiten letras
           </Text>
         </View>
+
         <View style={styles.inputContainer}>
         <Ionicons
           name={"person-outline"}
@@ -282,11 +284,12 @@ export const RegistroTecnico = (props) => {
             style={[
               styles.TextDefault,
               !state.apellidoValidate ? styles.TextError : null,
-              state.cedulaValidate ? styles.TextErrorValid : null,
+              state.apellidoValidate ? styles.TextErrorValid : null,
             ]}
           >Solo se permiten letras
           </Text>
         </View>
+
         <View style={styles.inputContainer}>
         <Ionicons
           name={"person-outline"}
@@ -310,8 +313,8 @@ export const RegistroTecnico = (props) => {
           <Text
             style={[
               styles.TextDefault,
-              !!state.telefonoValidate ? styles.TextError : null,
-              !state.telefonoValidate ? styles.TextErrorValid : null,
+              !!state.cedulaValidate ? styles.TextError : null,
+              !state.cedulaValidate ? styles.TextErrorValid : null,
             ]}
           >
             {state.cedulaValidate.msg}
@@ -342,7 +345,7 @@ export const RegistroTecnico = (props) => {
             style={[
               styles.TextDefault,
               !state.telefonoValidate ? styles.TextError : null,
-              state.cedulaValidate ? styles.TextErrorValid : null,
+              state.telefonoValidate ? styles.TextErrorValid : null,
             ]}
           >Debe ingresar 10 digitos numéricos
           </Text>
