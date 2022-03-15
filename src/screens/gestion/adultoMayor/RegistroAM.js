@@ -53,7 +53,7 @@ export const RegistroAM = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisibleRegsitro, setDatePickerVisibilityRegsitro] =
     useState(false);
-
+/*
   useEffect(() => {
     adultosRegistrados();
     return () => {
@@ -82,9 +82,9 @@ export const RegistroAM = (props) => {
     } catch (error) {
       console.error(error);
     }
-  };
+  };*/
   const registroAdultoM = async () => {
-    console.log("longitud: "+(listadoAM.length + 1))
+    //console.log("longitud: "+(listadoAM.length + 1))
     const { cedula } = state;
     const { nombres } = state;
     const { apellidos } = state;
