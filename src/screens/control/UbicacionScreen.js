@@ -101,7 +101,7 @@ export const UbicacionScreen = (props) => {
 
     try {
       const responseE = await fetch(
-        "http://192.188.58.82:3000/encabezados",
+        "http://192.188.58.82:3000/ultimoIdEncabezado/",
         {
           method: "GET",
           headers: {
@@ -122,7 +122,7 @@ export const UbicacionScreen = (props) => {
     }
   };
 
-  const idEncabezado = listadoE.length + 1;
+  const idEncabezado = listadoE[0];
 
   const registroEncabezado = async () => {
 
@@ -154,10 +154,10 @@ export const UbicacionScreen = (props) => {
       );
       if (response.status == 200) {
         //const json = await response.json();
-        navigation.navigate("Test", {
-
+        aux = idEncabezado.Cantidad;
+        navigation.replace("Test", {
           id: state.am_id,
-          enc_id: idEncabezado,
+          enc_id: parseInt(aux)+1,
           nombre: state.am_nombre,
           apellido: state.am_apellido,
         });
@@ -438,7 +438,7 @@ export const UbicacionScreen = (props) => {
 
         <TouchableOpacity
           style={styles.btnSalir}
-          onPress={() => navigation.replace("HeaderInicio")}
+          onPress={() => navigation.navigate("HeaderInicio")}
         >
 
           <Text style={styles.textBtn}>Salir</Text>
