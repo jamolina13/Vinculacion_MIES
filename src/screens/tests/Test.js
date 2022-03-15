@@ -27,12 +27,6 @@ export const Test = (props) => {
   var idLawton= params.idLawton
   var idMini= params.idMini
   var idBarthel= params.idBarthel
-  console.log("----------------------------------------- ")
-  console.log("idYesavage: "+idYesavage)
-  console.log("idLawton: "+idLawton)
-  console.log("idMini: "+idMini)
-  console.log("idBarthel: "+idBarthel)
-
   var validacioIdBarthel=false
   var validacioIdLawton=false
   var validacioIdMini=false
@@ -77,9 +71,7 @@ export const Test = (props) => {
   }
 
   const Observaciones = () => {
-    navigation.navigate('Observaciones', {
-      enc_id: state.enc_id,
-    });
+    navigation.navigate('Observaciones')
   }
 
   const CrearEncabezado = () => {
@@ -179,17 +171,17 @@ export const Test = (props) => {
             </View>
           </View>
         </View>
-
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <View>
             <TouchableOpacity style={styles.btnContinuar} onPress={Observaciones}>
-              <Text style={styles.textBtn}>AGREGAR</Text>
-              <Text style={styles.textBtn}>OBSERVACIÓN</Text>
+              <Text style={styles.textBtn}>AGREGAR OBSERVACIÓN</Text>
             </TouchableOpacity>
-            {<TouchableOpacity style={styles.btnContinuar}>
-              <Text style={styles.textBtn}>VER</Text>
-              <Text style={styles.textBtn}>RESULTADOS</Text>
-            </TouchableOpacity>}
+            <TouchableOpacity style={styles.btnContinuar}>
+              <Text style={styles.textBtn}>VER RESULTADOS</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnContinuar} onPress={() => navigation.replace("HeaderInicio")}>
+              <Text style={styles.textBtn}>VOLVER AL INICIO</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
