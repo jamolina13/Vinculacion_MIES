@@ -32,14 +32,14 @@ export const Observaciones = (props) => {
   const { id } = useSelector((state) => state.auth);
   const params = props.route.params;
   const navigation = props.navigation;
+  const enc_id = params.enc_id;
   //const enc_id = params.enc_id;
   const [values, setValues] = useState({
-    enc_id: params.enc_id,
     observacion_preguntas: params.observacion_preguntas,
     observacion_tecnico: params.observacion_tecnico,
     foto_adulto: params.foto_adulto,
   });
-  const { enc_id } = values;
+  //const { enc_id } = values;
   const { observacion_preguntas } = values;
   const { observacion_tecnico } = values;
   const { foto_adulto } = values;
@@ -83,7 +83,7 @@ export const Observaciones = (props) => {
     try {
       if (!image.cancelled) {
         console.log("entra a enviar");
-        const response = await fetch("http://192.188.58.82:3000/actualizarFotObsEncabezadoById/" + values.enc_id + "",
+        const response = await fetch("http://192.188.58.82:3000/actualizarFotObsEncabezadoById/" + enc_id + "",
           {
             method: 'POST',
             headers: {
@@ -174,7 +174,7 @@ export const Observaciones = (props) => {
             onPress={enviarDatos}>
             <Text style={styles.text}>Guardar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnCancelar} onPress={() => this.props.navigation.navigate('Test')}>
+          <TouchableOpacity style={styles.btnCancelar} onPress={() => navigation.navigate('Test')}>
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
         </View>
