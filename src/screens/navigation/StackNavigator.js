@@ -24,7 +24,7 @@ import { PreguntasTestLawtonBrody } from "../preguntas/PreguntasTestLawtonBrody"
 import { RegistroTecnico } from "../gestion/tecnico/RegistroTecnico";
 import { ActualizarTecnico } from "../gestion/tecnico/ActualizarTecnico";
 import { Observaciones } from "../control/Observaciones";
-import { Camara } from "../control/Camara";
+
 import { Menureporte } from "../control/Menureporte";
 
 import { ReporteBarthel } from "../gestion/reportes/ReporteBarthel";
@@ -172,11 +172,7 @@ export const StackNavigator = () => {
             options={{ title: "MIES APP" }}
             component={ Observaciones}
           />
-          <Stack.Screen
-            name="Camara"
-            options={{ title: "MIES APP" }}
-            component={ Camara }
-          />
+         
            <Stack.Screen
             name="Menureporte"
             options={{ title: "MIES APP" }}
