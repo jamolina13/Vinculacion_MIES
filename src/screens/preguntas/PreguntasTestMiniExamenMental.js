@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,10 +15,6 @@ import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 export const PreguntasTestMiniExamenMental = (props) => {
-  const [values, setValues] = useState({
-    listadoM: [],
-  });
-  const { listadoM } = values;
   const [state, setState] = useState({
     checked: "",
     checked1: "",
@@ -54,7 +50,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
     uno: 1,
     puntaje: 0,
     temp: "",
-    estado: "1",
+    estado: 1,
     fechaInicial: "",
     fechaFinal: "",
     time: "",
@@ -99,45 +95,12 @@ export const PreguntasTestMiniExamenMental = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
+
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
-
-  useEffect(() => {
-    Mini();
-    return () => {
-      setValues({});
-    }
-  }, [state.isReady]);
-
-  const Mini = async () => {
-
-    try {
-      const Mini2 = await fetch(
-        "http://192.188.58.82:3000/consultaMiniMental",
-        {
-          method: "GET",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-      const json = await Mini2.json();
-      setValues({
-        ...values,
-        listadoM: json,
-        isReady: true,
-        refreshing: false,
-      });
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const idMini = listadoM.length + 1;
 
   const { datetimeStart } = state;
   const datetimeEnd = moment(new Date());
@@ -210,15 +173,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
 
 
   const onsubmitGuardar = async () => {
-    /*Alert.alert(
-      "Guardado",
-      "Datos correctamente guardados",
-      [
-        
-        { text: "OK", onPress: () => props.navigation.navigate("Test") }
-      ]
-    );
-*/
+   
     try {
       console.log("entra");
       const response = await fetch(
@@ -230,23 +185,42 @@ export const PreguntasTestMiniExamenMental = (props) => {
             "Content-type": "Application/json",
           },
           body: JSON.stringify({
-            ef_id: 2,
-            mim_p1_orientacion_tiempo: p1_orientacion_tiempo,
-            mim_p2_orientacion_espacio: p2_orientacion_espacio,
-            mim_p3_memoria: p3_memoria,
-            mim_p4_atencion_calculo: p4_atencion_calculo,
-            mim_p5_memoria: p5_memoria,
-            mim_p6_denominacion: p6_denominacion,
-            mim_p7_repeticion_frase: p7_repeticion_frase,
-            mim_p8_compresion: p8_compresion,
-            mim_p9_lectura: p9_lectura,
-            mim_p10_escritura: p10_escritura,
-            mim_p11_copia_dibujo: p11_copia_dibujo,
+            ef_id: enc_id,
+            mim_orientacion_tiempo_op1: checked,
+            mim_orientacion_tiempo_op2: checked1,
+            mim_orientacion_tiempo_op3: checked2,
+            mim_orientacion_tiempo_op4: checked3,
+            mim_orientacion_tiempo_op5: checked4,
+            mim_orientacion_espacio_op1: checked5,
+            mim_orientacion_espacio_op2: checked6,
+            mim_orientacion_espacio_op3: checked7,
+            mim_orientacion_espacio_op4: checked8,
+            mim_orientacion_espacio_op5: checked9,
+            mim_memoria_op1: checked10,
+            mim_memoria_op2: checked11,
+            mim_memoria_op3: checked12,
+            mim_atencion_calculo_op1: checked13,
+            mim_atencion_calculo_op2: checked14,
+            mim_atencion_calculo_op3: checked15,
+            mim_atencion_calculo_op4: checked16,
+            mim_atencion_calculo_op5: checked17,
+            mim_memoria_dif_op1: checked18,
+            mim_memoria_dif_op2: checked19,
+            mim_memoria_dif_op3: checked20,
+            mim_denominacion_op1: checked21,
+            mim_denominacion_op2: checked22,
+            mim_repeticion_frase_op1: checked23,
+            mim_compresion_op1: checked24,
+            mim_compresion_op2: checked25,
+            mim_compresion_op3: checked26,
+            mim_lectura_op1: checked27,
+            mim_escritura_op1: checked28,
+            mim_copia_dibujo_op1: checked29,
             mim_tiempo_inicial: fechaInicial,
             mim_tiempo_final: fechaFinal,
             mim_tiempo_total: time,
             mim_estado: estado,
-            mim_puntaje_total: puntajeTotal,
+            mim_puntaje_total: puntajeTotal
           }),
         }
       );
@@ -254,11 +228,11 @@ export const PreguntasTestMiniExamenMental = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        console.log("idMini: " + idMini)
+        console.log("idMini: " +enc_id);
         navigation.navigate("Test", {
-          idMini: idMini,
+          idMini:enc_id,
         });
-        Alert.alert("MIES APP", `puntaje total: ${puntajeTotal}`, [
+        Alert.alert("MIES APP", `Puntaje total: ${puntajeTotal}`, [
           {
             text: "Continuar",
             style: "destructive",
@@ -1439,7 +1413,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btnCancelar}
-          onPress={() => props.navigation.navigate("Test")}
+          onPress={() => navigation.navigate("Test")}
         >
           <Text style={styles.text}>Cancelar</Text>
         </TouchableOpacity>
