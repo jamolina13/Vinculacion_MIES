@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -28,6 +28,31 @@ export const PreguntasTestLawtonBrody = (props) => {
     checked6: "",
     checked7: "",
     checked8: "",
+    checked9: "",
+    checked10: "",
+    checked11: "",
+    checked12: "",
+    checked13: "",
+    checked14: "",
+    checked15: "",
+    checked16: "",
+    checked17: "",
+    checked18: "",
+    checked19: "",
+    checked20: "",
+    checked21: "",
+    checked22: "",
+    checked23: "",
+    checked24: "",
+    checked25: "",
+    checked26: "",
+    checked27: "",
+    checked28: "",
+    checked29: "",
+    checked30: "",
+    checked31: "",
+    cero: 0,
+    uno: 1,
     puntaje: 0,
     temp: "",
     estado: "1",
@@ -44,12 +69,13 @@ export const PreguntasTestLawtonBrody = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
+
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
-
+/*
   useEffect(() => {
     Lawton();
     return () => {
@@ -83,7 +109,7 @@ export const PreguntasTestLawtonBrody = (props) => {
   };
 
   const idLawton = listadoL.length + 1;
-
+*/
   const { checked1 } = state;
   const { checked2 } = state;
   const { checked3 } = state;
@@ -92,6 +118,29 @@ export const PreguntasTestLawtonBrody = (props) => {
   const { checked6 } = state;
   const { checked7 } = state;
   const { checked8 } = state;
+  const { checked9 } = state;
+  const { checked10 } = state;
+  const { checked11 } = state;
+  const { checked12 } = state;
+  const { checked13 } = state;
+  const { checked14 } = state;
+  const { checked15 } = state;
+  const { checked16 } = state;
+  const { checked17 } = state;
+  const { checked18 } = state;
+  const { checked19 } = state;
+  const { checked20 } = state;
+  const { checked21 } = state;
+  const { checked22 } = state;
+  const { checked23 } = state;
+  const { checked24 } = state;
+  const { checked25 } = state;
+  const { checked26 } = state;
+  const { checked27 } = state;
+  const { checked28 } = state;
+  const { checked29 } = state;
+  const { checked30 } = state;
+  const { checked31 } = state;
 
 
   //CALCULO DE TIEMPO DE APLICACIÓN
@@ -150,8 +199,6 @@ export const PreguntasTestLawtonBrody = (props) => {
       }
     });
 
-
-
     const { checked1 } = state;
     const { checked2 } = state;
     const { checked3 } = state;
@@ -160,8 +207,30 @@ export const PreguntasTestLawtonBrody = (props) => {
     const { checked6 } = state;
     const { checked7 } = state;
     const { checked8 } = state;
+    const { checked9 } = state;
+    const { checked10 } = state;
+    const { checked11 } = state;
+    const { checked12 } = state;
+    const { checked13 } = state;
+    const { checked14 } = state;
+    const { checked15 } = state;
+    const { checked16 } = state;
+    const { checked17 } = state;
+    const { checked18 } = state;
+    const { checked19 } = state;
+    const { checked20 } = state;
+    const { checked21 } = state;
+    const { checked22 } = state;
+    const { checked23 } = state;
+    const { checked24 } = state;
+    const { checked25 } = state;
+    const { checked26 } = state;
+    const { checked27 } = state;
+    const { checked28 } = state;
+    const { checked29 } = state;
+    const { checked30 } = state;
+    const { checked31 } = state;
     const { estado } = state;
-
 
 
     try {
@@ -176,14 +245,37 @@ export const PreguntasTestLawtonBrody = (props) => {
           },
           body: JSON.stringify({
             ef_id: enc_id,
-            elb_p1_usar_telefono: (checked1.charAt(0)),
-            elb_p2_hacer_compras: (checked2.charAt(0)),
-            elb_p3_preparar_comida: (checked3.charAt(0)),
-            elb_p4_cuidado_casa: (checked4.charAt(0)),
-            elb_p5_lavar_ropa: (checked5.charAt(0)),
-            elb_p6_uso_transporte: (checked6.charAt(0)),
-            elb_p7_medicacion: (checked7.charAt(0)),
-            elb_p8_utiliza_dinero: (checked8.charAt(0)),
+            elb_usar_telefono_op1: checked1,
+            elb_usar_telefono_op2: checked2,
+            elb_usar_telefono_op3: checked3,
+            elb_usar_telefono_op4: checked4,
+            elb_hacer_compras_op1: checked5,
+            elb_hacer_compras_op2: checked6,
+            elb_hacer_compras_op3: checked7,
+            elb_hacer_compras_op4: checked8,
+            elb_preparar_comida_op1: checked9,
+            elb_preparar_comida_op2: checked10,
+            elb_preparar_comida_op3: checked11,
+            elb_preparar_comida_op4: checked12,
+            elb_cuidado_casa_op1: checked13,
+            elb_cuidado_casa_op2: checked14,
+            elb_cuidado_casa_op3: checked15,
+            elb_cuidado_casa_op4: checked16,
+            elb_cuidado_casa_op5: checked17,
+            elb_lavar_ropa_op1: checked18,
+            elb_lavar_ropa_op2: checked19,
+            elb_lavar_ropa_op3: checked20,
+            elb_uso_transporte_op1: checked21,
+            elb_uso_transporte_op2: checked22,
+            elb_uso_transporte_op3: checked23,
+            elb_uso_transporte_op4: checked24,
+            elb_uso_transporte_op5: checked25,
+            elb_medicacion_op1: checked26,
+            elb_medicacion_op2: checked27,
+            elb_medicacion_op3: checked28,
+            elb_utiliza_dinero_op1: checked29,
+            elb_utiliza_dinero_op2: checked30,
+            elb_utiliza_dinero_op3: checked31,
             elb_tiempo_inicial: fechaInicial,
             elb_tiempo_final: fechaFinal,
             elb_tiempo_total: time,
@@ -195,11 +287,11 @@ export const PreguntasTestLawtonBrody = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        console.log("idLawton: " + idLawton)
+        console.log("idLawton: " + enc_id)
         navigation.navigate("Test", {
-          idLawton: idLawton,
+          idLawton: enc_id,
         });
-        Alert.alert("Datos correctamente guardados",  `puntaje total: ${valor}`, [
+        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
