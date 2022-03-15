@@ -14,6 +14,7 @@ export const IndiTestYesavage = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
+
   return (
     <ScrollView style={styles.ScrollView}>
       <View style={styles.tituloContainer}>
@@ -80,8 +81,7 @@ export const IndiTestYesavage = (props) => {
       <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
         <TouchableOpacity
           style={styles.btnRegistrar}
-          onPress={() => 
-          navigation.navigate('TestYesavage', {
+          onPress={() => navigation.navigate("TestYesavage",{
             enc_id: enc_id,
           })}
         >
