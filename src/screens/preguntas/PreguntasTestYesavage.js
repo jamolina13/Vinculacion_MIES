@@ -59,6 +59,8 @@ export const PreguntasTestYesavage = (props) => {
       temp: total,
     });
   };
+
+  /*
   useEffect(() => {
     Yesavage();
     return () => {
@@ -66,6 +68,7 @@ export const PreguntasTestYesavage = (props) => {
     }
   }, [state.isReady]);
 
+  
   const Yesavage = async () => {
 
     try {
@@ -92,7 +95,7 @@ export const PreguntasTestYesavage = (props) => {
   };
 
   const idYesavage = listadoY.length + 1;
-
+*/
   const { checked } = state;
   const { checked1 } = state;
   const { checked2 } = state;
@@ -227,9 +230,9 @@ export const PreguntasTestYesavage = (props) => {
       if (response.status == 200) {
         //const json = await response.json();
         // navigation.replace("Test");
-        console.log("idYesavage: " + idYesavage)
+        console.log("idYesavage: " + enc_id)
         navigation.navigate("Test", {
-          idYesavage: idYesavage,
+          idYesavage: enc_id,
         });
         Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
           {
