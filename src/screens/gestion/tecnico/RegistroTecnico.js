@@ -310,8 +310,8 @@ export const RegistroTecnico = (props) => {
           <Text
             style={[
               styles.TextDefault,
-              !state.telefonoValidate ? styles.TextError : null,
-              state.telefonoValidate ? styles.TextErrorValid : null,
+              !!state.telefonoValidate ? styles.TextError : null,
+              !state.telefonoValidate ? styles.TextErrorValid : null,
             ]}
           >
             {state.cedulaValidate.msg}
