@@ -48,6 +48,7 @@ export const PreguntasTestBarthel = (props) => {
   });
 
   const navigation = props.navigation;
+
   const params = props.route.params;
   const enc_id = params.enc_id;
 
@@ -56,14 +57,14 @@ export const PreguntasTestBarthel = (props) => {
       temp: total,
     });
   };
-
+/*
   useEffect(() => {
     Barthel();
     return () => {
       setValues({});
     }
-  }, [state.isReady]);
-
+  }, [state.isReady]);*/
+/*
   const Barthel = async () => {
 
     try {
@@ -90,7 +91,7 @@ export const PreguntasTestBarthel = (props) => {
   };
 
   const idBarthel = listadoB.length + 1;
-
+*/
   const { checked } = state;
   const { checked1 } = state;
   const { checked2 } = state;
@@ -209,9 +210,9 @@ export const PreguntasTestBarthel = (props) => {
       console.log(response.status);
       if (response.status == 200) {
         //const json = await response.json();
-        console.log("idBarthel: " + idBarthel)
+        console.log("idBarthel: " + enc_id)
         navigation.navigate("Test", {
-          idBarthel: idBarthel,
+          idBarthel: enc_id,
         });
         Alert.alert("MIES APP", `puntaje total: ${valor}`, [
           {
@@ -826,7 +827,7 @@ export const PreguntasTestBarthel = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnCancelar}
-            onPress={() => navigation.navigate("TestBarthel")}
+            onPress={() => navigation.navigate("Test")}
           >
             <Text style={styles.text}>Cancelar</Text>
           </TouchableOpacity>
