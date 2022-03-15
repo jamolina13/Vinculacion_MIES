@@ -71,7 +71,9 @@ export const Test = (props) => {
   }
 
   const Observaciones = () => {
-    navigation.navigate('Observaciones')
+    navigation.navigate('Observaciones',{
+      enc_id: state.enc_id,
+    })
   }
 
   const CrearEncabezado = () => {
