@@ -28,29 +28,6 @@ export const PreguntasTestLawtonBrody = (props) => {
     checked6: "",
     checked7: "",
     checked8: "",
-    checked9: "",
-    checked10: "",
-    checked11: "",
-    checked12: "",
-    checked13: "",
-    checked14: "",
-    checked15: "",
-    checked16: "",
-    checked17: "",
-    checked18: "",
-    checked19: "",
-    checked20: "",
-    checked21: "",
-    checked22: "",
-    checked23: "",
-    checked24: "",
-    checked25: "",
-    checked26: "",
-    checked27: "",
-    checked28: "",
-    checked29: "",
-    checked30: "",
-    checked31: "",
     cero: 0,
     uno: 1,
     puntaje: 0,
@@ -60,10 +37,6 @@ export const PreguntasTestLawtonBrody = (props) => {
     fechaFinal: "",
     time: "",
     datetimeStart: moment(new Date()),
-
-    //Ver y ocultar clave
-    showPass: true,
-    press: false,
   });
 
   const navigation = props.navigation;
@@ -118,29 +91,7 @@ export const PreguntasTestLawtonBrody = (props) => {
   const { checked6 } = state;
   const { checked7 } = state;
   const { checked8 } = state;
-  const { checked9 } = state;
-  const { checked10 } = state;
-  const { checked11 } = state;
-  const { checked12 } = state;
-  const { checked13 } = state;
-  const { checked14 } = state;
-  const { checked15 } = state;
-  const { checked16 } = state;
-  const { checked17 } = state;
-  const { checked18 } = state;
-  const { checked19 } = state;
-  const { checked20 } = state;
-  const { checked21 } = state;
-  const { checked22 } = state;
-  const { checked23 } = state;
-  const { checked24 } = state;
-  const { checked25 } = state;
-  const { checked26 } = state;
-  const { checked27 } = state;
-  const { checked28 } = state;
-  const { checked29 } = state;
-  const { checked30 } = state;
-  const { checked31 } = state;
+  const { estado } = state;
 
 
   //CALCULO DE TIEMPO DE APLICACIÓN
@@ -181,58 +132,70 @@ export const PreguntasTestLawtonBrody = (props) => {
         }
       }
     });
-
     onsubmitGuardar()
   }
+    
 
   const onsubmitGuardar = async () => {
+
     let valor = 0;
+    let iteradorr = 0;
+    
+    let var1 = 0;
+    let var2 = 0;
+    let var3 = 0;
+    let var4 = 0;
+    let var5 = 0;
+    let var6 = 0;
+    let var7 = 0;
+    let var8 = 0;
 
     Object.keys(state).forEach(key => {
+        
 
       if (key.substring(0, 7) == "checked") {
+        iteradorr = iteradorr +1;
+        //console.log(iteradorr)
+        console.log(parseInt(state[key].charAt(0)));
 
-        if ((state[key]) != '') {
-          valor = valor + parseInt(state[key].charAt(0));
-          console.log(key + " " + valor);
-        }
+
+        if((iteradorr==1) && (parseInt(state[key].charAt(0)) <= 3)){
+            var1=1;
+            console.log(key + " " + var1);
+        };
+
+        if((iteradorr==2) && (parseInt(state[key].charAt(0)) == 1)){
+            var2=1;
+            console.log(key + " " + var2);
+        };
+
+        if((iteradorr==3) && (parseInt(state[key].charAt(0)) == 1)){
+            var3=1;
+            console.log(key + " " + var3);
+        };
+        if((iteradorr==4) && (parseInt(state[key].charAt(0)) <= 4)){
+            var4=1;
+            console.log(key + " " + var4);
+        };
+        if((iteradorr==5) && (parseInt(state[key].charAt(0)) <= 2)){
+            var5=1;
+            console.log(key + " " + var5);
+        };
+        if((iteradorr==7) && (parseInt(state[key].charAt(0)) == 1)){
+            var7=1;
+            console.log(key + " " + var7);
+        };
+        if((iteradorr==8) && (parseInt(state[key].charAt(0)) <= 2)){
+            var8=1;
+            console.log(key + " " + var8);
+        };        
       }
     });
 
-    const { checked1 } = state;
-    const { checked2 } = state;
-    const { checked3 } = state;
-    const { checked4 } = state;
-    const { checked5 } = state;
-    const { checked6 } = state;
-    const { checked7 } = state;
-    const { checked8 } = state;
-    const { checked9 } = state;
-    const { checked10 } = state;
-    const { checked11 } = state;
-    const { checked12 } = state;
-    const { checked13 } = state;
-    const { checked14 } = state;
-    const { checked15 } = state;
-    const { checked16 } = state;
-    const { checked17 } = state;
-    const { checked18 } = state;
-    const { checked19 } = state;
-    const { checked20 } = state;
-    const { checked21 } = state;
-    const { checked22 } = state;
-    const { checked23 } = state;
-    const { checked24 } = state;
-    const { checked25 } = state;
-    const { checked26 } = state;
-    const { checked27 } = state;
-    const { checked28 } = state;
-    const { checked29 } = state;
-    const { checked30 } = state;
-    const { checked31 } = state;
-    const { estado } = state;
 
-
+    valor = var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8;
+    
+    
     try {
 
       const response = await fetch(
@@ -245,37 +208,14 @@ export const PreguntasTestLawtonBrody = (props) => {
           },
           body: JSON.stringify({
             ef_id: enc_id,
-            elb_usar_telefono_op1: checked1,
-            elb_usar_telefono_op2: checked2,
-            elb_usar_telefono_op3: checked3,
-            elb_usar_telefono_op4: checked4,
-            elb_hacer_compras_op1: checked5,
-            elb_hacer_compras_op2: checked6,
-            elb_hacer_compras_op3: checked7,
-            elb_hacer_compras_op4: checked8,
-            elb_preparar_comida_op1: checked9,
-            elb_preparar_comida_op2: checked10,
-            elb_preparar_comida_op3: checked11,
-            elb_preparar_comida_op4: checked12,
-            elb_cuidado_casa_op1: checked13,
-            elb_cuidado_casa_op2: checked14,
-            elb_cuidado_casa_op3: checked15,
-            elb_cuidado_casa_op4: checked16,
-            elb_cuidado_casa_op5: checked17,
-            elb_lavar_ropa_op1: checked18,
-            elb_lavar_ropa_op2: checked19,
-            elb_lavar_ropa_op3: checked20,
-            elb_uso_transporte_op1: checked21,
-            elb_uso_transporte_op2: checked22,
-            elb_uso_transporte_op3: checked23,
-            elb_uso_transporte_op4: checked24,
-            elb_uso_transporte_op5: checked25,
-            elb_medicacion_op1: checked26,
-            elb_medicacion_op2: checked27,
-            elb_medicacion_op3: checked28,
-            elb_utiliza_dinero_op1: checked29,
-            elb_utiliza_dinero_op2: checked30,
-            elb_utiliza_dinero_op3: checked31,
+            elb_p1_usar_telefono: checked1,
+            elb_p2_hacer_compras: checked2,
+            elb_p3_preparar_comida: checked3,
+            elb_p4_cuidado_casa: checked4,
+            elb_p5_lavar_ropa: checked5,
+            elb_p6_uso_transporte: checked6,
+            elb_p7_medicacion: checked7,
+            elb_p8_utiliza_dinero: checked8,
             elb_tiempo_inicial: fechaInicial,
             elb_tiempo_final: fechaFinal,
             elb_tiempo_total: time,
@@ -291,7 +231,7 @@ export const PreguntasTestLawtonBrody = (props) => {
         navigation.navigate("Test", {
           idLawton: enc_id,
         });
-        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
+        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
@@ -349,10 +289,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Utiliza el teléfono por iniciativa propia
               </Text>
               <RadioButton
-                value="1A"
-                status={checked1 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked1 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "1A" });
+                  setState({ ...state, checked1: "1" });
                 }}
               />
             </View>
@@ -361,10 +301,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Es capaz de marcar bien algunos números familiares
               </Text>
               <RadioButton
-                value="1B"
-                status={checked1 === "1B" ? "checked" : "unchecked"}
+                value="2"
+                status={checked1 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "1B" });
+                  setState({ ...state, checked1: "2" });
                 }}
               />
             </View>
@@ -373,20 +313,20 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Es capaz de contestar al teléfono, pero no de marcar
               </Text>
               <RadioButton
-                value="1C"
-                status={checked1 === "1C" ? "checked" : "unchecked"}
+                value="3"
+                status={checked1 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "1" });
+                  setState({ ...state, checked1: "3" });
                 }}
               />
             </View>
             <View style={styles.radios}>
               <Text style={styles.TextRadio}>No utiliza el teléfono</Text>
               <RadioButton
-                value="0A"
-                status={checked1 === "0A" ? "checked" : "unchecked"}
+                value="4"
+                status={checked1 === "4" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked1: "0A" });
+                  setState({ ...state, checked1: "4" });
                 }}
               />
             </View>
@@ -407,10 +347,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Realiza todas las compras necesarias independientemente
               </Text>
               <RadioButton
-                value="1A"
-                status={checked2 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked2 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "1A" });
+                  setState({ ...state, checked2: "1" });
                 }}
               />
             </View>
@@ -419,10 +359,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Realiza independientemente pequeñas compras
               </Text>
               <RadioButton
-                value="0A"
-                status={checked2 === "0A" ? "checked" : "unchecked"}
+                value="2"
+                status={checked2 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "0A" });
+                  setState({ ...state, checked2: "2" });
                 }}
               />
             </View>
@@ -431,10 +371,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Necesita ir acompañado para cualquier compra
               </Text>
               <RadioButton
-                value="0B"
-                status={checked2 === "0B" ? "checked" : "unchecked"}
+                value="3"
+                status={checked2 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "0B" });
+                  setState({ ...state, checked2: "3" });
                 }}
               />
             </View>
@@ -443,10 +383,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Totalmente incapaz de comprar
               </Text>
               <RadioButton
-                value="0C"
-                status={checked2 === "0C" ? "checked" : "unchecked"}
+                value="4"
+                status={checked2 === "4" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked2: "0C" });
+                  setState({ ...state, checked2: "4" });
                 }}
               />
             </View>
@@ -467,10 +407,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Organiza, prepara y sirve las comidas por si solo adecuadamente
               </Text>
               <RadioButton
-                value="1A"
-                status={checked3 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked3 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "1A" });
+                  setState({ ...state, checked3: "1" });
                 }}
               />
             </View>
@@ -480,10 +420,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 ingredientes
               </Text>
               <RadioButton
-                value="0A"
-                status={checked3 === "0A" ? "checked" : "unchecked"}
+                value="2"
+                status={checked3 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "0A" });
+                  setState({ ...state, checked3: "2" });
                 }}
               />
             </View>
@@ -493,10 +433,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 adecuada
               </Text>
               <RadioButton
-                value="0B"
-                status={checked3 === "0B" ? "checked" : "unchecked"}
+                value="3"
+                status={checked3 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "0B" });
+                  setState({ ...state, checked3: "3" });
                 }}
               />
             </View>
@@ -505,10 +445,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Necesita que le preparen y sirvan las comidas
               </Text>
               <RadioButton
-                value="0C"
-                status={checked3 === "0C" ? "checked" : "unchecked"}
+                value="4"
+                status={checked3 === "4" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked3: "0C" });
+                  setState({ ...state, checked3: "4" });
                 }}
               />
             </View>
@@ -530,10 +470,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 pesados){" "}
               </Text>
               <RadioButton
-                value="1A"
-                status={checked4 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked4 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "1A" });
+                  setState({ ...state, checked4: "1" });
                 }}
               />
             </View>
@@ -542,10 +482,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Realiza tareas ligeras, como lavar los platos o hacer las camas{" "}
               </Text>
               <RadioButton
-                value="1B"
-                status={checked4 === "1B" ? "checked" : "unchecked"}
+                value="2"
+                status={checked4 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "1B" });
+                  setState({ ...state, checked4: "2" });
                 }}
               />
             </View>
@@ -555,10 +495,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 de limpieza
               </Text>
               <RadioButton
-                value="1C"
-                status={checked4 === "1C" ? "checked" : "unchecked"}
+                value="3"
+                status={checked4 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "1C" });
+                  setState({ ...state, checked4: "3" });
                 }}
               />
             </View>
@@ -567,10 +507,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Necesita ayuda en todas las labores de casa
               </Text>
               <RadioButton
-                value="1D"
-                status={checked4 === "1D" ? "checked" : "unchecked"}
+                value="4"
+                status={checked4 === "4" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "1D" });
+                  setState({ ...state, checked4: "4" });
                 }}
               />
             </View>
@@ -579,10 +519,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 No participa en ninguna labor de la casa
               </Text>
               <RadioButton
-                value="0A"
-                status={checked4 === "0A" ? "checked" : "unchecked"}
+                value="5"
+                status={checked4 === "5" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked4: "0A" });
+                  setState({ ...state, checked4: "5" });
                 }}
               />
             </View>
@@ -602,10 +542,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Lava por sí solo toda la ropa
               </Text>
               <RadioButton
-                value="1A"
-                status={checked5 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked5 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked5: "1A" });
+                  setState({ ...state, checked5: "1" });
                 }}
               />
             </View>
@@ -614,10 +554,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Lava por sí solo pequeñas prendas{" "}
               </Text>
               <RadioButton
-                value="1B"
-                status={checked5 === "1B" ? "checked" : "unchecked"}
+                value="2"
+                status={checked5 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked5: "1B" });
+                  setState({ ...state, checked5: "2" });
                 }}
               />
             </View>
@@ -626,10 +566,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Todo el lavado de ropa debe ser realizado por otro
               </Text>
               <RadioButton
-                value="0A"
-                status={checked5 === "0A" ? "checked" : "unchecked"}
+                value="3"
+                status={checked5 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked5: "0A" });
+                  setState({ ...state, checked5: "3" });
                 }}
               />
             </View>
@@ -650,10 +590,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Viaja solo en transporte público o conduce su propio coche
               </Text>
               <RadioButton
-                value="1A"
-                status={checked6 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked6 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "1A" });
+                  setState({ ...state, checked6: "1" });
                 }}
               />
             </View>
@@ -662,10 +602,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Es capaz de coger un taxi, pero no usa otro medio de transporte
               </Text>
               <RadioButton
-                value="1B"
-                status={checked6 === "1B" ? "checked" : "unchecked"}
+                value="2"
+                status={checked6 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "1B" });
+                  setState({ ...state, checked6: "2" });
                 }}
               />
             </View>
@@ -675,10 +615,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 persona
               </Text>
               <RadioButton
-                value="1C"
-                status={checked6 === "1C" ? "checked" : "unchecked"}
+                value="3"
+                status={checked6 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "1C" });
+                  setState({ ...state, checked6: "3" });
                 }}
               />
             </View>
@@ -687,20 +627,20 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Utiliza el taxi o el automóvil sólo con la ayuda de otros{" "}
               </Text>
               <RadioButton
-                value="0A"
-                status={checked6 === "0A" ? "checked" : "unchecked"}
+                value="4"
+                status={checked6 === "4" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "0A" });
+                  setState({ ...state, checked6: "4" });
                 }}
               />
             </View>
             <View style={styles.radios}>
               <Text style={styles.TextRadio}>No viaja </Text>
               <RadioButton
-                value="0B"
-                status={checked6 === "0B" ? "checked" : "unchecked"}
+                value="5"
+                status={checked6 === "5" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked6: "0B" });
+                  setState({ ...state, checked6: "5" });
                 }}
               />
             </View>
@@ -723,10 +663,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Es capaz de tomar su medicación a la dosis y hora adecuada
               </Text>
               <RadioButton
-                value="1A"
-                status={checked7 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked7 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked7: "1A" });
+                  setState({ ...state, checked7: "1" });
                 }}
               />
             </View>
@@ -735,10 +675,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Toma su medicación si la dosis es preparada previamente
               </Text>
               <RadioButton
-                value="0A"
-                status={checked7 === "0A" ? "checked" : "unchecked"}
+                value="2"
+                status={checked7 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked7: "0A" });
+                  setState({ ...state, checked7: "2" });
                 }}
               />
             </View>
@@ -747,10 +687,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 No es capaz de administrarse su medicación
               </Text>
               <RadioButton
-                value="0B"
-                status={checked7 === "0B" ? "checked" : "unchecked"}
+                value="3"
+                status={checked7 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked7: "0B" });
+                  setState({ ...state, checked7: "3" });
                 }}
               />
             </View>
@@ -773,10 +713,10 @@ export const PreguntasTestLawtonBrody = (props) => {
                 Se encarga de sus asuntos económicos por si solo
               </Text>
               <RadioButton
-                value="1A"
-                status={checked8 === "1A" ? "checked" : "unchecked"}
+                value="1"
+                status={checked8 === "1" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked8: "1A" });
+                  setState({ ...state, checked8: "1" });
                 }}
               />
             </View>
@@ -786,20 +726,20 @@ export const PreguntasTestLawtonBrody = (props) => {
                 grandes compras y en los bancos{" "}
               </Text>
               <RadioButton
-                value="1B"
-                status={checked8 === "1B" ? "checked" : "unchecked"}
+                value="2"
+                status={checked8 === "2" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked8: "1B" });
+                  setState({ ...state, checked8: "2" });
                 }}
               />
             </View>
             <View style={styles.radios2}>
               <Text style={styles.TextRadio}>Incapaz de manejar dinero</Text>
               <RadioButton
-                value="0A"
-                status={checked8 === "0A" ? "checked" : "unchecked"}
+                value="3"
+                status={checked8 === "3" ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked8: "0A" });
+                  setState({ ...state, checked8: "3" });
                 }}
               />
             </View>
