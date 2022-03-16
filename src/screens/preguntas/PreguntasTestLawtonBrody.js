@@ -181,6 +181,10 @@ export const PreguntasTestLawtonBrody = (props) => {
             var5=1;
             console.log(key + " " + var5);
         };
+        if((iteradorr==6) && (parseInt(state[key].charAt(0)) <= 3)){
+          var6=1;
+          console.log(key + " " + var6);
+      };
         if((iteradorr==7) && (parseInt(state[key].charAt(0)) == 1)){
             var7=1;
             console.log(key + " " + var7);
