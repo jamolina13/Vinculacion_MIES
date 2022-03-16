@@ -155,7 +155,7 @@ export const Observaciones = (props) => {
             }
             value={values.observacion_tecnico}
           />
-          <Text style={styles.TextInfo}>Seleccione una imagen del adulto mayor</Text>
+          <Text style={styles.TextInfo}>Tomar una fotografía al adulto mayor</Text>
           <TouchableOpacity style={styles.button2} onPress={tomarFoto}>
             <FontAwesome name="camera" size={20} color="black" />
             <Text style={styles.btnText}> Tomar foto</Text>
