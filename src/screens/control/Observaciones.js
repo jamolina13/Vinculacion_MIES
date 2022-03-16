@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 import { Camera } from "expo-camera";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 
 
@@ -55,6 +56,7 @@ export const Observaciones = (props) => {
     return true
   }
   var image;
+  var fotoF;
   const tomarFoto = async () => {
     // nos aseguramos de que tengamos el permiso
     const permisos = await preguntarPermisos()
@@ -65,16 +67,22 @@ export const Observaciones = (props) => {
       image = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [3, 3],
-        quality: 0.5,
+        quality: 0.8,
         base64: true,
       })
-    } return (
+    } /*return (
       <View style={styles.container}>
         <Image source={{ uri: image.base64 }} style={{ width: 260, height: 260, marginTop: 20 }} />
       </View>
-    )
+    )*/
+
+    fotoF = await ImageManipulator.manipulateAsync(
+      image.uri, 
+      [{resize: {height: 1024}}],
+      {compress: 0.6,base64:true});
   }
+
+  
 
 
   //función para subir imagen al server, API
@@ -94,7 +102,7 @@ export const Observaciones = (props) => {
             body: JSON.stringify({
               ef_observacion_preguntas: observacion_preguntas,
               ef_observacion_tecnico: observacion_tecnico,
-              ef_foto_adulto: image.base64,
+              ef_foto_adulto: fotoF.base64,
             }),
           });
         console.log("registro actualizado")
