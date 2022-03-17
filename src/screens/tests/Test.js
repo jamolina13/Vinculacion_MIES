@@ -76,6 +76,14 @@ export const Test = (props) => {
     })
   }
 
+  const Menureporte = () => {
+    navigation.navigate('Menureporte',{
+      enc_id: state.enc_id,
+    })
+  }
+
+  
+
   const CrearEncabezado = () => {
     navigation.navigate('Encabezado')
   }
@@ -179,7 +187,7 @@ export const Test = (props) => {
               <Text style={styles.textBtn}>AGREGAR OBSERVACIÓN</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnContinuar}>
-              <Text style={styles.textBtn}>VER RESULTADOS</Text>
+              <Text style={styles.textBtn} onPress={Menureporte}>VER RESULTADOS</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnContinuar} onPress={() => navigation.replace("HeaderInicio")}>
               <Text style={styles.textBtn}>VOLVER AL INICIO</Text>
