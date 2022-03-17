@@ -24,7 +24,12 @@ import { PreguntasTestLawtonBrody } from "../preguntas/PreguntasTestLawtonBrody"
 import { RegistroTecnico } from "../gestion/tecnico/RegistroTecnico";
 import { ActualizarTecnico } from "../gestion/tecnico/ActualizarTecnico";
 import { Observaciones } from "../control/Observaciones";
+import { Menureporte } from "../control/Menureporte";
 
+import { ReporteBarthel } from "../gestion/reportes/ReporteBarthel";
+import { ReporteExamenMental } from "../gestion/reportes/ReporteExamenMental";
+import { ReporteLawtonBrody } from "../gestion/reportes/ReporteLawtonBrody";
+import { ReporteYesavage } from "../gestion/reportes/ReporteYesavage";
 
 //Creación de la navegación
 const Stack = createStackNavigator();
@@ -164,6 +169,31 @@ export const StackNavigator = () => {
             name="Observaciones"
             options={{ title: "MIES APP" }}
             component={ Observaciones}
+          />
+              <Stack.Screen
+            name="Menureporte"
+            options={{ title: "MIES APP" }}
+            component={ Menureporte }
+          />
+          <Stack.Screen
+            name="ReporteBarthel"
+            options={{ title: "MIES APP" }}
+            component={ ReporteBarthel }
+          />
+          <Stack.Screen
+            name="ReporteExamenMental"
+            options={{ title: "MIES APP" }}
+            component={ ReporteExamenMental }
+          />
+          <Stack.Screen
+            name="ReporteLawtonBrody"
+            options={{ title: "MIES APP" }}
+            component={ ReporteLawtonBrody }
+          />
+          <Stack.Screen
+            name="ReporteYesavage"
+            options={{ title: "MIES APP" }}
+            component={ ReporteYesavage }
           />
           
         </>
