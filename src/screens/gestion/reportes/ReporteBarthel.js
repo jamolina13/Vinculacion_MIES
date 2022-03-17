@@ -9,8 +9,6 @@ import {
 } from "react-native";
 
 import { styles } from "../../../estilos/styleReporte";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
-import FileViewer from "react-native-file-viewer";
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 
