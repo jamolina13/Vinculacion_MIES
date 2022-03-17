@@ -54,6 +54,14 @@ export const styles = StyleSheet.create({
     marginTop: 0,
     marginRight: 10,
   },
+  TextUpdateForm: {
+    color: "#2C3E50",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 3,
+    marginLeft: 30,
+    textAlign: "left",
+  },
   TextRadio1: {
     color: "#2C3E50",
     fontSize: 16,

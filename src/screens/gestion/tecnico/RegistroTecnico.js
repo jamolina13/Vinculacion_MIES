@@ -233,7 +233,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"person-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -292,7 +292,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"person-outline"}
+          name={"finger-print-outline"}
           size={30}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -323,7 +323,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"phone-portrait-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -353,7 +353,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"mail-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -383,7 +383,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"location-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -411,7 +411,7 @@ export const RegistroTecnico = (props) => {
 
         <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"key-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}

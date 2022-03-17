@@ -129,11 +129,7 @@ export const LoginScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("RecuperarContrasena")}
-        >
-          <Text style={styles.forgot}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
+        
         <TouchableOpacity
           style={[
             value.validacion ? styles.btnLoginDisabled : null,

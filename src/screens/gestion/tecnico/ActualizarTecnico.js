@@ -185,12 +185,14 @@ export const ActualizarTecnico = (props) => {
   return (
     <ScrollView style={styles.scrollView}>
       <View tyle={styles.tituloContainer}>
-        <Text style={styles.TituloLogin}>Formulario de Actualización</Text>
+        <Text style={styles.TituloLogin}>Actualizar Técnico</Text>
       </View>
-      <Text>Nombre: </Text>
+
+      <Text style={styles.TextUpdateForm}>Nombres</Text>
+
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"person-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -217,7 +219,9 @@ export const ActualizarTecnico = (props) => {
           Solo se permiten letras
         </Text>
       </View>
-      <Text>Apellido: </Text>
+
+      <Text style={styles.TextUpdateForm}>Apellidos</Text>
+     
       <View style={styles.inputContainer}>
         <Ionicons
           name={"person-outline"}
@@ -247,10 +251,12 @@ export const ActualizarTecnico = (props) => {
           Solo se permiten letras
         </Text>
       </View>
-      <Text>Cédula: </Text>
+
+      <Text style={styles.TextUpdateForm}>Cédula</Text>
+      
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"person-outline"}
+          name={"finger-print-outline"}
           size={30}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -277,10 +283,12 @@ export const ActualizarTecnico = (props) => {
           Debe ingresar 10 digitos numéricos
         </Text>
       </View>
-      <Text>Teléfono: </Text>
+
+      <Text style={styles.TextUpdateForm}>Teléfono</Text>
+      
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"phone-portrait-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -308,10 +316,12 @@ export const ActualizarTecnico = (props) => {
           Debe ingresar 10 digitos numéricos
         </Text>
       </View>
-      <Text>Correo: </Text>
+
+      <Text style={styles.TextUpdateForm}>Correo</Text>
+      
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"mail-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -338,10 +348,12 @@ export const ActualizarTecnico = (props) => {
           Solo se permiten letras
         </Text>
       </View>
-      <Text>Dirección: </Text>
+
+      <Text style={styles.TextUpdateForm}>Dirección</Text>
+      
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"location-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}
@@ -366,10 +378,12 @@ export const ActualizarTecnico = (props) => {
           ]}
         ></Text>
       </View>
-      <Text>Contraseña: </Text>
+      
+        <Text style={styles.TextUpdateForm}>Contraseña</Text>
+      
       <View style={styles.inputContainer}>
         <Ionicons
-          name={"md-person-circle-outline"}
+          name={"key-outline"}
           size={28}
           color={"rgba(0,0,0,1)"}
           style={styles.inputIcon}

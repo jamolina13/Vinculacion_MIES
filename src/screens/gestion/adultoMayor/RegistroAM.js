@@ -267,14 +267,10 @@ export const RegistroAM = (props) => {
   };
 
   const validateDomicilio = (domicilio, type) => {
-    var alph =
-      /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
     if (type == "domicilio") {
-      if (alph.test(domicilio)) {
         setState({ ...state, domicilioValidate: true, domicilio: domicilio });
-      } else {
+      }else {
         setState({ ...state, domicilioValidate: false });
-      }
     }
   };
 
@@ -369,11 +365,11 @@ export const RegistroAM = (props) => {
         }
       >
         <View tyle={styles.tituloContainer}>
-          <Text style={styles.TituloLogin}>Registro</Text>
+          <Text style={styles.TituloLogin}>Registro Adulto Mayor</Text>
         </View>
         <View style={styles.inputContainer}>
           <Ionicons
-            name={"md-person-circle-outline"}
+            name={"finger-print-outline"}
             size={28}
             color={"rgba(0,0,0,1)"}
             style={styles.inputIcon}
@@ -464,7 +460,7 @@ export const RegistroAM = (props) => {
         <View style={styles.inputContainer2}>
           <View style={styles.input}>
             <Ionicons
-              name={"male"}
+              name={"male-outline"}
               size={30}
               color={"rgba(0,0,0,1)"}
               style={styles.inputIcon1}
@@ -575,12 +571,11 @@ export const RegistroAM = (props) => {
               state.domicilioValidate ? styles.TextErrorValid : null,
             ]}
           >
-            Solo se permiten letras
           </Text>
         </View>
         <View style={styles.inputContainer}>
           <Ionicons
-            name={"locate"}
+            name={"locate-outline"}
             size={30}
             color={"rgba(0,0,0,1)"}
             style={styles.inputIcon}

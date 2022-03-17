@@ -132,7 +132,7 @@ import {
             <ListItem
               thumbnail
               onPress={() =>
-                navigation.navigate("Test", {
+                navigation.navigate("InformacionAM", {
                   id: item.am_id,
                   nombre: item.am_nombre,
                   apellido: item.am_apellido,

@@ -214,7 +214,7 @@ export const PreguntasTestBarthel = (props) => {
         navigation.navigate("Test", {
           idBarthel: enc_id,
         });
-        Alert.alert("MIES APP", `puntaje total: ${valor}`, [
+        Alert.alert("MIES APP", `Puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",

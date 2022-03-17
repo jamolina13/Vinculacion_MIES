@@ -234,7 +234,7 @@ export const PreguntasTestYesavage = (props) => {
         navigation.navigate("Test", {
           idYesavage: enc_id,
         });
-        Alert.alert("Datos correctamente guardados", `puntaje total: ${valor}`, [
+        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}`, [
           {
             text: "Continuar",
             style: "destructive",
