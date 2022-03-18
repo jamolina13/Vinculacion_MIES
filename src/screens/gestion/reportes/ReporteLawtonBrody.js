@@ -11,6 +11,7 @@ import { shareAsync } from 'expo-sharing';
 export const ReporteLawtonBrody = (props) => {
     const params = props.route.params;
     const navigation = props.navigation;
+    const idEncabezado = params.idEncabezado
     const [values, setValues] = useState({
         lista: [],
         datosReporte: [],
@@ -35,47 +36,6 @@ export const ReporteLawtonBrody = (props) => {
 
     }
 
-
-    const obj = 
-    {
-        ef_id: 1,
-        elb_usar_telefono_op1: 1,
-        elb_usar_telefono_op2: 0,
-        elb_usar_telefono_op3: 0,
-        elb_usar_telefono_op4: 0,
-        elb_hacer_compras_op1: 1,
-        elb_hacer_compras_op2: 0,
-        elb_hacer_compras_op3: 0,
-        elb_hacer_compras_op4: 0,
-        elb_preparar_comida_op1: 1,
-        elb_preparar_comida_op2: 0,
-        elb_preparar_comida_op3: 0,
-        elb_preparar_comida_op4: 0,
-        elb_cuidado_casa_op1: 1,
-        elb_cuidado_casa_op2: 0,
-        elb_cuidado_casa_op3: 0,
-        elb_cuidado_casa_op4: 0,
-        elb_cuidado_casa_op5: 0,
-        elb_lavar_ropa_op1: 1,
-        elb_lavar_ropa_op2: 0,
-        elb_lavar_ropa_op3: 0,
-        elb_uso_transporte_op1: 1,
-        elb_uso_transporte_op2: 0,
-        elb_uso_transporte_op3: 0,
-        elb_uso_transporte_op4: 0,
-        elb_uso_transporte_op5: 0,
-        elb_medicacion_op1: 1,
-        elb_medicacion_op2: 0,
-        elb_medicacion_op3: 0,
-        elb_utiliza_dinero_op1: 1,
-        elb_utiliza_dinero_op2: 0,
-        elb_utiliza_dinero_op3: 0,
-        elb_tiempo_inicial: "08:30:00",
-        elb_tiempo_final: "09:30:00",
-        elb_tiempo_total: "01:00:00",
-        elb_estado: 1,
-        elb_puntaje_total: 1    
-    }
     useEffect(() => {
         llamarDatos();
         return () => {
@@ -87,7 +47,7 @@ export const ReporteLawtonBrody = (props) => {
         
         try {
             const responseE = await fetch(
-                "http://192.188.58.82:3000/reporteLawtonById/1",
+                "http://192.188.58.82:3000/reporteLawtonById/"+ idEncabezado + "",
                 {
                     method: "GET",
                     headers: {
