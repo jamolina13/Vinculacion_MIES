@@ -152,6 +152,23 @@ export const PreguntasTestBarthel = (props) => {
     onsubmitGuardar()
   }
 
+  function resultadoTest (valor) {
+    if(valor<=20){
+      return "Dependencia Total";
+    }
+    if(valor > 20 && valor <= 60){
+      return "Dependencia Severa";
+    }
+    if(valor > 60 && valor <= 90){
+      return "Dependencia Moderada";
+    }
+    if(valor > 90 && valor <= 99){
+      return "Dependencia Escasa";
+    }    
+    if(valor == 100){
+      return "Independencia";
+    }
+  }
 
   const onsubmitGuardar = async () => {
     let valor =0;
@@ -214,7 +231,10 @@ export const PreguntasTestBarthel = (props) => {
         navigation.navigate("Test", {
           idBarthel: enc_id,
         });
-        Alert.alert("MIES APP", `Puntaje total: ${valor}`, [
+
+        clasValor = resultadoTest(valor);
+
+        Alert.alert("MIES APP", `Puntaje total: ${valor}, ${clasValor}`, [
           {
             text: "Continuar",
             style: "destructive",
