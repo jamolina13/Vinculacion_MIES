@@ -102,6 +102,22 @@ export const PreguntasTestMiniExamenMental = (props) => {
     });
   };
 
+  function resultadoTest (puntajeTotal) {
+    if(puntajeTotal >= 27){
+      return "Normal";
+    }
+    if(puntajeTotal >= 24 && puntajeTotal <= 26){
+      return "Sospecha Patológica";
+    }
+    if(puntajeTotal >= 12 && puntajeTotal <= 23){
+      return "Deterioro";
+    }
+    if(puntajeTotal >= 9 && puntajeTotal <= 11){
+      return "Demencia";
+    }  
+  }
+
+
   const { datetimeStart } = state;
   const datetimeEnd = moment(new Date());
   //fechas para enviar a la base de datos
@@ -232,7 +248,9 @@ export const PreguntasTestMiniExamenMental = (props) => {
         navigation.navigate("Test", {
           idMini:enc_id,
         });
-        Alert.alert("MIES APP", `Puntaje total: ${puntajeTotal}`, [
+
+        clasValor = resultadoTest(puntajeTotal);
+        Alert.alert("MIES APP", `Puntaje total: ${puntajeTotal}, ${clasValor}`, [
           {
             text: "Continuar",
             style: "destructive",
