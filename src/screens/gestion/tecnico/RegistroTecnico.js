@@ -41,6 +41,10 @@ export const RegistroTecnico = (props) => {
     contraseñaValidate: true,
   });
 
+  const [value, setValue] = useState({
+    press: false,
+    showPass: true,
+  });
  
   const registroTecnico = async () => {
     //alert('OK');
@@ -86,7 +90,24 @@ export const RegistroTecnico = (props) => {
       console.log(error);
     }
   };
-  //actualizar pagina
+  
+
+
+  const showPass = () => {
+    if (value.press == false) {
+      setValue({
+        ...value,
+        showPass: false,
+        press: true,
+      });
+    } else {
+      setValue({
+        ...value,
+        showPass: true,
+        press: false,
+      });
+    }
+  };
   
   //validaciones de datos
     const validateCedula = (cedula) => {
@@ -424,9 +445,21 @@ export const RegistroTecnico = (props) => {
             placeholder={"Contraseña"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
+            secureTextEntry={value.showPass}
             onChangeText={(text) => setState({...state, contraseña: text})}
           />
+
+        <TouchableOpacity style={styles.btnEye} onPress={showPass.bind()}>
+            <Ionicons
+              name={
+                value.press == false ? "ios-eye-outline" : "ios-eye-off-outline"
+              }
+              size={26}
+              color={"rgba(0,0,0,1)"}
+            />
+          </TouchableOpacity>
         </View>
+
         <View style={styles.errorContainer}>
           <Text
             style={[
@@ -445,6 +478,7 @@ export const RegistroTecnico = (props) => {
           >
             <Text style={styles.text}>Guardar</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.btnCancelar}
             onPress={() => navigation.replace("HeaderInicio")}
