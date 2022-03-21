@@ -23,14 +23,15 @@ export const Test = (props) => {
   const params = props.route.params;
   //static contextType = NavigationContext;  
    
-  var idYesavage= params.idYesavage  
-  var idLawton= params.idLawton
-  var idMini= params.idMini
-  var idBarthel= params.idBarthel
+  const idYesavage= params.idYesavage  
+  const idLawton= params.idLawton
+  const idMini= params.idMini
+  const idBarthel= params.idBarthel
   var validacioIdBarthel=false
   var validacioIdLawton=false
   var validacioIdMini=false
   var validacioIdYesavage= false;
+  var validacionReportes= true;
   const [state, setState] = useState({
     isReady: false,
     listadoAdultMay: [],
@@ -75,14 +76,11 @@ export const Test = (props) => {
       enc_id: state.enc_id,
     })
   }
-
-  const Menureporte = () => {
-    navigation.navigate('Menureporte',{
-      enc_id: state.enc_id,
-    })
+  const verResultado = () => {
+    navigation.navigate('Menureporte', {
+      enc_id:state.enc_id,
+    });
   }
-
-  
 
   const CrearEncabezado = () => {
     navigation.navigate('Encabezado')
@@ -117,13 +115,21 @@ export const Test = (props) => {
     }
   }
 
+  const validateReportes = () => {
+    if(validacioIdMini == true && validacioIdLawton == true 
+      && validacioIdYesavage == true && validacioIdBarthel == true){
+      validacionReportes=false;    
+    }
+    return validacionReportes
+  }
+
   return (
     <Content padder >
       <View>
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
           Adulto Mayor: {' ' + state.nombre + ' ' + state.apellido}</Text>
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
-          </Text>
+          encabezado id: {' ' + state.enc_id}</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
           <View style={{ alignItems: 'center', padding: 20 }}>
@@ -186,8 +192,10 @@ export const Test = (props) => {
             <TouchableOpacity style={styles.btnContinuar} onPress={Observaciones}>
               <Text style={styles.textBtn}>AGREGAR OBSERVACIÓN</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnContinuar}>
-              <Text style={styles.textBtn} onPress={Menureporte}>VER RESULTADOS</Text>
+            <TouchableOpacity style={styles.btnContinuar}
+            disabled={validateReportes()}  
+            onPress={verResultado}>
+              <Text style={styles.textBtn}>VER RESULTADOS</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnContinuar} onPress={() => navigation.replace("HeaderInicio")}>
               <Text style={styles.textBtn}>VOLVER AL INICIO</Text>
