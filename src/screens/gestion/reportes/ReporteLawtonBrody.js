@@ -382,9 +382,9 @@ export const ReporteLawtonBrody = (props) => {
                                 <p class="MsoNormal" style="margin-bottom: 0cm; text-align: center; line-height: normal;"
                                     align="center"><span style="color: black;">1</span></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; text-align: center; line-height: normal;"
-                                    align="center"><span style="color: black;">1</span></p>
+                                    align="center"><span style="color: black;">0</span></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; text-align: center; line-height: normal;"
-                                    align="center"><span style="color: black;">1</span></p>
+                                    align="center"><span style="color: black;">0</span></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; text-align: center; line-height: normal;"
                                     align="center"><span style="color: black;">0</span></p>
                             </td>
