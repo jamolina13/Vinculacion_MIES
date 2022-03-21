@@ -30,8 +30,8 @@ export const IndiTestLawtonBrody = (props) => {
 
       <View style={styles.tituloLabel}>
         <Text style={styles.TextInfotitu}>
-          <Text style={styles.hombre}>Hombres</Text> /{" "}
-          <Text style={styles.mujer}>Mujeres</Text>
+          <Text style={styles.mujer}>Mujeres</Text> /{" "}
+          <Text style={styles.hombre}>Hombres</Text>
         </Text>
       </View>
 
