@@ -357,7 +357,8 @@ export const ReporteYesavage = (props) => {
 <td style="width: 157.354px;">TOTAL</td>
 <td style="width: 147.646px;">
 <div>
-<div>${datosReporte[30]}</div>
+<div style="width: 28px; height: 18px; text-align: center;">${datosReporte[30]}</div>
+
 </div>
 </td>
 </tr>
@@ -407,10 +408,7 @@ export const ReporteYesavage = (props) => {
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+
 <p><strong>________</strong></p>
 <p>2 Aguado , Mart&iacute;nez j, On&iacute;s mc et al.(2000). adaptaci&oacute;n y validaci&oacute;n al castellano de la versi&oacute;n abreviada de<br />la &ldquo;Geriatric Depresi&oacute;n scale&rdquo; (gds) de Yesavage. atenci&oacute;n primaria, 26 (supl 1): 328.</p> 
 
