@@ -131,6 +131,19 @@ export const PreguntasTestYesavage = (props) => {
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
+  function resultadoTest (valor) {
+    if(valor >=0 && valor <= 5){
+      return "No depresión";
+    }
+    if(valor > 5 && valor <= 9){
+      return "Probable depresión";
+    }
+    if(valor > 9 && valor <= 15){
+      return "Depresión establecida";
+    }    
+  }
+
+
   function validarFormulario() {
 
     let valor = 0;
@@ -234,7 +247,10 @@ export const PreguntasTestYesavage = (props) => {
         navigation.navigate("Test", {
           idYesavage: enc_id,
         });
-        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}`, [
+
+        clasValor = resultadoTest(valor);
+
+        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}, ${clasValor}`, [
           {
             text: "Continuar",
             style: "destructive",
