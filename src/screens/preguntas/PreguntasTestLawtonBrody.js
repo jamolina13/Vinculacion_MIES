@@ -240,11 +240,13 @@ export const PreguntasTestLawtonBrody = (props) => {
     });
 
 
-    valor = var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8;
+    //valor = var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8;
 
     if (sex == "Hombre"){
-      valor = valor - 3;
+      valor = var1 + var2 + var6 + var7 + var8;
 
+    }else{
+      valor = var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8;
     }
     
     
