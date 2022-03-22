@@ -2,7 +2,7 @@ import {
   Content,
   Thumbnail, Text
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -38,7 +38,8 @@ export const Test = (props) => {
     enc_id: params.enc_id,
     id: params.id,
     nombre: params.nombre,
-    apellido: params.apellido,      
+    apellido: params.apellido,  
+    isReady: false,    
     
     /* 
     idBarthel: params.idBarthel,
@@ -47,6 +48,50 @@ export const Test = (props) => {
     idMini: params.idMini,
     */
   });
+
+  const [values, setValues] = useState({
+    listadoE: [],
+  });
+
+  const { listadoE } = values;
+
+  useEffect(() => {
+    obtenerSexo();
+    return () => {
+      setValues({});
+    }
+  }, [state.isReady]);
+  
+  const obtenerSexo = async () => {
+
+    try {
+      const responseE = await fetch(
+        "http://192.188.58.82:3000/sexoAdultoMayorById/"+state.id+"",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await responseE.json();
+      setValues({
+        ...values,
+        listadoE: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sexo = listadoE[0];
+  console.log(sexo);
+
+
+
   const IndiTestBarthel = () => {
     console.log("Encabezado: "+state.enc_id)
     navigation.navigate('TestBarthel', {
@@ -59,9 +104,11 @@ export const Test = (props) => {
     });
   }
 
-  const IndiTestLawtonBrody = () => {    
+  const IndiTestLawtonBrody = () => {   
+    //aux = sexo.am_sexo;
     navigation.navigate('IndiTestLawtonBrody', {
       enc_id: state.enc_id,
+      am_sex: sexo.am_sexo
     });
   }
 
