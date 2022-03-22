@@ -42,12 +42,55 @@ export const PreguntasTestLawtonBrody = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
+  const sex = params.sex;
 
   const calculartotal = (total) => {
     setState({
       temp: total,
     });
   };
+
+  function resultadoTest (valor) {
+    if(sex=="Mujer"){
+      if(valor<=1){
+        return "Dependencia Total";
+      }
+      if(valor > 1 && valor <= 3){
+        return "Dependencia Grave";
+      }
+      if(valor > 3 && valor <= 5){
+        return "Dependencia Moderada";
+      }
+      if(valor > 5 && valor <= 7){
+        return "Dependencia Escasa";
+      }    
+      if(valor == 8){
+        return "Autónoma";
+      }
+
+    }
+
+    if(sex=="Hombre"){
+      if(valor == 0){
+        return "Dependencia Total";
+      }
+      if(valor == 1){
+        return "Dependencia Grave";
+      }
+      if(valor > 1 && valor <= 3){
+        return "Dependencia Moderada";
+      }
+      if(valor == 4){
+        return "Dependencia Escasa";
+      }    
+      if(valor == 5){
+        return "Autónoma";
+      }
+
+    }
+
+  }
+
 /*
   useEffect(() => {
     Lawton();
@@ -198,6 +241,11 @@ export const PreguntasTestLawtonBrody = (props) => {
 
 
     valor = var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8;
+
+    if (sex == "Hombre"){
+      valor = valor - 3;
+
+    }
     
     
     try {
@@ -235,7 +283,10 @@ export const PreguntasTestLawtonBrody = (props) => {
         navigation.navigate("Test", {
           idLawton: enc_id,
         });
-        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}`, [
+
+        clasValor = resultadoTest(valor);
+
+        Alert.alert("Datos correctamente guardados", `Puntaje total: ${valor}, ${clasValor}`, [
           {
             text: "Continuar",
             style: "destructive",
