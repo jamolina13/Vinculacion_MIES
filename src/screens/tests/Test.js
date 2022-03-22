@@ -175,8 +175,6 @@ export const Test = (props) => {
       <View>
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
           Adulto Mayor: {' ' + state.nombre + ' ' + state.apellido}</Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
-          encabezado id: {' ' + state.enc_id}</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
           <View style={{ alignItems: 'center', padding: 20 }}>
