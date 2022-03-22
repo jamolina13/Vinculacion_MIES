@@ -15,6 +15,7 @@ export const IndiTestLawtonBrody = (props) => {
   const navigation = props.navigation;
   const params = props.route.params;
   const enc_id = params.enc_id;
+  const am_sex = params.am_sex;
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.tituloContainer}>
@@ -100,6 +101,7 @@ export const IndiTestLawtonBrody = (props) => {
           onPress={() => 
             navigation.navigate('TestLawtonBrody', {
               enc_id: enc_id,
+              sex: am_sex
             })}
         >
           <Text style={styles.text}>Siguiente</Text>
