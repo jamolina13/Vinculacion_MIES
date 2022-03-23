@@ -17,7 +17,11 @@ export const ReporteLawtonBrody = (props) => {
         lista: [],
         datosReporte: [],
     });
+ const MenuReporte = () => {
+        navigation.navigate('Menureporte', {
 
+        });
+    }
     const [state, setState] = useState({
         isReady: false,
     })
