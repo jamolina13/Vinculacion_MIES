@@ -50,7 +50,11 @@ export const ReporteYesavage = (props) => {
             setValues({});
         }
     }, [state.isReady]);
+ const MenuReporte = () => {
+        navigation.navigate('Menureporte', {
 
+        });
+    }
     const llamarDatos = async () => {
 
         try {
