@@ -4,6 +4,7 @@ import {
     StyleSheet,
     View,
     Button,
+    TouchableOpacity,
 } from "react-native";
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -805,22 +806,32 @@ export const ReporteLawtonBrody = (props) => {
         return html;
     }
 
-    return (
-        <View>
-            <Button title='Print' onPress={print} />
-            <View style={styles8.spacer} />
-            <Button title='Print to PDF file' onPress={printToFile} />
-            {Platform.OS === 'ios' &&
-                <>
-                    <View style={styles8.spacer} />
-                    <Button title='Select printer' onPress={selectPrinter} />
-                    <View style={styles8.spacer} />
-                    {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
-                </>
-            }
+       return (
+        <View
+            style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
+        >
+            <View style={styles8.inputContainer} >
+                <TouchableOpacity style={styles8.txtBtn} onPress={print} >
+                    <Text style={[styles8.text]}> Generar PDF</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles8.txtBtn2} onPress={MenuReporte} >
+                    <Text style={[styles8.text]}> Regresar</Text>
+                </TouchableOpacity>
+                {Platform.OS === 'ios' &&
+                    <>
+                        <View style={styles8.spacer} />
+                        <Button title='Select printer' onPress={selectPrinter} />
+                        <View style={styles8.spacer} />
+                        {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
+                    </>
+                }
+
+            </View>
+
         </View>
     );
 };
+
 const styles8 = StyleSheet.create({
     spacer: {
         margin: 5,
@@ -829,5 +840,48 @@ const styles8 = StyleSheet.create({
         backgroundColor: "#080f26",
 
     },
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        height: null,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    inputContainer: {
+        marginTop: 180,
+        marginBottom: 10,
+    },
+    txtBtn: {
+        //width:  100,
+        height: 50,
+        borderRadius: 10,
+        backgroundColor: "#005DA6",
+        justifyContent: "center",
+        marginTop: 20,
+    },
+    txtBtn2: {
+        //width:  100,
+        height: 50,
+        borderRadius: 10,
+        backgroundColor: "#FF0000",
+        justifyContent: "center",
+        marginTop: 20,
+    },
+    text: {
+        color: "#fff",
+        fontSize: 18,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+    input: {
+        //width: WIDTH - 55,
+        height: 45,
+        borderRadius: 10,
+        fontSize: 18,
+        paddingLeft: 55,
+        backgroundColor: "rgba(0,0,0,0.20)",
+        color: "black",
+        marginHorizontal: 25,
+    },
 
-})
+});
