@@ -38,7 +38,11 @@ export const ReporteExamenMental = (props) => {
     var { lista } = values;
     var { datosReporte } = values;
     const idEncabezado = params.idEncabezado
+ const MenuReporte = () => {
+        navigation.navigate('Menureporte', {
 
+        });
+    }
     console.log(idEncabezado + "aasas")
     const [state, setState] = useState({
         isReady: false,
