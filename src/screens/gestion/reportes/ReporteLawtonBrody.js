@@ -670,8 +670,6 @@ export const ReporteLawtonBrody = (props) => {
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;">${repot.elb_puntaje_total}</span></strong></p>
-                                <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">&nbsp;</span></strong></p>
                             </td>
                             <td style="border: none; padding: 0cm; width: 12px;">
                                 <p class="MsoNormal">&nbsp;</p>
