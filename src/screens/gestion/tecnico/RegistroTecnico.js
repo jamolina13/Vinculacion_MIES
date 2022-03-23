@@ -36,9 +36,10 @@ export const RegistroTecnico = (props) => {
     nombreValidate: false,
     apellidoValidate: false,
     telefonoValidate: false,
-    correoValidate: true,
-    direccionValidate: true,
-    contraseñaValidate: true,
+    correoValidate: false,
+    direccionValidate: false,
+    contraseñaValidate: false,
+    disabled:true
   });
 
   const [value, setValue] = useState({
@@ -176,8 +177,10 @@ export const RegistroTecnico = (props) => {
     if (type == "nombre") {
       if (alph.test(nombre)) {
         setState({ ...state, nombreValidate: true, nombre: nombre });
+        console.log("nombre: " +state.nombreValidate)
       } else {
         setState({ ...state, nombreValidate: false });
+        console.log("nombre: " +state.nombreValidate)
       }
     }
   };
@@ -187,9 +190,11 @@ export const RegistroTecnico = (props) => {
       /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
     if (type == "apellido") {
       if (alph.test(apellido)) {
-        setState({ ...state, apellidoValidate: true, apellido: apellido });
+        setState({ ...state, apellidoValidate: true, apellido: apellido, disabled: false });
+        console.log("ape: " + state.apellidoValidate)
       } else {
-        setState({ ...state, apellidoValidate: false });
+        setState({ ...state, apellidoValidate: false, disabled: true });
+        console.log("ape: " + state.apellidoValidate)
       }
     }
   };
@@ -198,10 +203,71 @@ export const RegistroTecnico = (props) => {
     var alph = /^([0-9]{0,10})$/;
     if (type == "telefono") {
       if (alph.test(telefono)) {
-        setState({ ...state, telefonoValidate: true, telefono: telefono });
+        setState({ ...state, telefonoValidate: true, telefono: telefono, disabled: false });
+        console.log("cell: " +state.telefonoValidate)
       } else {
-        setState({ ...state, telefonoValidate: false });
+        setState({ ...state, telefonoValidate: false, disabled: true });
+        console.log("cell: " +state.telefonoValidate)
       }
+    }
+  };
+
+  const validateCorreo = (correo, type) => {
+    if (type == "correo") {
+        setState({ ...state, correoValidate: true, correo: correo, disabled: false });
+        console.log("corre: " +state.correoValidate)
+      }else {
+        setState({ ...state, correoValidate: false, disabled: true });
+        console.log("corre: " +state.correoValidate)
+    }
+  };
+
+  const validateDireccion = (direccion, type) => {
+    if (type == "direccion") {
+        setState({ ...state, direccionValidate: true, direccion: direccion, disabled: false });
+        console.log("dir: " +state.direccionValidate)
+      }else {
+        setState({ ...state, direccionValidate: false, disabled: true });
+        console.log("dir: " +state.direccionValidate)
+    }
+  };
+
+  const validateContraseña = (contraseña, type) => {
+    if (type == "contraseña") {
+        setState({ ...state, contraseñaValidate: true, correo: contraseña, disabled: false });
+        console.log("contra: " +state.contraseñaValidate)
+      }else {
+        setState({ ...state, contraseñaValidate: false, disabled: true });
+        console.log("contra: " +state.contraseñaValidate)
+    }
+  };
+
+  const validarEntradaDatos = () => {
+    console.log("nombre: " +state.nombreValidate)
+    console.log("ape: " +state.apellidoValidate)
+    console.log("cedu: " +state.cedulaValidate.estado)
+    console.log("tele: " +state.telefonoValidate)
+    console.log("correo: " +state.correoValidate)
+    console.log("direcc: " +state.direccionValidate)
+    console.log("contra: " +state.contraseñaValidate)
+    if (
+      state.nombreValidate == true &&
+      state.apellidoValidate == true &&
+      state.cedulaValidate.estado == true &&
+      state.telefonoValidate == true &&
+      state.correoValidate == true &&
+      state.direccionValidate == true &&
+      state.contraseñaValidate == true
+    ) {
+      registroTecnico();
+    } else {
+      console.log("datos")
+      Alert.alert("MIES APP", "Debe ingresar todos los datos", [
+        {
+          text: "Continuar",
+          style: "destructive",
+        },
+      ]);
     }
   };
 
@@ -267,7 +333,7 @@ export const RegistroTecnico = (props) => {
             placeholder={"Ingrese el nombre"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
-            onChangeText={(text) => validateNombre(text, "nombre")}
+            onChangeText={(nombre) => validateNombre(nombre, "nombre")}
           />
         </View>
         <View style={styles.errorContainer}>
@@ -296,7 +362,7 @@ export const RegistroTecnico = (props) => {
             placeholder={"Ingrese el apellido"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
-            onChangeText={(text) => validateApellido(text, "apellido")
+            onChangeText={(apellido) => validateApellido(apellido, "apellido")
             }
           />
         </View>
@@ -327,7 +393,7 @@ export const RegistroTecnico = (props) => {
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
             maxLength={10}
-            onChangeText={(text) => validateCedula(text, "cedula")}
+            onChangeText={(cedula) => validateCedula(cedula, "cedula")}
           />
         </View>
         <View style={styles.errorContainer}>
@@ -357,7 +423,8 @@ export const RegistroTecnico = (props) => {
             placeholder={"Teléfono"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
-            onChangeText={(text) => validateTelefono(text, "telefono")}
+            maxLength={10}
+            onChangeText={(telefono) => validateTelefono(telefono, "telefono")}
             //onChangeText = {(text) => setState({})}
           />
         </View>
@@ -387,7 +454,9 @@ export const RegistroTecnico = (props) => {
             placeholder={"Correo"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
-            onChangeText={(text) => setState({...state, correo: text})}
+            onChangeText={(correo) =>
+              validateCorreo(correo, "correo")
+            }
           />
         </View>
         <View style={styles.errorContainer}>
@@ -398,7 +467,6 @@ export const RegistroTecnico = (props) => {
               state.correoValidate ? styles.TextErrorValid : null,
             ]}
           >
-            Solo se permiten letras
           </Text>
         </View>
 
@@ -417,7 +485,9 @@ export const RegistroTecnico = (props) => {
             placeholder={"Direccion"}
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
-            onChangeText={(text) => setState({...state, direccion: text})}
+            onChangeText={(direccion) =>
+              validateDireccion(direccion, "direccion")
+            }
           />
         </View>
         <View style={styles.errorContainer}>
@@ -446,7 +516,9 @@ export const RegistroTecnico = (props) => {
             placeholderTextColor={"rgba(0,0,0,0.7)"}
             underlineColorAndroid="transparent"
             secureTextEntry={value.showPass}
-            onChangeText={(text) => setState({...state, contraseña: text})}
+            onChangeText={(contraseña) =>
+              validateContraseña(contraseña, "contraseña")
+            }
           />
 
         <TouchableOpacity style={styles.btnEye} onPress={showPass.bind()}>
@@ -473,8 +545,12 @@ export const RegistroTecnico = (props) => {
           style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
         >
           <TouchableOpacity
-            style={styles.btnRegistrar}
-            onPress={registroTecnico}
+          disabled={state.disabled}
+          style={[
+              state.disabled ? styles.btnRegistrarDisabled : null,
+              !state.disabled ? styles.btnRegistrar : null,
+            ]}
+          onPress={validarEntradaDatos}
           >
             <Text style={styles.text}>Guardar</Text>
           </TouchableOpacity>
