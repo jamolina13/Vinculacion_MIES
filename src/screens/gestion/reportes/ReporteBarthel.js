@@ -31,7 +31,11 @@ const html = `
 export const ReporteBarthel = (props) => {
     const [selectedPrinter, setSelectedPrinter] = React.useState();
     const [allowances, setAllowances] = useState([]);
+ const MenuReporte = () => {
+        navigation.navigate('Menureporte', {
 
+        });
+    }
 
     const params = props.route.params;
     const navigation = props.navigation;
