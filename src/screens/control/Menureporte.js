@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { ReporteLawtonBrody } from "../gestion/reportes/ReporteLawtonBrody";
-import {
-
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  View,
-
-  TouchableOpacity,
-} from "react-native";
+import {ReporteExamenMental} from "../gestion/reportes/ReporteExamenMental";
+import {Text,View,TouchableOpacity} from "react-native";
 
 import { styles } from "../../estilos/styleReporte";
 
@@ -23,12 +16,6 @@ export const Menureporte = (props) => {
 
   const ReporteBarthel = () => {
     navigation.navigate('ReporteBarthel', {
-      idEncabezado: idEncabezado,
-    });
-  }
-
-  const ReporteExamenMental = () => {
-    navigation.navigate('ReporteExamenMental', {
       idEncabezado: idEncabezado,
     });
   }
@@ -63,21 +50,10 @@ export const Menureporte = (props) => {
           >
             <Text style={[styles.text]}>Reporte Barthel</Text>
           </TouchableOpacity>
-
-
          
-          <ReporteLawtonBrody
-            vals={idEncabezado}
-          />
+          <ReporteLawtonBrody vals={idEncabezado}/>
 
-
-          <TouchableOpacity style={styles.txtBtn}
-            // disabled={value.validacionBtn}
-            //</View>onPress={() => registroEncabezado()}
-            onPress={ReporteExamenMental}
-          >
-            <Text style={[styles.text]}>Reporte Mini Examen del Estado Mental</Text>
-          </TouchableOpacity>
+          <ReporteExamenMental vals={idEncabezado}/>
 
         </View>
 
