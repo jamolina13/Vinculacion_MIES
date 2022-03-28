@@ -1,6 +1,7 @@
 import { Content, Text } from "native-base";
 import { CheckBox } from "react-native-elements";
 import React, { useEffect, useState } from "react";
+import moment from 'moment';
 
 import {
   StyleSheet,
@@ -13,8 +14,11 @@ import {
 
 const { width: WIDTH } = Dimensions.get("window");
 
-const fecha = new Date();
-const tiempoInicial = fecha.getHours()+':'+fecha.getMinutes()+':'+fecha.getSeconds();
+const fechaAplicacion = new Date();
+console.log(fechaAplicacion);
+const fecha_aplicacion = moment.utc(fechaAplicacion).format('YYYY-MM-DD');
+console.log(fecha_aplicacion);
+const tiempoInicial = fechaAplicacion.getHours()+':'+fechaAplicacion.getMinutes()+':'+fechaAplicacion.getSeconds();
 var  validacionBtn =  true;
 var  validacion = false;
 /* 
@@ -148,7 +152,7 @@ export const UbicacionScreen = (props) => {
             ef_tiempo_inicial: state.tiempo_inicial,
             ef_tiempo_final: "",
             ef_tiempo_total: "",
-            ef_fecha_aplicacion: "2022-03-03"
+            ef_fecha_aplicacion: fecha_aplicacion
           }),
         }
       );
