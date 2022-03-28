@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-
-    Text,
-    StyleSheet,
-    View,
-    Button,
-    TouchableOpacity,
-} from "react-native";
-
+import {Text,TouchableOpacity} from "react-native";
+import moment from 'moment';
 import { styles } from "../../../estilos/styleReporte";
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -27,18 +20,8 @@ const html = `
   </body>
 </html>
 `;
-
-export const ReporteBarthel = (props) => {
-    const [selectedPrinter, setSelectedPrinter] = React.useState();
-    const [allowances, setAllowances] = useState([]);
- const MenuReporte = () => {
-        navigation.navigate('Menureporte', {
-
-        });
-    }
-
-    const params = props.route.params;
-    const navigation = props.navigation;
+export const ReporteBarthel = (vals) => {
+    
     var [values, setValues] = useState({
         lista: [],
         datosReporte: [],
@@ -46,9 +29,9 @@ export const ReporteBarthel = (props) => {
 
     var { lista } = values;
     var { datosReporte } = values;
-    const idEncabezado = params.idEncabezado
 
     console.log(idEncabezado + "aasas")
+    const idEncabezado = vals;
     const [state, setState] = useState({
         isReady: false,
     })
@@ -57,13 +40,16 @@ export const ReporteBarthel = (props) => {
         return () => {
             setValues({});
         }
-    }, [state.isReady]);
+    },[]);
 
     const llamarDatos = async () => {
-
+        let dinamicValue;
+        for (var property in idEncabezado) {
+            dinamicValue = idEncabezado[property];
+        }
         try {
             const responseE = await fetch(
-                "http://192.188.58.82:3000/reporteBarthelById/" + idEncabezado + "",
+                "http://192.188.58.82:3000/reporteBarthelById/" + dinamicValue + "",
 
                 {
                     method: "GET",
@@ -116,6 +102,13 @@ export const ReporteBarthel = (props) => {
         datosReporte[24] = `${item.ib_estado}`;
         datosReporte[25] = `${item.ib_puntaje_total}`;
     });
+    const DatosFecha = datosReporte[8];
+    const fecha = moment.utc(DatosFecha).format('DD/MM/YYYY');
+    console.log("Fecha " + fecha);
+
+    const [selectedPrinter, setSelectedPrinter] = React.useState();
+    const [allowances, setAllowances] = useState([]);
+
     const print = async () => {
         // On iOS/android prints the given html. On web prints the HTML from the current page.
         await Print.printAsync({
@@ -241,7 +234,7 @@ export const ReporteBarthel = (props) => {
 </td>
 <td style="width: 337px; height: 49px;">
 <p><strong>Fecha de aplicaci&oacute;n:</strong></p>
-<p>${datosReporte[8]}</p>
+<p>${fecha}</p>
 </td>
 <td style="width: 244px; height: 49px;">
 <p><strong>Aplicado por:</strong></p>
@@ -484,81 +477,11 @@ export const ReporteBarthel = (props) => {
     }
 
    return (
-        <View
-            style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
-        >
-            <View style={styles8.inputContainer} >
-                <TouchableOpacity style={styles8.txtBtn} onPress={print} >
-                    <Text style={[styles8.text]}> Generar PDF</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles8.txtBtn2} onPress={MenuReporte} >
-                    <Text style={[styles8.text]}> Regresar</Text>
-                </TouchableOpacity>
-                {Platform.OS === 'ios' &&
-                    <>
-                        <View style={styles8.spacer} />
-                        <Button title='Select printer' onPress={selectPrinter} />
-                        <View style={styles8.spacer} />
-                        {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
-                    </>
-                }
-
-            </View>
-
-        </View>
+        <TouchableOpacity style={styles.txtBtn}
+        // disabled={value.validacionBtn}
+        //</View>onPress={() => registroEncabezado()}
+        onPress={print}>
+            <Text style={[styles.text]}> Reporte Barthel</Text>
+        </TouchableOpacity>
     );
 };
-
-const styles8 = StyleSheet.create({
-    spacer: {
-        margin: 5,
-    },
-    dext: {
-        backgroundColor: "#080f26",
-
-    },
-    backgroundContainer: {
-        flex: 1,
-        width: null,
-        height: null,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    inputContainer: {
-        marginTop: 180,
-        marginBottom: 10,
-    },
-    txtBtn: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#005DA6",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    txtBtn2: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#FF0000",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    text: {
-        color: "#fff",
-        fontSize: 18,
-        textAlign: "center",
-        fontWeight: "bold",
-    },
-    input: {
-        //width: WIDTH - 55,
-        height: 45,
-        borderRadius: 10,
-        fontSize: 18,
-        paddingLeft: 55,
-        backgroundColor: "rgba(0,0,0,0.20)",
-        color: "black",
-        marginHorizontal: 25,
-    },
-
-});
