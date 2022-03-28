@@ -211,7 +211,7 @@ export const ReporteBarthel = (props) => {
 </tr>
 <tr style="height: 83px;">
 <td style="width: 65px; height: 83px;">
-<p style="text-align: center;"><strong>Nombre del Uruario:</strong></p>
+<p style="text-align: center;"><strong>Nombre del Usuario:</strong></p>
 </td>
 <td style="width: 139px; height: 83px;">${datosReporte[0]}</td>
 <td style="width: 118px; height: 83px;">
