@@ -142,7 +142,7 @@ export const PreguntasTestYesavage = (props) => {
       return "Depresión establecida";
     }    
   }
-
+  
 
   function validarFormulario() {
 
@@ -314,20 +314,20 @@ export const PreguntasTestYesavage = (props) => {
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
-                  value={state.uno}
-                  status={checked === uno ? "checked" : "unchecked"}
+                  value={state.cero}
+                  status={checked === cero ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked: uno });
+                    setState({ ...state, checked: cero });
                   }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
-                  value={state.cero}
-                  status={checked === cero ? "checked" : "unchecked"}
+                  value={state.uno}
+                  status={checked === uno ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked: cero });
+                    setState({ ...state, checked: uno });
                   }}
                 />
               </View>
@@ -457,20 +457,20 @@ export const PreguntasTestYesavage = (props) => {
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
-                  value={state.uno}
-                  status={checked4 === uno ? "checked" : "unchecked"}
+                  value={state.cero}
+                  status={checked4 === cero ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked4: uno });
+                    setState({ ...state, checked4: cero });
                   }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
-                  value={state.cero}
-                  status={checked4 === cero ? "checked" : "unchecked"}
+                  value={state.uno}
+                  status={checked4 === uno ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked4: cero });
+                    setState({ ...state, checked4: uno });
                   }}
                 />
               </View>
@@ -529,20 +529,20 @@ export const PreguntasTestYesavage = (props) => {
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
-                  value={state.uno}
-                  status={checked6 === uno ? "checked" : "unchecked"}
+                  value={state.cero}
+                  status={checked6 === cero ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked6: uno });
+                    setState({ ...state, checked6: cero });
                   }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
-                  value={state.cero}
-                  status={checked6 === cero ? "checked" : "unchecked"}
+                  value={state.uno}
+                  status={checked6 === uno ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked6: cero });
+                    setState({ ...state, checked6: uno });
                   }}
                 />
               </View>
@@ -674,20 +674,20 @@ export const PreguntasTestYesavage = (props) => {
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
-                  value={state.uno}
-                  status={checked10 === uno ? "checked" : "unchecked"}
+                  value={state.cero}
+                  status={checked10 === cero ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked10: uno });
+                    setState({ ...state, checked10: cero });
                   }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
-                  value={state.cero}
-                  status={checked10 === cero ? "checked" : "unchecked"}
+                  value={state.uno}
+                  status={checked10 === uno ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked10: cero });
+                    setState({ ...state, checked10: uno });
                   }}
                 />
               </View>
@@ -744,20 +744,20 @@ export const PreguntasTestYesavage = (props) => {
             <View style={{ flexDirection: "row" }}>
               <View>
                 <RadioButton
-                  value={state.uno}
-                  status={checked12 === uno ? "checked" : "unchecked"}
+                  value={state.cero}
+                  status={checked12 === cero ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked12: uno });
+                    setState({ ...state, checked12: cero });
                   }}
                 />
               </View>
               <Text style={styles.TextRadio}>Si</Text>
               <View>
                 <RadioButton
-                  value={state.cero}
-                  status={checked12 === cero ? "checked" : "unchecked"}
+                  value={state.uno}
+                  status={checked12 === uno ? "checked" : "unchecked"}
                   onPress={() => {
-                    setState({ ...state, checked12: cero });
+                    setState({ ...state, checked12: uno });
                   }}
                 />
               </View>
