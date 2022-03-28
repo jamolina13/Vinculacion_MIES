@@ -9,19 +9,17 @@ import {
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 
-export const ReporteLawtonBrody = (props) => {
-    const params = props.route.params;
-    const navigation = props.navigation;
-    const idEncabezado = params.idEncabezado
+import { styles } from "../../../estilos/styleReporte";
+
+export const ReporteLawtonBrody = (vals) => {
+
+    const idEncabezado = vals
+    
     const [values, setValues] = useState({
         lista: [],
         datosReporte: [],
     });
- const MenuReporte = () => {
-        navigation.navigate('Menureporte', {
 
-        });
-    }
     const [state, setState] = useState({
         isReady: false,
     })
@@ -49,10 +47,16 @@ export const ReporteLawtonBrody = (props) => {
       }, []);
 
     const llamarDatos = async() =>{
+        let dinamicValue
         
+        for(var property in idEncabezado) {
+            dinamicValue=idEncabezado[property];
+        }
+
         try {
+            console.log("aqui estas: "+idEncabezado)
             const responseE = await fetch(
-                "http://192.188.58.82:3000/reporteLawtonById/"+ idEncabezado + "",
+                "http://192.188.58.82:3000/reporteLawtonById/"+ dinamicValue + "",
                 {
                     method: "GET",
                     headers: {
@@ -66,14 +70,14 @@ export const ReporteLawtonBrody = (props) => {
                 lista: json,
                 refreshing: false,
             });
-
+            
         } catch (error) {
 
             console.error(error);
         }
 
     }
-    console.log("holas"+lista.length)
+    
 
     const printToFile = async () => {
         // On iOS/android prints the given html. On web prints the HTML from the current page.
@@ -109,7 +113,7 @@ export const ReporteLawtonBrody = (props) => {
         values.lista.filter((item) => {
             repot= item;
         });
-        console.log(repot)
+        
 
         const blanco = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;">`;
         const amarillo = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal; background-color: yellow;">`;
@@ -137,6 +141,8 @@ export const ReporteLawtonBrody = (props) => {
            return a;         
         }
         var tamaños=[4,4,4,5,3,5,3,3]
+        
+
         Object.keys(repot).forEach(key => {
             console.log(key.substring(0,5))
            if(key.substring(0,5)==="elb_p"){
@@ -803,83 +809,15 @@ export const ReporteLawtonBrody = (props) => {
     `;
         return html;
     }
-
-       return (
-        <View
-            style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
-        >
-            <View style={styles8.inputContainer} >
-                <TouchableOpacity style={styles8.txtBtn} onPress={print} >
-                    <Text style={[styles8.text]}> Generar PDF</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles8.txtBtn2} onPress={MenuReporte} >
-                    <Text style={[styles8.text]}> Regresar</Text>
-                </TouchableOpacity>
-                {Platform.OS === 'ios' &&
-                    <>
-                        <View style={styles8.spacer} />
-                        <Button title='Select printer' onPress={selectPrinter} />
-                        <View style={styles8.spacer} />
-                        {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
-                    </>
-                }
-
-            </View>
-
-        </View>
+    return (
+        <TouchableOpacity style={styles.txtBtn}
+        // disabled={value.validacionBtn}
+        //</View>onPress={() => registroEncabezado()}
+        onPress={print}
+      >
+        <Text style={[styles.text]}> Reporte Lawton Brody</Text>
+      </TouchableOpacity>
     );
 };
 
-const styles8 = StyleSheet.create({
-    spacer: {
-        margin: 5,
-    },
-    dext: {
-        backgroundColor: "#080f26",
 
-    },
-    backgroundContainer: {
-        flex: 1,
-        width: null,
-        height: null,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    inputContainer: {
-        marginTop: 180,
-        marginBottom: 10,
-    },
-    txtBtn: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#005DA6",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    txtBtn2: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#FF0000",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    text: {
-        color: "#fff",
-        fontSize: 18,
-        textAlign: "center",
-        fontWeight: "bold",
-    },
-    input: {
-        //width: WIDTH - 55,
-        height: 45,
-        borderRadius: 10,
-        fontSize: 18,
-        paddingLeft: 55,
-        backgroundColor: "rgba(0,0,0,0.20)",
-        color: "black",
-        marginHorizontal: 25,
-    },
-
-});

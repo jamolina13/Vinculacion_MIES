@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ReporteLawtonBrody } from "../gestion/reportes/ReporteLawtonBrody";
 import {
 
   Text,
@@ -19,11 +20,6 @@ export const Menureporte = (props) => {
 
   console.log("idEncabezado: "+idEncabezado)
 
-  const ReporteLawton = () => {
-    navigation.navigate('ReporteLawtonBrody', {
-      idEncabezado: idEncabezado,
-    });
-  }
 
   const ReporteBarthel = () => {
     navigation.navigate('ReporteBarthel', {
@@ -69,13 +65,10 @@ export const Menureporte = (props) => {
           </TouchableOpacity>
 
 
-          <TouchableOpacity style={styles.txtBtn}
-            // disabled={value.validacionBtn}
-            //</View>onPress={() => registroEncabezado()}
-            onPress={ReporteLawton}
-          >
-            <Text style={[styles.text]}>Reporte Lawton y Brody</Text>
-          </TouchableOpacity>
+         
+          <ReporteLawtonBrody
+            vals={idEncabezado}
+          />
 
 
           <TouchableOpacity style={styles.txtBtn}
