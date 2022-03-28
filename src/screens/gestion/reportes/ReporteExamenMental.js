@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-    Button,
-    Text,
-    StyleSheet,
-    View,
-
-    TouchableOpacity,
-} from "react-native";
+import {Text,TouchableOpacity} from "react-native";
+import moment from 'moment';
 
 import { styles } from "../../../estilos/styleReporte";
 import * as Print from 'expo-print';
@@ -27,9 +21,9 @@ const html = `
   </body>
 </html>
 `;
-export const ReporteExamenMental = (props) => {
-    const params = props.route.params;
-    const navigation = props.navigation;
+
+export const ReporteExamenMental = (vals) => {
+
     var [values, setValues] = useState({
         lista: [],
         datosReporte: [],
@@ -37,28 +31,28 @@ export const ReporteExamenMental = (props) => {
 
     var { lista } = values;
     var { datosReporte } = values;
-    const idEncabezado = params.idEncabezado
- const MenuReporte = () => {
-        navigation.navigate('Menureporte', {
 
-        });
-    }
-    console.log(idEncabezado + "aasas")
+    const idEncabezado = vals;
+
     const [state, setState] = useState({
         isReady: false,
     })
+
     useEffect(() => {
         llamarDatos();
         return () => {
             setValues({});
         }
-    }, [state.isReady]);
+    }, []);
 
     const llamarDatos = async () => {
-
+        let dinamicValue;
+        for (var property in idEncabezado) {
+            dinamicValue = idEncabezado[property];
+        }
         try {
             const responseE = await fetch(
-                "http://192.188.58.82:3000/reporteMiniById/" + idEncabezado + "",
+                "http://192.188.58.82:3000/reporteMiniById/" + dinamicValue + "",
 
                 {
                     method: "GET",
@@ -78,8 +72,8 @@ export const ReporteExamenMental = (props) => {
 
             console.error(error);
         }
-
     }
+
     values.lista.filter((item) => {
         datosReporte[0] = `${item.am_nombre}`;
         datosReporte[1] = `${item.uni_zona}`;
@@ -131,6 +125,9 @@ export const ReporteExamenMental = (props) => {
         datosReporte[45] = `${item.mim_puntaje_total}`;
     });
 
+    const DatosFecha = datosReporte[8];
+    const fecha = moment.utc(DatosFecha).format('DD/MM/YYYY');
+    console.log("Fecha " + fecha);
 
     const [selectedPrinter, setSelectedPrinter] = React.useState();
     const [allowances, setAllowances] = useState([]);
@@ -165,25 +162,25 @@ export const ReporteExamenMental = (props) => {
         var cumpleanos = new Date(fecha);
         var edad = hoy.getFullYear() - cumpleanos.getFullYear();
         var m = hoy.getMonth() - cumpleanos.getMonth();
-    
+
         if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
             edad--;
         }
-    
+
         return edad;
     }
-    
+
     function calcularMes(fecha) {
         console.log(fecha)
         var hoy = new Date();
         var cumpleanos = new Date(fecha);
         var edad = hoy.getFullYear() - cumpleanos.getFullYear();
         var m = hoy.getMonth() - cumpleanos.getMonth();
-    
+
         if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
             edad--;
         }
-    
+
         return Math.abs(m);
     }
 
@@ -260,7 +257,7 @@ export const ReporteExamenMental = (props) => {
 </td>
 <td style="width: 337px; height: 3px;">
 <p><strong>Fecha de aplicaci&oacute;n:</strong></p>
-<p>${datosReporte[8]}</p>
+<p>${fecha}</p>
 </td>
 <td style="width: 244px; height: 3px;">
 <p><strong>Aplicado por:</strong></p>
@@ -651,82 +648,14 @@ export const ReporteExamenMental = (props) => {
     `;
         return html;
     }
-   return (
-        <View
-            style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
+    return (
+        <TouchableOpacity style={styles.txtBtn}
+            // disabled={value.validacionBtn}
+            //</View>onPress={() => registroEncabezado()}
+            onPress={print}
         >
-            <View style={styles8.inputContainer} >
-                <TouchableOpacity style={styles8.txtBtn} onPress={print} >
-                    <Text style={[styles8.text]}> Generar PDF</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles8.txtBtn2} onPress={MenuReporte} >
-                    <Text style={[styles8.text]}> Regresar</Text>
-                </TouchableOpacity>
-                {Platform.OS === 'ios' &&
-                    <>
-                        <View style={styles8.spacer} />
-                        <Button title='Select printer' onPress={selectPrinter} />
-                        <View style={styles8.spacer} />
-                        {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
-                    </>
-                }
-
-            </View>
-
-        </View>
+            <Text style={[styles.text]}> Reporte Examen Mental</Text>
+        </TouchableOpacity>
     );
 };
 
-const styles8 = StyleSheet.create({
-    spacer: {
-        margin: 5,
-    },
-    dext: {
-        backgroundColor: "#080f26",
-
-    },
-    backgroundContainer: {
-        flex: 1,
-        width: null,
-        height: null,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    inputContainer: {
-        marginTop: 180,
-        marginBottom: 10,
-    },
-    txtBtn: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#005DA6",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    txtBtn2: {
-        //width:  100,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: "#FF0000",
-        justifyContent: "center",
-        marginTop: 20,
-    },
-    text: {
-        color: "#fff",
-        fontSize: 18,
-        textAlign: "center",
-        fontWeight: "bold",
-    },
-    input: {
-        //width: WIDTH - 55,
-        height: 45,
-        borderRadius: 10,
-        fontSize: 18,
-        paddingLeft: 55,
-        backgroundColor: "rgba(0,0,0,0.20)",
-        color: "black",
-        marginHorizontal: 25,
-    },
-
-});
