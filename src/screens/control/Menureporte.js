@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ReporteLawtonBrody } from "../gestion/reportes/ReporteLawtonBrody";
 import {ReporteExamenMental} from "../gestion/reportes/ReporteExamenMental";
 import { ReporteBarthel } from "../gestion/reportes/ReporteBarthel";
+import { ReporteYesavage } from "../gestion/reportes/ReporteYesavage";
 import {Text,View,TouchableOpacity} from "react-native";
 
 import { styles } from "../../estilos/styleReporte";
@@ -12,14 +13,6 @@ export const Menureporte = (props) => {
 
   const idEncabezado = params.enc_id
 
-  console.log("idEncabezado: "+idEncabezado)
-
-
-  const ReporteYesavage = () => {
-    navigation.navigate('ReporteYesavage', {
-      idEncabezado: idEncabezado,
-    });
-  }
 
   return (
     <>
@@ -30,13 +23,7 @@ export const Menureporte = (props) => {
 
         <View style={styles.inputContainer}>
 
-          <TouchableOpacity style={styles.txtBtn}
-            // disabled={value.validacionBtn}
-            //</View>onPress={() => registroEncabezado()}
-            onPress={ReporteYesavage}
-          >
-            <Text style={[styles.text]}> Reporte Yesavage</Text>
-          </TouchableOpacity>
+          <ReporteYesavage vals={idEncabezado}/>
 
           <ReporteBarthel vals={idEncabezado}/>
          
