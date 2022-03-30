@@ -77,7 +77,7 @@ export const IndiTestLawtonBrody = (props) => {
           </Text>
         </View>
 
-        <View style={styles.tituloLabelItemt}>
+        <View style={styles.tituloLabel}>
           <Text style={styles.TextInfot}>Tiempo de administración.</Text>
           <Text style={styles.TextInfot}> 4 - 10 minutos</Text>
         </View>
@@ -87,7 +87,7 @@ export const IndiTestLawtonBrody = (props) => {
         <Text style={styles.TextInfotitu}>Normas de aplicación.</Text>
       </View>
 
-      <View style={styles.tituloLabelparr}>
+      <View style={styles.tituloLabel}>
         <Text style={styles.TextInfoparr}>
           Evalúa la capacidad funcional mediante 8 ítems. A cada ítem se le
           asigna un valor numérico 1 (independiente) o 0 (dependiente). La
