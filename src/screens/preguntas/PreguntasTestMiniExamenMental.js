@@ -46,8 +46,8 @@ export const PreguntasTestMiniExamenMental = (props) => {
     checked27: "",
     checked28: "",
     checked29: "",
-    cero: 0,
-    uno: 1,
+    cero: "0",
+    uno: "1",
     puntaje: 0,
     temp: "",
     estado: 1,
@@ -102,18 +102,21 @@ export const PreguntasTestMiniExamenMental = (props) => {
     });
   };
 
-  function resultadoTest (puntajeTotal) {
-    if(puntajeTotal >= 27){
+  function resultadoTest (valor) {
+    if(valor >= 27){
       return "Normal";
     }
-    if(puntajeTotal >= 24 && puntajeTotal <= 26){
+    if(valor >= 24 && valor <= 26){
       return "Sospecha Patológica";
     }
-    if(puntajeTotal >= 12 && puntajeTotal <= 23){
+    if(valor >= 12 && valor <= 23){
       return "Deterioro";
     }
-    if(puntajeTotal >= 9 && puntajeTotal <= 11){
+    if(valor >= 9 && valor <= 11){
       return "Demencia";
+    }
+    if(valor == 0 || valor < 9){
+      return "Resultado inconsistente";
     }  
   }
 
@@ -131,7 +134,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
   time.setSeconds(parseInt(diferencia % 60));
   time = time.toTimeString().split(" ")[0];
 
-  const p1_orientacion_tiempo =
+ /* const p1_orientacion_tiempo =
     checked + checked1 + checked2 + checked3 + checked4;
   const p2_orientacion_espacio =
     checked5 + checked6 + checked7 + checked8 + checked9;
@@ -146,7 +149,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
   const p10_escritura = checked28;
   const p11_copia_dibujo = checked29;
 
-  const puntajeTotal =
+  const valor =
     p1_orientacion_tiempo +
     p2_orientacion_espacio +
     p3_memoria +
@@ -157,7 +160,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
     p8_compresion +
     p9_lectura +
     p10_escritura +
-    p11_copia_dibujo;
+    p11_copia_dibujo;*/
 
     function validarFormulario(){
       
@@ -167,12 +170,12 @@ export const PreguntasTestMiniExamenMental = (props) => {
       Object.keys(state).forEach(key => {
         
         if(key.substring(0, 7)=="checked"){
-  
+
           if((state[key])!='' && count === 0){
             valor=valor+parseInt(state[key]);
-            
-          }else if ( (state[key])=='' && count === 0) {
-            
+
+          } else if ((state[key]) == '' && count === 0) {
+            console.log(state[key]);
             count=1;
             Alert.alert("MIES APP", "Existen campos sin llenar, por favor llene todos los campos", [
               {
@@ -183,12 +186,26 @@ export const PreguntasTestMiniExamenMental = (props) => {
           }
         }
       });
+      if(!count){
+        onsubmitGuardar()
+      }
       
-      onsubmitGuardar()
     }
 
 
   const onsubmitGuardar = async () => {
+    let valor = 0;
+
+    Object.keys(state).forEach(key => {
+
+      if (key.substring(0, 7) == "checked") {
+        if ((state[key]) != '') {
+          valor = valor + parseInt(state[key]);
+        }
+      }
+
+
+    });
    
     try {
       console.log("entra");
@@ -236,7 +253,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
             mim_tiempo_final: fechaFinal,
             mim_tiempo_total: time,
             mim_estado: estado,
-            mim_puntaje_total: puntajeTotal
+            mim_puntaje_total: valor
           }),
         }
       );
@@ -249,8 +266,8 @@ export const PreguntasTestMiniExamenMental = (props) => {
           idMini:enc_id,
         });
 
-        clasValor = resultadoTest(puntajeTotal);
-        Alert.alert("MIES APP", `Puntaje total: ${puntajeTotal}, ${clasValor}`, [
+        clasValor = resultadoTest(valor);
+        Alert.alert("MIES APP", `Puntaje total: ${valor}, ${clasValor}`, [
           {
             text: "Continuar",
             style: "destructive",
@@ -285,6 +302,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
       </View>
       <View style={{ alignItems: "center" }}>
         <RadioButton.Group
+          re
           onValueChange={(v) => {
             setState({ ...state, checked: v });
           }}
@@ -1318,7 +1336,7 @@ export const PreguntasTestMiniExamenMental = (props) => {
                 value={state.cero}
                 status={checked27 === cero ? "checked" : "unchecked"}
                 onPress={() => {
-                  setState({ ...state, checked25: cero });
+                  setState({ ...state, checked27: cero });
                 }}
               />
             </View>
