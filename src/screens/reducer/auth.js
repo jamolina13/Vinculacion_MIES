@@ -62,7 +62,7 @@ export const startLogIn = (cedula, password) => {
           );
         } else {
           //dispatch(logout());
-          Alert.alert("MIES APP", "Número de cédula o contraseña incorrectos", [
+          Alert.alert("MIES APP", "La contraseña es incorrecta, vuelva a intentarlo", [
             {
               text: "Continuar",
               style: "destructive",
@@ -123,7 +123,7 @@ export const startLogIn = (cedula, password) => {
           } else {
             Alert.alert(
               "MIES APP",
-              "Número de cédula o contraseña incorrectos",
+              "La contraseña es incorrecta, vuelva a intentarlo",
               [
                 {
                   text: "Continuar",
@@ -135,7 +135,7 @@ export const startLogIn = (cedula, password) => {
         } else {
           Alert.alert(
             "MIES APP",
-            "Algo ha salido mal. Intenta más tarde.",
+            "El número de cédula es incorrecto",
             [
               {
                 text: "Continuar",
