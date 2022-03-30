@@ -175,7 +175,9 @@ export const PreguntasTestLawtonBrody = (props) => {
         }
       }
     });
-    onsubmitGuardar()
+    if(!count){
+      onsubmitGuardar()
+    }
   }
     
 
