@@ -234,7 +234,7 @@ export const RegistroTecnico = (props) => {
 
   const validateContraseña = (contraseña, type) => {
     if (type == "contraseña") {
-        setState({ ...state, contraseñaValidate: true, correo: contraseña, disabled: false });
+        setState({ ...state, contraseñaValidate: true, contraseña: contraseña, disabled: false });
         console.log("contra: " +state.contraseñaValidate)
       }else {
         setState({ ...state, contraseñaValidate: false, disabled: true });
