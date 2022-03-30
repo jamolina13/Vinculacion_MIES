@@ -429,7 +429,7 @@ export const ReporteYesavage = (vals) => {
         <tbody>
         <tr style="height: 28px;">
         <td style="width: 169.523px; text-align: center; height: 28px;">No depresi&oacute;n</td>
-        <td style="width: 169.523px; text-align: center; height: 28px;">10-15 puntos</td>
+        <td style="width: 169.523px; text-align: center; height: 28px;">0-5 puntos</td>
         </tr>
         <tr style="height: 29.0078px;">
         <td style="width: 169.523px; text-align: center; height: 29.0078px;">Probable depresi&oacute;n&nbsp;</td>
@@ -483,28 +483,6 @@ export const ReporteYesavage = (vals) => {
             onPress={print}>
             <Text style={[styles.text]}> Reporte Yesavage</Text>
         </TouchableOpacity>
-        /*<View
-            style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
-        >
-            <View style={styles8.inputContainer} >
-                <TouchableOpacity style={styles8.txtBtn} onPress={print} >
-                    <Text style={[styles8.text]}> Generar PDF</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles8.txtBtn2} onPress={MenuReporte} >
-                    <Text style={[styles8.text]}> Regresar</Text>
-                </TouchableOpacity>
-                {Platform.OS === 'ios' &&
-                    <>
-                        <View style={styles8.spacer} />
-                        <Button title='Select printer' onPress={selectPrinter} />
-                        <View style={styles8.spacer} />
-                        {selectedPrinter ? <Text style={styles8.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text> : undefined}
-                    </>
-                }
-
-            </View>
-
-        </View>*/
     );
 };
 
