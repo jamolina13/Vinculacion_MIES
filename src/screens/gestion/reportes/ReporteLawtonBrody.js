@@ -1,157 +1,162 @@
 import React, { useState, useEffect } from "react";
-import {
-    Text,
-    StyleSheet,
-    View,
-    Button,
-    TouchableOpacity,
-} from "react-native";
-import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
-
+import { Text, StyleSheet, View, Button, TouchableOpacity } from "react-native";
+import * as Print from "expo-print";
+import { shareAsync } from "expo-sharing";
+import moment from 'moment';
 import { styles } from "../../../estilos/styleReporte";
 
 export const ReporteLawtonBrody = (vals) => {
+  const idEncabezado = vals;
 
-    const idEncabezado = vals
-    
-    const [values, setValues] = useState({
-        lista: [],
-        datosReporte: [],
+  const [values, setValues] = useState({
+    lista: [],
+    datosReporte: [],
+  });
+
+  const [state, setState] = useState({
+    isReady: false,
+  });
+  const { lista } = values;
+  var { datosReporte } = values;
+  ///////////////////////////////////////////////////////////////////
+
+  const [selectedPrinter, setSelectedPrinter] = React.useState();
+  const [allowances, setAllowances] = useState([]);
+
+  const print = async () => {
+    await Print.printAsync({
+      html: createDynamicTable(),
+      printerUrl: selectedPrinter?.url, // iOS only
+    });
+  };
+
+  useEffect(() => {
+    llamarDatos();
+    return () => {
+      setValues({});
+    };
+  }, []);
+
+  function calcularEdad(fecha) {
+    console.log(fecha);
+    var hoy = new Date();
+    var cumpleanos = new Date(fecha);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+      edad--;
+    }
+
+    return edad;
+  }
+
+  function calcularMes(fecha) {
+    console.log(fecha);
+    var hoy = new Date();
+    var cumpleanos = new Date(fecha);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+      edad--;
+    }
+
+    return Math.abs(m);
+  }
+
+  const llamarDatos = async () => {
+    let dinamicValue;
+
+    for (var property in idEncabezado) {
+      dinamicValue = idEncabezado[property];
+    }
+
+    try {
+      console.log("aqui estas: " + idEncabezado);
+      const responseE = await fetch(
+        "http://192.188.58.82:3000/reporteLawtonById/" + dinamicValue + "",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await responseE.json();
+      setValues({
+        ...values,
+        lista: json,
+        refreshing: false,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const printToFile = async () => {
+    // On iOS/android prints the given html. On web prints the HTML from the current page.
+    const { uri } = await Print.printToFileAsync({
+      html,
+    });
+    console.log("File has been saved to:", uri);
+    await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
+  };
+
+  const selectPrinter = async () => {
+    const printer = await Print.selectPrinterAsync(); // iOS only
+    setSelectedPrinter(printer);
+  };
+
+  const createDynamicTable = () => {
+    // await useEffect(() => {
+    //     fetch("192.188.58.82:3000/consultaEscalaLawtonBrodyByIdAm/1")
+    //       .then(data => {
+    //         return data.json();
+    //       })
+    //       .then(data => {
+    //         setAllowances(data);
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //   }, []);
+    var repot;
+    values.lista.filter((item) => {
+      repot = item;
     });
 
-    const [state, setState] = useState({
-        isReady: false,
-    })
-    const { lista } = values;
-    var { datosReporte } = values;
-    ///////////////////////////////////////////////////////////////////
+    const DatosFecha = repot.ef_fecha_aplicacion;
+    console.log("Fecha sin format: "+ DatosFecha);
+    const fecha = moment.utc(DatosFecha).format("DD/MM/YYYY");
+    console.log("Fecha " + fecha);
 
-    const [selectedPrinter, setSelectedPrinter] = React.useState();
-    const [allowances, setAllowances] = useState([]);
-    const print = async () => {
-        // On iOS/android prints the given html. On web prints the HTML from the current page.
+    const blanco = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;">`;
+    const amarillo = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal; background-color: yellow;">`;
+    const arraycolors = [];
 
-        await Print.printAsync({
-            html: createDynamicTable(),
-            printerUrl: selectedPrinter?.url, // iOS only
-        });
-
-    }
-
-    useEffect(() => {
-        llamarDatos();
-        return () => {
-          setValues({});
+    let arrayx = (valor, tamaño) => {
+      let a = [];
+      for (let i = 1; i <= tamaño; i++) {
+        if (valor === i) {
+          arraycolors.push(amarillo);
+        } else {
+          arraycolors.push(blanco);
         }
-      }, []);
+      }
+      return a;
+    };
+    var tamaños = [4, 4, 4, 5, 3, 5, 3, 3];
 
-    const llamarDatos = async() =>{
-        let dinamicValue
-        
-        for(var property in idEncabezado) {
-            dinamicValue=idEncabezado[property];
-        }
+    Object.keys(repot).forEach((key) => {
+      console.log(key.substring(0, 5));
+      if (key.substring(0, 5) === "elb_p") {
+        arrayx(repot[key], tamaños.shift());
+      }
+    });
 
-        try {
-            console.log("aqui estas: "+idEncabezado)
-            const responseE = await fetch(
-                "http://192.188.58.82:3000/reporteLawtonById/"+ dinamicValue + "",
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                });
-                const json = await responseE.json();
-            setValues({
-                ...values,
-                lista: json,
-                refreshing: false,
-            });
-            
-        } catch (error) {
-
-            console.error(error);
-        }
-
-    }
-    
-
-    const printToFile = async () => {
-        // On iOS/android prints the given html. On web prints the HTML from the current page.
-        const { uri } = await Print.printToFileAsync({
-            html
-        });
-        console.log('File has been saved to:', uri);
-        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-    }
-
-    const selectPrinter = async () => {
-        const printer = await Print.selectPrinterAsync(); // iOS only
-        setSelectedPrinter(printer);
-    }
-
-
-    const createDynamicTable = () => {
-
-
-        // await useEffect(() => {
-        //     fetch("192.188.58.82:3000/consultaEscalaLawtonBrodyByIdAm/1")
-        //       .then(data => {
-        //         return data.json();
-        //       })
-        //       .then(data => {
-        //         setAllowances(data);
-        //       })
-        //       .catch(err => {
-        //         console.log(err);
-        //       });
-        //   }, []);
-        var repot;
-        values.lista.filter((item) => {
-            repot= item;
-        });
-        
-
-        const blanco = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;">`;
-        const amarillo = `<p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal; background-color: yellow;">`;
-        const arraycolors = []
-        
-        //console.log(obj)
-        // Object.keys(obj).forEach(key => {
-        //     if (obj[key] === 0 && key != 'ef_id') {
-        //         arraycolors.push(blanco)
-        //     } else if (obj[key] === 1 && key != 'ef_id') {
-        //         arraycolors.push(amarillo)
-        //     }
-        // })
-
-        let arrayx= (valor, tamaño)=>{
-           let a=[]
-           for(let i=1;i<=tamaño;i++){
-              
-            if(valor===i){
-                arraycolors.push(amarillo)
-            }else{
-                arraycolors.push(blanco)
-            }
-           }
-           return a;         
-        }
-        var tamaños=[4,4,4,5,3,5,3,3]
-        
-
-        Object.keys(repot).forEach(key => {
-            console.log(key.substring(0,5))
-           if(key.substring(0,5)==="elb_p"){
-            arrayx(repot[key],tamaños.shift())
-           }
-        })
-
-
-        const html = `
+    const html = `
     <!DOCTYPE html>
     <html lang="es">
 
@@ -195,22 +200,30 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 133px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 97.2pt;"
                                 colspan="2">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">${repot.am_nombre}</span></strong></p>
+                                            style="color: black;">${
+                                              repot.am_nombre
+                                            }</span></strong></p>
                             </td>
                             <td style="width: 113px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 97.2pt;"
                                 colspan="3" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Zona: ${repot.uni_zona}</span></strong></p>
+                                            style="color: black;">Zona: ${
+                                              repot.uni_zona
+                                            }</span></strong></p>
                             </td>
                             <td style="width: 133px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 97.2pt;"
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Distrito: ${repot.uni_distrito}</span></strong></p>
+                                            style="color: black;">Distrito: ${
+                                              repot.uni_distrito
+                                            }</span></strong></p>
                             </td>
                             <td style="width: 191px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 97.2pt;"
                                 colspan="5" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Modalidad de Atenci&oacute;n: ${repot.uni_modalidad}</span></strong></p>
+                                            style="color: black;">Modalidad de Atenci&oacute;n: ${
+                                              repot.uni_modalidad
+                                            }</span></strong></p>
                             </td>
                             <td style="border: none; padding: 0cm; width: 12px;">
                                 <p class="MsoNormal">&nbsp;</p>
@@ -220,7 +233,9 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 1028.61px; border-right: 1pt solid windowtext; border-bottom: 1pt solid windowtext; border-left: 1pt solid windowtext; border-image: initial; border-top: none; padding: 0cm 5.4pt; height: 34.85pt;"
                                 colspan="14">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Nombre de la Unidad de Atenci&oacute;n: ${repot.uni_unidad_atencion}</span></strong>
+                                            style="color: black;">Nombre de la Unidad de Atenci&oacute;n: ${
+                                              repot.uni_unidad_atencion
+                                            }</span></strong>
                                 </p>
                             </td>
                             <td style="border: none; padding: 0cm; width: 12px;">
@@ -231,21 +246,25 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 63px; border-right: 1pt solid windowtext; border-bottom: 1pt solid windowtext; border-left: 1pt solid windowtext; border-image: initial; border-top: none; padding: 0cm 5.4pt; height: 56.1pt;"
                                 rowspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Edad: </span></strong></p>
+                                            style="color: black;">Edad</span></strong></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;"> &nbsp; </span></strong></p>
                             </td>
                             <td style="width: 405.609px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 56.1pt;"
                                 colspan="2" rowspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">A&ntilde;os: </span></strong></p>
+                                            style="color: black;">A&ntilde;os: ${calcularEdad(
+                                                repot.am_fecha_de_nacimiento
+                                              )}</span></strong></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;"> &nbsp; </span></strong></p>
                             </td>
                             <td style="width: 143px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 56.1pt;"
                                 rowspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Meses:</span></strong></p>
+                                            style="color: black;">Meses: ${calcularMes(
+                                              repot.am_fecha_de_nacimiento
+                                            )}</span></strong></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;"><span style="mso-spacerun: yes;">&nbsp;</span>
                                         </span></strong></p>
@@ -253,14 +272,18 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 277px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 56.1pt;"
                                 colspan="6" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Fecha de aplicaci&oacute;n:</span></strong></p>
+                                            style="color: black;">Fecha de aplicaci&oacute;n: ${fecha}</span></strong></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;"> &nbsp; </span></strong></p>
                             </td>
                             <td style="width: 140px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 56.1pt;"
                                 colspan="4" rowspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Aplicado por: ${repot.tec_apellido} ${repot.tec_nombre} </span></strong></p>
+                                            style="color: black;">Aplicado por: ${
+                                              repot.tec_apellido
+                                            } ${
+      repot.tec_nombre
+    } </span></strong></p>
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
                                             style="color: black;"> &nbsp; </span></strong></p>
                             </td>
@@ -272,17 +295,23 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 104px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 62.45pt;"
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Hora inicial: ${repot.elb_tiempo_inicial}</span></strong></p>
+                                            style="color: black;">Hora inicial: ${
+                                              repot.elb_tiempo_inicial
+                                            }</span></strong></p>
                             </td>
                             <td style="width: 82px; border-top: 1pt solid windowtext; border-right: 1pt solid windowtext; border-bottom: 1pt solid windowtext; border-image: initial; border-left: none; padding: 0cm; height: 62.45pt;"
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Hora Final: ${repot.elb_tiempo_final}</span></strong></p>
+                                            style="color: black;">Hora Final: ${
+                                              repot.elb_tiempo_final
+                                            }</span></strong></p>
                             </td>
                             <td style="width: 91px; border-top: 1pt solid windowtext; border-right: 1pt solid windowtext; border-bottom: 1pt solid windowtext; border-image: initial; border-left: none; padding: 0cm; height: 62.45pt;"
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">Total: ${repot.elb_tiempo_total}</span></strong></p>
+                                            style="color: black;">Total: ${
+                                              repot.elb_tiempo_total
+                                            }</span></strong></p>
                             </td>
                             <td style="border: none; padding: 0cm; width: 12px;">
                                 <p class="MsoNormal">&nbsp;</p>
@@ -679,7 +708,9 @@ export const ReporteLawtonBrody = (vals) => {
                             <td style="width: 81px; border-top: none; border-left: none; border-bottom: 1pt solid windowtext; border-right: 1pt solid windowtext; padding: 0cm 5.4pt; height: 15.5pt;"
                                 colspan="2" valign="top">
                                 <p class="MsoNormal" style="margin-bottom: 0cm; line-height: normal;"><strong><span
-                                            style="color: black;">${repot.elb_puntaje_total}</span></strong></p>
+                                            style="color: black;">${
+                                              repot.elb_puntaje_total
+                                            }</span></strong></p>
                             </td>
                             <td style="border: none; padding: 0cm; width: 12px;">
                                 <p class="MsoNormal">&nbsp;</p>
@@ -807,17 +838,14 @@ export const ReporteLawtonBrody = (vals) => {
     
     </html>
     `;
-        return html;
-    }
-    return (
-        <TouchableOpacity style={styles.txtBtn}
-        // disabled={value.validacionBtn}
-        //</View>onPress={() => registroEncabezado()}
-        onPress={print}
-      >
-        <Text style={[styles.text]}> Reporte Lawton Brody</Text>
-      </TouchableOpacity>
-    );
+    return html;
+  };
+  return (
+    <TouchableOpacity
+      style={styles.txtBtn}
+      onPress={print}
+    >
+      <Text style={[styles.text]}> Reporte Lawton Brody</Text>
+    </TouchableOpacity>
+  );
 };
-
-
