@@ -148,8 +148,9 @@ export const PreguntasTestBarthel = (props) => {
         }
       }
     });
-    
-    onsubmitGuardar()
+    if(!count){
+      onsubmitGuardar()
+    }
   }
 
   function resultadoTest (valor) {
