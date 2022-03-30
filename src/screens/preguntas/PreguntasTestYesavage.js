@@ -60,42 +60,7 @@ export const PreguntasTestYesavage = (props) => {
     });
   };
 
-  /*
-  useEffect(() => {
-    Yesavage();
-    return () => {
-      setValues({});
-    }
-  }, [state.isReady]);
 
-  
-  const Yesavage = async () => {
-
-    try {
-      const Yesavage2 = await fetch(
-        "http://192.188.58.82:3000/consultaEscalaYesavage",
-        {
-          method: "GET",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-      const json = await Yesavage2.json();
-      setValues({
-        ...values,
-        listadoY: json,
-        isReady: true,
-        refreshing: false,
-      });
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const idYesavage = listadoY.length + 1;
-*/
   const { checked } = state;
   const { checked1 } = state;
   const { checked2 } = state;
@@ -155,7 +120,7 @@ export const PreguntasTestYesavage = (props) => {
 
         if ((state[key]) != '' && count === 0) {
           valor = valor + parseInt(state[key]);
-
+          console.log(valor);
         } else if ((state[key]) == '' && count === 0) {
 
           count = 1;
@@ -168,8 +133,9 @@ export const PreguntasTestYesavage = (props) => {
         }
       }
     });
-
-    onsubmitGuardar()
+    if(!count){
+      onsubmitGuardar()
+    }
   }
 
   const onsubmitGuardar = async () => {
