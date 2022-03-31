@@ -80,7 +80,7 @@ export const UbicacionScreen = (props) => {
   
 
   useEffect(() => {
-    encabezados();
+    //cedulas();
     return () => {
       setValues({});
     }
@@ -100,8 +100,8 @@ export const UbicacionScreen = (props) => {
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       });
       setState(...state, { isReady: true });
-  */
-  const encabezados = async () => {
+  *//*
+  const encabezadoss = async () => {
 
     try {
       const responseE = await fetch(
@@ -126,14 +126,40 @@ export const UbicacionScreen = (props) => {
     }
   };
 
-  const idEncabezado = listadoE[0];
+  const cedulas = async () => {
+    try {
+      const responseE = await fetch(
+        "http://192.188.58.82:3000/cedulaAdultoMayorById/"+state.am_id+"",
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      const json = await responseE.json();
+      setValues({
+        ...values,
+        listadoE: json,
+        isReady: true,
+        refreshing: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const cedula = listadoE[0];*/
 
   const registroEncabezado = async () => {
-
+    auxSec = new Date().getSeconds().toString();
+    aux = state.am_id+fechaAplicacion.getFullYear().toString()+fechaAplicacion.getMonth().toString()+fechaAplicacion.getDate().toString()+auxSec;
+    console.log(aux);
     try {
 
       const response = await fetch(
-        "http://192.188.58.82:3000/guardarEncabezado",
+        "http://192.188.58.82:3000/guardarEncabezado2",
         {
           method: "POST",
           headers: {
@@ -142,6 +168,7 @@ export const UbicacionScreen = (props) => {
           },
 
           body: JSON.stringify({
+            ef_id: aux,
             am_id: state.am_id,
             ef_observacion_preguntas: "assa",
             ef_observacion_tecnico: "ass",
@@ -158,10 +185,10 @@ export const UbicacionScreen = (props) => {
       );
       if (response.status == 200) {
         //const json = await response.json();
-        aux = idEncabezado.Cantidad;
+        
         navigation.replace("Test", {
           id: state.am_id,
-          enc_id: parseInt(aux)+1,
+          enc_id: aux,
           nombre: state.am_nombre,
           apellido: state.am_apellido,
         });
@@ -180,6 +207,7 @@ export const UbicacionScreen = (props) => {
     }
     console.log(
       JSON.stringify({
+        ef_id: aux,
         am_id: params.id, //parseInt(id),//pendiente
         ef_observacion_preguntas: state.observacion_preguntas,
         ef_observacion_tecnico: state.observacion_tecnico,
