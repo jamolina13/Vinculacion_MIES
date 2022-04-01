@@ -125,11 +125,12 @@ export const UbicacionScreen = (props) => {
       console.error(error);
     }
   };
+  */
 
   const cedulas = async () => {
     try {
       const responseE = await fetch(
-        "http://192.188.58.82:3000/cedulaAdultoMayorById/"+state.am_id+"",
+        "http://192.188.58.82:3000/ultimoIdEncabezado2/"+state.am_id+"",
         {
           method: "GET",
           headers: {
@@ -144,22 +145,32 @@ export const UbicacionScreen = (props) => {
         isReady: true,
         refreshing: false,
       });
+      if (responseE.status == 200) {
+        console.log("Se trajo el id del encabezado");
+        objeto = json[0];
+        aux = objeto.ef_id;
+        console.log(aux);
+        //const json = await response.json();
+        
+        navigation.replace("Test", {
+          id: state.am_id,
+          enc_id: parseInt(aux),
+          nombre: state.am_nombre,
+          apellido: state.am_apellido,
+        });
+      }
 
     } catch (error) {
       console.error(error);
     }
   };
 
-  const cedula = listadoE[0];*/
 
   const registroEncabezado = async () => {
-    auxSec = new Date().getSeconds().toString();
-    aux = state.am_id+fechaAplicacion.getFullYear().toString()+fechaAplicacion.getMonth().toString()+fechaAplicacion.getDate().toString()+auxSec;
-    console.log(aux);
     try {
 
       const response = await fetch(
-        "http://192.188.58.82:3000/guardarEncabezado2",
+        "http://192.188.58.82:3000/guardarEncabezado",
         {
           method: "POST",
           headers: {
@@ -168,7 +179,6 @@ export const UbicacionScreen = (props) => {
           },
 
           body: JSON.stringify({
-            ef_id: aux,
             am_id: state.am_id,
             ef_observacion_preguntas: "assa",
             ef_observacion_tecnico: "ass",
@@ -184,14 +194,7 @@ export const UbicacionScreen = (props) => {
         }
       );
       if (response.status == 200) {
-        //const json = await response.json();
-        
-        navigation.replace("Test", {
-          id: state.am_id,
-          enc_id: aux,
-          nombre: state.am_nombre,
-          apellido: state.am_apellido,
-        });
+        console.log("Se guarda el encabezado");
       } else {
 
         Alert.alert("MIES APP", "Error al registrar. Intente más tarde. ", [
@@ -207,7 +210,6 @@ export const UbicacionScreen = (props) => {
     }
     console.log(
       JSON.stringify({
-        ef_id: aux,
         am_id: params.id, //parseInt(id),//pendiente
         ef_observacion_preguntas: state.observacion_preguntas,
         ef_observacion_tecnico: state.observacion_tecnico,
@@ -223,6 +225,12 @@ export const UbicacionScreen = (props) => {
     );
   };
 
+
+  function hace (){
+    registroEncabezado();
+
+    cedulas();
+  }
 
   const IndiTestYesavage = () => {
     navigation("IndiTestYesavage");
@@ -461,7 +469,7 @@ export const UbicacionScreen = (props) => {
       >
         <TouchableOpacity style={styles.btnContinuar}
           disabled={value.validacionBtn}
-          onPress={() => registroEncabezado()}>
+          onPress={() => hace()}>
           <Text style={[styles.textBtn]}
 
 
